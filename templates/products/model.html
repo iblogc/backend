@@ -1,0 +1,230 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}product{% endblock %}
+
+{% block privateStyle %}
+    <link type="text/css" rel="stylesheet" media="screen" href="/statics/css/products/model.css">
+    <link type="text/css" rel="stylesheet" media="screen" href="/statics/plugins/select2/select2.min.css">
+        <link type="text/css" rel="stylesheet" media="screen"
+          href="/statics/plugins/datetimepicker/bootstrap-datetimepicker.min.css">
+{% endblock %}
+
+{% block PageNavigator %}
+    <li><a href="/product">产品和模型管理</a></li>
+    <li>模型管理</li>
+{% endblock %}
+
+{% block privateScript %}
+    <script type="text/javascript" src="/statics/js/products/model.js"></script>
+    <script type="text/javascript" src="/statics/plugins/select2/select2.min.js"></script>
+    <script type="text/javascript" src="/statics/plugins/datetimepicker/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="/statics/plugins/datetimepicker/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            modelApp.init();
+            baseApp.pickDate($('.form_date'));
+        });
+    </script>
+{% endblock %}
+
+
+{% block contentBody %}
+    <div class="model-body">
+        <div class="select select1">
+            <div class="select-table">
+                产品分类
+                <select name="product1" class="select-product form-control">
+                    <option>请选择</option>
+                </select>
+                <select name="product2" class="select-product form-control">
+                    <option>请选择</option>
+                </select>
+                <select name="product3" class="select-product form-control">
+                    <option>请选择</option>
+                </select>
+            </div>
+            <div class="select-table">
+                品牌系列
+                <select name="brand" class="select-brand form-control">
+                    <option>请选择</option>
+                </select>
+                <select name="series" class="select-brand form-control">
+                    <option>请选择</option>
+                </select>
+            </div>
+        </div>
+        <div class="select">
+             <div class="select-table">
+                <div class="dateText first left">创建时间&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                <div class="input-group date form_date" data-date-format="yyyy-mm-dd">
+                    <input sid="Date-created" class="form-control select-update-time" size="16" type="text" id="startDate-created" value=""
+                           readonly>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                </div>
+                <div class="dateText left">&nbsp;&nbsp;&nbsp;&nbsp;到&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                <div class="input-group date form_date" data-date-format="yyyy-mm-dd">
+                    <input sid="Date-created" class="form-control select-update-time" size="16" type="text" id="endDate-created" value="" readonly>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                </div>
+            </div>
+            <div class="select-table">
+                <div class="dateText first left">更新时间&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                <div class="input-group date form_date" data-date-format="yyyy-mm-dd">
+                    <input sid="Date-update" class="form-control select-update-time" size="16" type="text" id="startDate-update" value=""
+                           readonly>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                </div>
+                <div class="dateText left">&nbsp;&nbsp;&nbsp;&nbsp;到&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                <div class="input-group date form_date" data-date-format="yyyy-mm-dd">
+                    <input sid="Date-update" class="form-control select-update-time" size="16" type="text" id="endDate-update" value="" readonly>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                </div>
+            </div>
+        </div>
+        <div class="select">
+             <div class="select-table">
+                 &nbsp;&nbsp;&nbsp;&nbsp;关键字
+                 <input id="product-Search" class="select-search form-control" placeholder="搜索...">
+                 <span class="select-search-icon"></span>
+                 <button type="button" class="btn btn-primary select-search-btn" id="select-Search">查询</button>
+                 <a href="/product/model"><button type="button" class="btn btn-warning select-search-btn" id="select-Reset">重置</button></a>
+            </div>
+        </div>
+        <div class="model-body-bottom">
+            <div class="product-info-box">
+                <ul class="list-type-none inline-block product-body-number">
+                    <li>1</li>
+                </ul>
+                <ul class="list-type-none inline-block product-info-box-imgBox">
+                    <li><img src="/statics/imgs/Koala.jpg" class="inline-table product-info-box-img"></li>
+                </ul>
+                <div class="product-info-box-text">
+                    <ul class="list-type-none inline-block">
+                        <li>产品编号:</li>
+                        <li>产品分类:</li>
+                        <li>厂家名称:</li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;分类:</li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;品牌:</li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;系列:</li>
+                    </ul>
+                    <ul class="list-type-none inline-block">
+                        <li>规格编号:</li>
+                        <li>产品型号:</li>
+                        <li>尺寸(mm):</li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;材质:</li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;颜色:</li>
+                    </ul>
+                    <ul class="list-type-none inline-block">
+                        <li>录入时间:</li>
+                        <li>更新时间:</li>
+                        <li>
+                            <div class="model-file-type">obj</div>
+                            <div class="model-file-type">obj</div>
+                            <div class="model-file-type">obj</div>
+                            <div class="model-file-type">obj</div>
+                        </li>
+                        <li>
+                            <div class="model-file-type">obj</div>
+                            <div class="model-file-type">obj</div>
+                            <div class="model-file-type">obj</div>
+                            <div class="model-file-type">obj</div>
+                        </li>
+                        <li>
+                            <div class="model-file-type">obj</div>
+                            <div class="model-file-type">obj</div>
+                            <div class="model-file-type">obj</div>
+                            <div class="model-file-type">obj</div>
+                        </li>
+                    </ul>
+                </div>
+                <ul class="list-type-none link-info">
+                    <a href="/product/model/modify/">编辑模型</a><br><br>
+                    <a href="/product/model/show/">查看模型</a>
+                </ul>
+            </div>
+            <div class="product-info-box">
+                <ul class="list-type-none inline-block product-body-number">
+                    <li>1</li>
+                </ul>
+                <ul class="list-type-none inline-block product-info-box-imgBox">
+                    <li><img src="/statics/imgs/Koala.jpg" class="inline-table product-info-box-img"></li>
+                </ul>
+                <div class="product-info-box-text">
+                    <ul class="list-type-none inline-block">
+                        <li>产品编号:</li>
+                        <li>产品分类:</li>
+                        <li>厂家名称:</li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;分类:</li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;品牌:</li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;系列:</li>
+                    </ul>
+                    <ul class="list-type-none inline-block">
+                        <li>规格编号:</li>
+                        <li>产品型号:</li>
+                        <li>尺寸(mm):</li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;材质:</li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;颜色:</li>
+                    </ul>
+                    <ul class="list-type-none inline-block">
+                        <li>录入时间:</li>
+                        <li>更新时间:</li>
+                        <li>
+                            <div class="model-file-type">obj</div>
+                            <div class="model-file-type">obj</div>
+                            <div class="model-file-type">obj</div>
+                            <div class="model-file-type">obj</div>
+                        </li>
+                        <li>
+                            <div class="model-file-type">obj</div>
+                            <div class="model-file-type">obj</div>
+                            <div class="model-file-type">obj</div>
+                            <div class="model-file-type">obj</div>
+                        </li>
+                        <li>
+                            <div class="model-file-type">obj</div>
+                            <div class="model-file-type">obj</div>
+                            <div class="model-file-type">obj</div>
+                            <div class="model-file-type">obj</div>
+                        </li>
+                    </ul>
+                </div>
+                <ul class="list-type-none link-info">
+                    <a href=" ">编辑模型</a><br><br>
+                    <a href=" ">查看模型</a>
+                </ul>
+            </div>
+        </div>
+        <div class="right pagination-div">
+            <nav>
+                <ul class="pagination">
+                    {% ifnotequal cur_page 1 %}
+                        <li><a href="/product/pdt">|&lt;</a></li>
+                        <li><a href="/product/pdt?page_id={{ cur_page|add:-1 }}"><span>&lt;</span></a></li>
+                    {% else %}
+                        <li><span style="color: #d1d1d1;">|&lt;</span></li>
+                        <li><span style="color: #d1d1d1;">&lt;</span></li>
+                    {% endifnotequal %}
+
+                    <li><a href="/product/pdt?page_id={{ cur_page }}">{{ cur_page }}</a></li>
+
+                    {% ifnotequal cur_page total_page %}
+                            <li><a href="/product/pdt?page_id={{ cur_page|add:1 }}">{{ cur_page|add:1 }}</a></li>
+                    {% endifnotequal %}
+
+                    {% if next %}
+                        <li><a href="/product/pdt?page_id={{ cur_page|add:2 }}"><span>&gt;</span></a></li>
+                    {% else %}
+                        <li><span style="color: #d1d1d1;">&gt;</span></li>
+                    {% endif %}
+
+                    {% ifnotequal cur_page total_page %}
+                        <li><a href="/product/pdt?page_id={{ total_page }}"><span>&gt;|</span></a></li>
+                    {% else %}
+                        <li><span style="color: #d1d1d1">&gt;|</span></li>
+                    {% endifnotequal %}
+                </ul>
+            </nav>
+        </div>
+        <div class="bottom-btn-106"><button class="btn btn-primary" type="button">返回</button></div>
+    </div>
+{% endblock %}

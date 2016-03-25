@@ -1,0 +1,177 @@
+.system-menu-header {
+    height: 160px !important;
+}
+
+.btn {
+    margin: 0 10px 0 0!important;
+}
+
+/*三级联动*/
+.select-box {
+    width: 530px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.ctrl-select {
+    width: 140px;
+    display: inline;
+    margin-left: 10px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+
+.search-box {
+    width: 530px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.search {
+    display: inline-block;
+    width: 60%;
+    margin-left: 10px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+
+.search-icon{
+    top: 8px;
+    right:162px;
+    height: 16px;
+    width: 16px;
+    position: relative;
+    float: right;
+    cursor: pointer;
+    background: url("/statics/imgs/icon/Search-icon.png");
+}
+
+.search-btn {
+    margin-top: -3px!important;
+    margin-left: 10px!important;
+    margin-right: 0px!important;
+    vertical-align: middle;
+    width: 40px;
+    padding: 0px;
+    height: 26px;
+    line-height: 24px;
+    font-size: 12px;
+}
+
+/*按钮行*/
+.btn-box > * {
+    margin: 0 0 0 10px;
+    padding: 0px;
+    width: 80px;
+    font-size: 12px;
+}
+
+.table-list-operation a {
+    margin-right: 20px;
+}
+
+.table-list-operation span {
+    cursor: pointer;
+}
+
+/*楼盘管理*/
+.info-list {
+    min-width: 920px;
+    border: 5px;
+    padding: 0;
+}
+
+.info-list>* {
+    margin-bottom: -1px;
+    border: solid #d3d3d3 1px;
+    background: #fff;
+    position: relative;
+    height: 40px;
+    color: #7f8995;
+}
+
+.info-list>*:first-child {
+    -webkit-border-radius: 3px 3px 0 0;
+    -moz-border-radius: 3px 3px 0 0;
+    border-radius: 3px 3px 0 0;
+    font-weight: 600;
+    background: #EFEFEF;
+}
+
+.info-list>*:last-child {
+    -webkit-border-radius: 0 0 3px 3px;
+    -moz-border-radius: 0 0 3px 3px;
+    border-radius: 0 0 3px 3px;
+}
+
+.info-list>div>ul {
+    list-style: none;
+    padding: 0px;
+    height: 40px;
+    font-size: 0px;
+    margin-top: 0px;
+}
+
+.info-list>div>ul>li {
+    display: inline-block;
+    height: 40px;
+    font-size: 12px;
+    line-height: 40px;
+    padding-left: 10px;
+    float: left;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.info-list>div>ul>li>input {
+    width: 12px;
+    height: 12px;
+}
+
+.list-checkbox {
+    min-width: 45px;
+    width: 5%;
+}
+
+.list-name {
+    min-width: 135px;
+    width: 15%;
+}
+
+.list-developer {
+    min-width: 135px;
+    width: 15%;
+}
+
+.list-district {
+    min-width: 180px;
+    width: 20%;
+    padding-right: 2%;
+}
+
+.list-address {
+    min-width: 275px;
+    width: 30%;
+    padding-right: 2%;
+}
+
+.list-action {
+    min-width: 135px;
+    width: 15%;
+}
+
+.info-list-box span {
+    cursor: pointer;
+}
+
+.info-list-box span>img {
+    width: 10px;
+    height: 10px;
+}
+
+.mouse-over {
+    background: #E0F8FA!important;
+}

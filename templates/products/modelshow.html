@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}product{% endblock %}
+
+{% block privateStyle %}
+    <link type="text/css" rel="stylesheet" media="screen" href="/statics/css/products/modelshow.css">
+    <link type="text/css" rel="stylesheet" media="screen" href="/statics/plugins/select2/select2.min.css">
+{% endblock %}
+
+{% block PageNavigator %}
+    <li><a href="/product">产品和模型管理</a></li>
+    <li><a href="/product/model">模型管理</a></li>
+    <li>查看模型详情</li>
+{% endblock %}
+
+{% block privateScript %}
+    <script type="text/javascript" src="/statics/js/products/modelshow.js"></script>
+    <script type="text/javascript" src="/statics/js/base.js"></script>
+    <script type="text/javascript" src="/statics/plugins/select2/select2.min.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            modelshowApp.init();
+        });
+    </script>
+{% endblock %}
+
+
+{% block contentBody %}
+    <div class="model-body">
+        <div class="model-body-top">
+            <div class="model-body-top-div" id="model-info">
+                <div class="title"><img src="/statics/imgs/icon/title-icon.png"><span>产品信息</span></div>
+                <div><span id="id">产品编号:</span></div>
+                <div><span id="name">产品名称:</span></div>
+                <div><span id="company_id">厂家名称:</span></div>
+                <div><span id="category">产品分类:</span></div>
+                <div><span id="brand_series">品牌系列:</span></div>
+            </div>
+            <div class="model-body-top-div" id="model-spec">
+                <div class="title"><img src="/statics/imgs/icon/title-icon.png"><span>产品规格</span></div>
+                <div class="model-spec">
+                    <img src="../../statics/imgs/Koala.jpg">
+                    <ul class="list-type-none">
+                        <li>&nbsp;规格编号:</li>
+                        <li>&nbsp;产品型号:</li>
+                        <li>尺寸(mm):</li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;材质:</li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;颜色:</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="model-body-bottom">
+            <div class="model-body-bottom-div">
+                <div class="title"><img src="/statics/imgs/icon/title-icon.png"><span>模型信息</span></div>
+                <div class="model-body-bottom-div-left">
+                    <div>
+                        <div class="view-title-div title">模型预览</div>
+                        <img id="viewImg" src="/statics/imgs/Koala.jpg">
+                    </div>
+                    <ul class="list-type-none">
+                        <li>录入时间:</li>
+                        <li>更新时间:</li>
+                    </ul>
+                </div>
+                <div class="model-body-bottom-div-right">
+                    <div class="bottom-right-info">
+                        <div class="model-title-box title">
+                            模型文件
+                        </div>
+                        <div class="model-box">
+                            <ul class="model-ul list-type-none" id="modelFile">
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="bottom-right-info model-img">
+                        <div class="model-title-box title">
+                            模型贴图
+                        </div>
+                        <div class="model-box">
+                            <div class="model-img-box" id="modelImgFile">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bottom-btn-40">
+            <button class="btn btn-primary" type="button">返回</button>
+        </div>
+    </div>
+{% endblock %}

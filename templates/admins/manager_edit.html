@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}部门管理{% endblock %}
+
+{% block privateStyle %}
+    <link type="text/css" rel="stylesheet" media="screen" href="/statics/css/admins/manager_edit.css">
+{% endblock %}
+
+{% block PageNavigator %}
+    <li><a href="/admin">管理员管理</a></li>
+    <li><a href="/admin/manager_list">用户设置</a></li>
+    <li>查看用户详情</li>
+{% endblock %}
+
+{% block privateScript %}
+    <script type="text/javascript" src="/statics/js/admins/manager_edit.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            managerEditApp.init();
+        });
+    </script>
+{% endblock %}
+
+{% block contentBody %}
+    <div class="main-body">
+        <div class="modify-account-box">
+            <div><b>修改账号信息</b></div>
+            <div class="modify-list important">账号<span>*</span><input class="form-control" type="text"></div>
+            <div class="modify-list important">姓名<span>*</span><input class="form-control" type="text"></div>
+            <div class="modify-list">手机<input class="form-control" type="text"></div>
+            <div class="modify-list">邮箱<input class="form-control" type="text"></div>
+            <div class="modify-list">部门<input class="form-control" type="text"></div>
+        </div>
+    </div>
+    <div class="bottom-btn-106 bottom-btn-multiple">
+        <button id="save" class="btn btn-primary" type="button">保存</button>
+        <button class="btn btn-danger" type="button">取消</button>
+    </div>
+{% endblock %}

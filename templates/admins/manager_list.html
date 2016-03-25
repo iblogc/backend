@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}部门管理{% endblock %}
+
+{% block privateStyle %}
+    <link type="text/css" rel="stylesheet" media="screen" href="/statics/css/admins/manager.css">
+    <link type="text/css" rel="stylesheet" media="screen" href="/statics/plugins/select2/select2.min.css">
+    <link type="text/css" rel="stylesheet" media="screen"
+          href="/statics/plugins/datetimepicker/bootstrap-datetimepicker.min.css">
+{% endblock %}
+
+{% block PageNavigator %}
+    <li><a href="/admin">管理员管理</a></li>
+    <li>用户设置</li>
+{% endblock %}
+
+{% block privateScript %}
+    <script type="text/javascript" src="/statics/js/admins/manager.js"></script>
+    <script type="text/javascript" src="/statics/plugins/select2/select2.min.js"></script>
+    <script type="text/javascript" src="/statics/plugins/datetimepicker/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="/statics/plugins/datetimepicker/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            managerApp.init();
+            baseApp.pickDate($('.form_date'));
+        });
+    </script>
+{% endblock %}
+
+{% block contentBody %}
+    <div class="main-body">
+        <div class="main-top">
+            <div class="datePick">
+                <div class="dateText first left">创建时间&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                <div class="input-group date form_date left" data-date-format="yyyy-mm-dd">
+                    <input sid="Date-created" class="form-control select-update-time" size="16" type="text"
+                           id="startDate-created" value=""
+                           readonly>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                </div>
+                <div class="dateText left">&nbsp;&nbsp;&nbsp;&nbsp;到&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                <div class="input-group date form_date" data-date-format="yyyy-mm-dd">
+                    <input sid="Date-created" class="form-control select-update-time" size="16" type="text"
+                           id="endDate-created" value="" readonly>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                </div>
+            </div>
+            <div class="search-box">
+                &nbsp;&nbsp;&nbsp;&nbsp;关键字
+                <input id="search-box-Search" class="search form-control" placeholder="搜索...">
+                <span class="search-icon"></span>
+                <a id="search-link" href="/admin/manager_list">
+                    <button type="button" class="btn btn-primary search-btn" id="select-Search">查询</button>
+                </a>
+                <a href="/admin/manager_list">
+                    <button type="button" class="btn btn-warning search-btn" id="select-Reset">重置</button>
+                </a>
+            </div>
+            <div class="btn-box">
+                <button class="btn btn-primary" type="button" data-target="#addNewAccount">添加用户</button>
+                <button class="btn btn-default" type="button" data-target="#batchDel">批量删除</button>
+            </div>
+        </div>
+        <div class="main-bottom">
+            <div class="bottom-title">
+                <div class="checkbox"><input type="checkbox" id="checkAll" class="bottom-title-checkbox"></div>
+                <div class="account">账号</div>
+                <div class="name">姓名</div>
+                <div class="mobile">手机</div>
+                <div class="email">E-mail</div>
+                <div class="created-time">创建时间</div>
+                <div class="function">操作</div>
+            </div>
+            <div id="bottom-content-body">
+                <div class="bottom-content">
+                    <div class="bottom-content-child checkbox"><input type="checkbox" class="bottom-content-checkbox"></div>
+                    <div class="bottom-content-child account">账号</div>
+                    <div class="bottom-content-child name">姓名</div>
+                    <div class="bottom-content-child mobile">手机</div>
+                    <div class="bottom-content-child email">E-mail</div>
+                    <div class="bottom-content-child created-time">创建时间</div>
+                    <div class="bottom-content-child function"><span class="fa fa-search"></span><span class="fa fa-edit"></span><span class="fa fa-key"></span><span class="fa fa-remove"></span></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    {#    <div class="modal fade" id="menuFromDialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">#}
+    {#      <div class="modal-dialog" role="document">#}
+    {#        <div class="modal-content">#}
+    {#          <div class="modal-header">#}
+    {#            <button type="button" class="close" data-dismiss="modal" aria-label="Close">#}
+    {#                <span aria-hidden="true">&times;</span>#}
+    {#            </button>#}
+    {#            <h4 class="modal-title">增加部门</h4>#}
+    {#          </div>#}
+    {#          <div class="modal-body"></div>#}
+    {#          <div class="modal-footer">#}
+    {#            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>#}
+    {#            <button type="button" class="btn btn-primary" onclick="departmentApp.saveaddBtn()">保存</button>#}
+    {#          </div>#}
+    {#        </div>#}
+    {#      </div>#}
+    {#    </div>#}
+    {##}
+    {#    <div class="modal fade" id="editFromDialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">#}
+    {#      <div class="modal-dialog" role="document">#}
+    {#        <div class="modal-content">#}
+    {#          <div class="modal-header">#}
+    {#            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>#}
+    {#            <h4 class="modal-title">编辑部门</h4>#}
+    {#          </div>#}
+    {#          <div class="modal-body"></div>#}
+    {#          <div class="modal-footer">#}
+    {#            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>#}
+    {#            <button type="button" class="btn btn-primary" onclick="departmentApp.saveeditBtn()">保存</button>#}
+    {#          </div>#}
+    {#        </div>#}
+    {#      </div>#}
+    {#    </div>#}
+
+{% endblock %}

@@ -1,0 +1,121 @@
+.main-body {
+    min-width: 920px;
+    position: relative;
+    margin: 20px 0 0 0;
+}
+
+.product-info-box {
+    padding: 20px 20px 0 0;
+    margin: 0 0 10px 0;
+    background: #fff;
+    border: solid #ececec 1px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+
+.product-info-box>div {
+    line-height: 12px;
+    font-size: 12px;
+    padding: 0 0 20px 20px;
+    /*overflow: hidden;*/
+    /*white-space: nowrap;*/
+}
+
+.product-info-box div>* {
+    display: inline-block;
+}
+
+.product-info-box .title {
+    font-weight: bold;
+    line-height: 13px;
+    font-size: 13px;
+}
+
+.product-info-box .title *{
+    display: inline-block;
+}
+
+.product-info-box .title img {
+    margin: 0 5px 0 0;
+    vertical-align: top;
+}
+
+.product-info-box .product-spec {
+    width: 47%;
+    min-width: 400px;
+    max-width: 564px;
+    padding: 0;
+    margin: 0!important;
+    display: inline-block;
+}
+
+.product-info-box .product-spec img {
+    width: 140px!important;
+    height: 140px!important;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.product-info-box .product-spec ul {
+    height: 140px;
+    width: 50%;
+    max-width: 300px;
+    min-width: 150px;
+    display: inline-block;
+    vertical-align: middle;
+    padding: 0 0 0 30px;
+    margin-top: 0px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.product-info-box .product-spec li {
+    width: 100%;
+    line-height: 12px;
+    height: 12px;
+    margin-top: 11px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.product-info-box .product-spec li:last-child {
+    text-align: center;
+}
+
+.btn-link {
+    color: #008aff;
+    text-align: center;
+    cursor: pointer;
+}
+
+.product-info-box .product-param {
+    width: 100%;
+    padding: 0;
+    margin: 0!important;
+}
+
+.product-info-box .product-param>li {
+    width: 25%;
+    max-width: 282px;
+    float: left;
+    margin: 10px 0;
+    padding-right: 2%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.product-info-box .div-more {
+    width: 100%;
+}
+
+.product-info-box .btn-more {
+    width: 100%;
+    color: #008aff;
+    text-align: center;
+    cursor: pointer;
+    margin-top: 30px;
+}

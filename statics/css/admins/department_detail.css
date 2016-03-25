@@ -1,0 +1,56 @@
+.main-body {
+    width: 100%;
+    min-width: 920px;
+    padding: 0;
+}
+
+.body-box > div {
+    border: solid #d3d3d3 1px;
+    -webkit-border-radius: 3px!important;
+    -moz-border-radius: 3px!important;
+    border-radius: 3px!important;
+    background: #fff;
+    display: block;
+    margin-right: 20px;
+    margin-top: 20px;
+}
+
+.head {
+    height: 40px;
+    font-size: 13px;
+    padding-left: 20px;
+    background: #c7d5e0;
+    padding-top: 12px;
+}
+
+.body {
+    padding-left: 20px;
+}
+
+.body>div {
+    height: 30px;
+    padding-top: 8px;
+    display: inline-block;
+}
+
+#department-name ,#department-info  {
+    width: 500px;
+}
+
+#department-name .head, #department-info .head {
+    width: 500px;
+}
+
+#department-member ,#department-permission  {
+    max-width: 1920px;
+    width: 100%;
+    min-width: 920px;
+}
+
+#department-member .head {
+    width: 100%
+}
+
+#department-member .body > div {
+    width: 14%
+}

@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}部门管理{% endblock %}
+
+{% block privateStyle %}
+    <link type="text/css" rel="stylesheet" media="screen" href="/statics/css/admins/department_edit.css">
+{% endblock %}
+
+{% block PageNavigator %}
+    <li><a href="/admin">管理员管理</a></li>
+    <li><a href="/admin/department_list">部门管理</a></li>
+    <li>编辑部门</li>
+{% endblock %}
+
+{% block privateScript %}
+    <script type="text/javascript" src="/statics/js/admins/department_edit.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            departmentEditApp.init()
+        });
+    </script>
+{% endblock %}
+
+{% block contentBody %}
+    <div class="main-body">
+        <div class="main-top">
+            <div class="name-box">
+                部门<input id="department-name" class="form-control name-input">
+            </div>
+        </div>
+        <div class="main-bottom list-group">
+            <div class="department-user-box-title list-group-item">部门用户</div>
+            <div class="department-user-box-level1 list-group-item"><input type="checkbox"><span>部门内用户</span></div>
+            <div class="department-user-box-level2 list-group-item">
+                <ul class="list-type-none">
+                    <li><input type="checkbox"><span>123</span></li>
+                </ul>
+            </div>
+            <div class="department-user-box-level1 list-group-item"><input type="checkbox"><span>无部门用户</span></div>
+            <div class="department-user-box-level2 list-group-item">
+                <ul class="list-type-none">
+                    <li><input type="checkbox"><span>123</span></li>
+                </ul>
+            </div>
+        </div>
+{#        <script type="text/javascript">#}
+{#            var editData = {% autoescape off %}{{ editData }}{% endautoescape %};#}
+{#        </script>#}
+{#        <form class="form-horizontal" id="modal_data_edit">#}
+{#            <div class="form-group hidden">#}
+{#                <label class="col-sm-3 control-label">id</label>#}
+{#                <div class="col-sm-6">#}
+{#                    <input name="id" type="text">#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="form-group">#}
+{#                <label class="col-sm-3 control-label">部门名称</label>#}
+{#                <div class="col-sm-6">#}
+{#                    <input type="text" name="name" class="form-control" placeholder="部门名称">#}
+{#                    <label id="department_name_repeated"></label>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="form-group">#}
+{#                <label class="col-sm-3 control-label">部门描述</label>#}
+{#                <div class="col-sm-6"><input type="text" name="description" class="form-control" placeholder="部门描述">#}
+{#                </div>#}
+{#            </div>#}
+{#        </form>#}
+        <div class="bottom-btn-106">
+            <button class="btn btn-primary" type="button">返回</button>
+        </div>
+    </div>
+{% endblock %}

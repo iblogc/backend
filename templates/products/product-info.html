@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}detail{% endblock %}
+
+{% block privateStyle %}
+    <link type="text/css" rel="stylesheet" media="screen" href="/statics/css/products/product-info.css">
+    <link type="text/css" rel="stylesheet" media="screen" href="/statics/plugins/select2/select2.min.css">
+{% endblock %}
+
+{% block PageNavigator %}
+    <li><a href="/product">产品和模型管理</a></li>
+    <li><a href="/product/pdt">产品管理</a></li>
+    <li>产品管理详情</li>
+{% endblock %}
+
+{% block privateScript %}
+    <script type="text/javascript" src="/statics/js/products/product-info.js"></script>
+    <script type="text/javascript" src="/statics/js/base.js"></script>
+    <script type="text/javascript" src="/statics/plugins/select2/select2.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            productInfoApp.init();
+        });
+    </script>
+{% endblock %}
+
+
+{% block contentBody %}
+    <div class="main-body">
+{#<<<<<<< HEAD#}
+{#        <div>#}
+{#            <div class="product-info-box">#}
+{#                <div class="title"><img src="../../statics/imgs/icon/title-icon.png"><span>产品信息</span></div>#}
+{#                <div><span id="id">产品编号:&nbsp;&nbsp;{{ product.product_no }}</span></div>#}
+{#                <div><span id="name">产品名称:&nbsp;&nbsp;{{ product.product_name }}</span></div>#}
+{#                <div><span id="company_id">厂家名称:&nbsp;&nbsp;{{ product.company_name }}</span></div>#}
+{#                <div><span id="category">产品分类:&nbsp;&nbsp;{{ product.category_name }}</span></div>#}
+{#                <div><span id="brand_series">品牌系列:&nbsp;&nbsp;{{ product.brand }} - {{ product.series }}</span></div>#}
+{#            </div>#}
+{#            <div class="product-info-box">#}
+{#                <div class="title"><img src="../../statics/imgs/icon/title-icon.png"><span>产品规格</span></div>#}
+{#                {% for m in model %}#}
+{#                    <div>#}
+{#                    <div class="product-spec">#}
+{#                        <img src="../../statics/imgs/Koala.jpg">#}
+{#                        <ul class="list-type-none">#}
+{#                            <li>&nbsp;规格编号:&nbsp;&nbsp;{{ m.norm_no }}</li>#}
+{#                            <li>&nbsp;产品型号:&nbsp;&nbsp;{{ m.version }}</li>#}
+{#                            <li>尺寸(mm):&nbsp;&nbsp;长-{{ m.norms.length }}&nbsp;宽-{{ m.norms.width }}&nbsp;高-{{ m.norms.height }}</li>#}
+{#                            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;材质:&nbsp;&nbsp;{{ m.material }}</li>#}
+{#                            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;颜色:&nbsp;&nbsp;{{ m.color }}</li>#}
+{#                            <li><a class="btn-link">查看经销商</a></li>#}
+{#                        </ul>#}
+{#=======#}
+
+            <div class="tab_box">
+                <div>
+                    <div class="product-info-box">
+                        <div class="title"><img src="../../statics/imgs/icon/title-icon.png"><span>产品信息</span></div>
+                        <div><span id="id">产品编号:{{ product.product_no }}</span></div>
+                        <div><span id="name">产品名称:{{ product.product_name }}</span></div>
+                        <div><span id="company_id">厂家名称:{{ product.company_name }}</span></div>
+                        <div><span id="category">产品分类:{{ product.category_name }}</span></div>
+                        <div><span id="brand_series">品牌系列:{{ product.brand }} - {{ product.series }}</span></div>
+                    </div>
+                    <div class="product-info-box">
+                        <div class="title"><img src="../../statics/imgs/icon/title-icon.png"><span>产品规格</span></div>
+                        {% for m in model %}
+                            <div>
+                            <div class="product-spec">
+                                <img src="/{{ m.chartlet }}">
+                                <ul class="list-type-none">
+                                    <li>&nbsp;规格编号:{{ m.norm_no }}</li>
+                                    <li>&nbsp;产品型号:{{ m.version }}</li>
+                                    <li>尺寸(mm):&nbsp;长-{{ m.norms.length }}&nbsp;宽-{{ m.norms.width }}&nbsp;高-{{ m.norms.height }}</li>
+                                    <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;材质:{{ m.material }}</li>
+                                    <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;颜色:{{ m.color }}</li>
+                                    <li><a class="btn-link" href="/product/pdt/distributer/">查看经销商</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="product-info-box">
+                        <div class="title"><img src="../../statics/imgs/icon/title-icon.png"><span>产品参数</span></div>
+                        <div>
+                            <ul class="product-param list-type-none">
+                                <ul class="product-param list-type-none">
+                                    {% for k, v in arg.items %}
+                                        <li><span>{{ k }}:</span><span>{{ v }}</span></li>
+                                    {% endfor %}
+                                </ul>
+                            </ul>
+                            <div class="div-more">
+                                <li><span></span><span></span></li>
+                            </div>
+                            <div class="btn-more">更多</div>
+                        </div>
+                    </div>
+                    <div class="product-info-box">
+                        <div class="title"><img src="../../statics/imgs/icon/title-icon.png"><span>备注信息</span></div>
+                        <div>{{ remark }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="product-info-box">
+                <div class="title"><img src="../../statics/imgs/icon/title-icon.png"><span>产品参数</span></div>
+                <div>
+                    <ul class="product-param list-type-none">
+                    {% if arg %}
+                        {% for k,v in arg.items %}
+                        <li>
+                            <span>{{ k }}:</span>
+                            <span>{{ v }}</span>
+                        </li>
+                        {% endfor %}
+                        {% else %}
+                        <li>
+                            <span>None</span>
+                        </li>
+                    {% endif %}
+                    </ul>
+{#                    <div class="div-more">#}
+{#                        <ul class="product-param list-type-none">#}
+{#                            <li><span id="id">产品编号:</span><span>| test | test | test | test | test | test | test | test | test | test | test | test | test | test | test | test | test | test | test | test | test | test | test | test | test | test | test | test |</span></li>#}
+{#                            <li><span id="name">产品名称:</span></li>#}
+{#                            <li><span id="company_id">厂家名称:</span></li>#}
+{#                            <li><span id="category">产品分类:</span></li>#}
+{#                            <li><span id="">所属风格:</span></li>#}
+{#                            <li><span id="">适用空间:</span></li>#}
+{#                            <li><span id="">制作工艺:</span></li>#}
+{#                            <li><span id="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;毛重:</span></li>#}
+{#                        </ul>#}
+{#                    </div>#}
+{#                    <div class="btn-more">更多</div>#}
+                </div>
+            </div>
+            <div class="product-info-box">
+                <div class="title"><img src="../../statics/imgs/icon/title-icon.png"><span>备注信息</span></div>
+                <div>{{ remark }}</div>
+            </div>
+        <div class="bottom-btn-106"><button class="btn btn-primary" type="button">返回</button></div>
+    </div>
+{% endblock %}

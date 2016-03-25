@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}部门管理{% endblock %}
+
+{% block privateStyle %}
+    <link type="text/css" rel="stylesheet" media="screen" href="/statics/css/admins/role_permission_add.css">
+{% endblock %}
+
+{% block PageNavigator %}
+    <li><a href="/admin">管理员管理</a></li>
+    <li><a href="/admin/role_permission_list">角色管理设置</a></li>
+    <li>查看角色详情</li>
+{% endblock %}
+
+{% block privateScript %}
+    <script type="text/javascript" src="/statics/js/admins/role_permission_add.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            roleAddApp.init();
+        });
+    </script>
+{% endblock %}
+
+{% block contentBody %}
+    <div class="main-body">
+        <div class="body-box">
+            <div id="role-name">
+                <div class="head"><b>角色名称</b></div>
+                <div class="body"><div>123</div></div>
+            </div>
+            <div id="role-info">
+                <div class="head"><b>角色描述</b></div>
+                <div class="body"><div>123</div></div>
+            </div>
+            <div id="role-member">
+                <div class="head"><b>角色成员</b></div>
+                <div class="body"><div>123</div></div>
+            </div>
+            <div id="role-permission">
+                <div class="head"><b>角色权限</b></div>
+                <div class="body"><div>123</div></div>
+            </div>
+        </div>
+    </div>
+    <div class="bottom-btn-106 bottom-btn-multiple">
+        <button class="btn btn-primary" type="button">返回</button>
+        <button id="resetPassword" class="btn btn-danger" type="button">重置密码</button>
+    </div>
+{% endblock %}

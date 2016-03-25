@@ -1,0 +1,43 @@
+.main-body {
+    width: 100%;
+    min-width: 920px;
+    padding: 0;
+}
+
+.add-account-box {
+    padding-top: 20px;
+    font-size: 0px;
+}
+
+.add-account-box:first-child {
+    font-size: 13px;
+}
+
+.add-list {
+    padding-left: 4.2em;
+    margin-top: 20px;
+}
+
+.add-list >span {
+    color: red;
+}
+
+.add-list >input {
+    -webkit-border-radius: 3px!important;
+    -moz-border-radius: 3px!important;
+    border-radius: 3px!important;
+    width: 320px;
+    margin-left: 2.4em;
+    display: inline-block;
+    height: 30px!important;
+    line-height: 30px!important;
+    padding: 0px 6px;
+}
+
+.important>input{
+    margin-left: 2em!important;
+}
+
+.checkPwd {
+    padding-left: 2.2em!important;
+}

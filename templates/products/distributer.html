@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}detail{% endblock %}
+
+{% block privateStyle %}
+    <link type="text/css" rel="stylesheet" media="screen" href="/statics/css/products/distributer.css">
+    <link type="text/css" rel="stylesheet" media="screen" href="/statics/plugins/select2/select2.min.css">
+{% endblock %}
+
+{% block PageNavigator %}
+    <li><a href="/product">产品和模型管理</a></li>
+    <li><a href="/product/pdt">产品管理</a></li>
+    <li>经销商</li>
+{% endblock %}
+
+{% block privateScript %}
+    <script type="text/javascript" src="/statics/js/products/distributer.js"></script>
+    <script type="text/javascript" src="/statics/plugins/select2/select2.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            distributerApp.init();
+        });
+    </script>
+{% endblock %}
+
+
+{% block contentBody %}
+    <div class="main-body">
+        <div>
+            <div class="dealer-head-box">
+                <div class="product-img"><img src="/statics/imgs/Koala.jpg"></div>
+                <div class="product-list">
+                    <ul class="list-type-none">
+                        <li>规格编号:CPB12345678</li>
+                        <li>产品型号:CPB12345678</li>
+                    </ul>
+                </div>
+                <div class="product-list next-list">
+                    <ul class="list-type-none">
+                        <li>尺寸:CPB12345678CPB12345678CPB12345678</li>
+                        <li>材质:CPB12345678CPB12345678</li>
+                        <li>颜色:CPB12345678CPB12345678</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="search-box">
+                 <input id="product-Search" class="search form-control" placeholder="搜索...">
+                 <span class="search-icon"></span>
+                 <button type="button" class="btn btn-primary search-btn" id="select-Search">查询</button>
+                 <button type="button" class="btn btn-warning search-btn" id="select-Reset">重置</button>
+            </div>
+            <div class="dealer-info-box-title">
+                <div class="dealer-info-box">
+                    <div>
+                        <div class="public number"><div class="public">&nbsp;</div></div>
+                        <div class="public sn"><div class="public sn-text">编号</div></div>
+                        <div class="public dealer"><div class="public dealer-text">厂商名称</div></div>
+                        <div class="public principal"><div class="public principal-text">负责人</div></div>
+                        <div class="public tel"><div class="public tel-text">联系电话</div></div>
+                        <div class="public address"><div class="public address-text">联系地址</div></div>
+                    </div>
+                </div>
+            </div>
+            <div id="dealer-info">
+                <div class="dealer-info-box">
+                    <div>
+                        <div class="public number"><div class="public">&nbsp;&nbsp;&nbsp;&nbsp;1</div></div>
+                        <div class="public sn"><div class="public sn-text">这行一共八个字符</div></div>
+                        <div class="public dealer"><div class="public dealer-text">这句话一共有十六个字符不信你数数</div></div>
+                        <div class="public principal"><div class="public principal-text">四个字的</div></div>
+                        <div class="public tel"><div class="public tel-text">15068852359</div></div>
+                        <div class="public address"><div class="public address-text">二十六二十六二十六二十六二十六二十六二十六二十六二十</div></div>
+                    </div>
+                </div>
+                <div class="dealer-info-box">
+                    <div>
+                        <div class="public number"><div class="public">&nbsp;&nbsp;&nbsp;&nbsp;1</div></div>
+                        <div class="public sn"><div class="public sn-text">这行一共八个字符1</div></div>
+                        <div class="public dealer"><div class="public dealer-text">这句话一共有十六个字符不信你数数1</div></div>
+                        <div class="public principal"><div class="public principal-text">四个字的1</div></div>
+                        <div class="public tel"><div class="public tel-text">15068852359 1</div></div>
+                        <div class="public address"><div class="public address-text">二十六二十六二十六二十六二十六二十六二十六二十六二十1</div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bottom-btn-106"><button class="btn btn-primary" type="button">返回</button></div>
+    </div>
+{% endblock %}

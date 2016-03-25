@@ -1,0 +1,17 @@
+<form class="form-horizontal" id="modal_data_add">
+    <div class="form-group">
+        <label class="col-sm-3 control-label">类别名称</label>
+        <div class="col-sm-6">
+            <input type="text" name="category_name" class="form-control" placeholder="类别名称"  onchange="categoryApp.category_name_change('modal_data_add')" >
+            <label id="category_name_repeated"></label>
+        </div>
+    </div>
+{#    <div class="form-group">#}
+{#        <label class="col-sm-3 control-label">唯一标识码</label>#}
+{#        <div class="col-sm-6"><input type="text" name="keycode" class="form-control" placeholder="标识码字母"></div>#}
+{#    </div>#}
+    <div class="form-group">
+        <label class="col-sm-3 control-label">上级类别</label>
+        <div class="col-sm-6"><select name="parent_id" style="width: 100%"></select></div>
+    </div>
+</form>

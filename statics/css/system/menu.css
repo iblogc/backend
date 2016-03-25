@@ -1,0 +1,76 @@
+@charset "UTF-8";
+
+.system-menu-header {
+    height: 120px;
+    width: 100%;
+    padding-top: 20px;
+}
+
+.system-menu-table {
+    width: 100%;
+}
+.system-menu-table .system-menu-table-title {
+    background: #efefef;
+    height: 32px;
+    border-bottom: 2px solid #dfdfdf;
+    overflow: hidden;
+}
+.system-menu-table .system-menu-table-title > ul > li {
+    height: 32px;
+    line-height: 32px;
+    border-left: 1px solid #dfdfdf;
+    color: #999;
+    font-weight: 600;
+}
+.system-menu-table .system-menu-table-title > ul > li.table-menu-name {
+    width: 36%;
+}
+.system-menu-table .system-menu-table-title > ul > li.table-menu-url {
+    width: 25%;
+}
+
+.system-menu-table .system-menu-table-body {
+    overflow: hidden;
+    margin-top: 10px;
+    padding-top: 6px;
+    font-size: 0px;
+    border: solid #d3d3d3 1px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    background: #fff;
+    position: relative;
+    height: 36px;
+}
+
+.system-menu-table .system-menu-table-body > ul {
+    height: 36px;
+    line-height: 36px;
+}
+
+.system-menu-table .system-menu-table-body > ul > li {
+    border-left: 1px solid #efefef;
+    height: 36px;
+    line-height: 36px;
+    font-size: 12px;
+    margin-top: -6px;
+}
+.system-menu-table .system-menu-table-body > ul > li > input[type=text] {
+    height: 28px !important;
+    line-height: 28px !important;
+    width: 64px;
+    margin: 4px 0 0 0;
+}
+.system-menu-table .system-menu-table-body > ul > li.table-menu-name {
+    width: 36%;
+}
+.system-menu-table .system-menu-table-body > ul > li.table-menu-url {
+    width: 25%;
+}
+
+.system-menu-table .menu-depth-1 {}
+.system-menu-table .menu-depth-2 > ul > li.table-menu-name {text-indent: 1.8em;}
+.system-menu-table .menu-depth-3 > ul > li.table-menu-name {text-indent: 3.6em;}
+.system-menu-table .menu-depth-4 > ul > li.table-menu-name {text-indent: 5.4em;}
+.system-menu-table .menu-depth-5 > ul > li.table-menu-name {text-indent: 7.2em;}
+.system-menu-table .menu-depth-6 > ul > li.table-menu-name {text-indent: 9.0em;}

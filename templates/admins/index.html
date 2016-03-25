@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}管理{% endblock %}
+
+{% block privateStyle %}
+    <link type="text/css" rel="stylesheet" media="screen" href="/statics/css/admins/index.css">
+{% endblock %}
+
+{% block PageNavigator %}
+    <li>楼盘管理</li>
+    <li>楼盘编辑</li>
+    <li>添加图片</li>
+{% endblock %}
+
+{% block privateScript %}
+    <script type="text/javascript" src="/statics/js/admins/index.js"></script>
+    <script type="text/javascript">
+        estateViewApp.init();
+    </script>
+{% endblock %}
+
+{% block contentBody %}
+    {#    {% for item in object_list %}#}
+    {#        {{ item.realname }}#}
+    {#    {% endfor %}#}
+    <section class="main">
+        <section class="info">
+            <div class="info-title"><img src="/statics/imgs/icon/title-icon.png">基础信息</div>
+            <br>
+            <div class="info-box"><label>楼盘名称</label><div data-id="name"></div></div>
+            <div class="info-box"><label>所在区域</label><div data-id="district"></div></div>
+            <div class="info-box"><label>楼盘地址</label><div data-id="address"></div></div>
+            <div class="info-box"><label>特色</label><div data-id="feature">123</div></div>
+            <div class="info-box"><label>开发商</label><div data-id="developer"></div></div>
+            <div class="info-box"><label>售楼处地址</label><div data-id="sales-address"></div></div>
+            <div class="info-box"><label>开盘时间</label><div data-id="open-date"></div></div>
+            <div class="info-box"><label>交房时间</label><div data-id="completion-date"></div></div>
+            <div class="info-box"><label>占地面积</label><div data-id="area"></div></div>
+            <div class="info-box"><label>建筑面积</label><div data-id="floorage"></div></div>
+            <div class="info-box"><label>建筑类型</label><div data-id="build-type"></div></div>
+            <div class="info-box"><label>产权年限</label><div data-id="year"></div></div>
+            <div class="info-box"><label>装修状况</label><div data-id="decoration"></div></div>
+            <div class="info-box"><label>总价</label><div data-id="total"></div></div>
+            <div class="info-box"><label>均价</label><div data-id="avg"></div></div>
+            <div class="info-box"><label>户型</label><div data-id="room-type"></div></div>
+            <div class="info-box"><label>规划户数</label><div data-id="households"></div></div>
+            <div class="info-box"><label>绿化率</label><div data-id="green"></div></div>
+            <div class="info-box"><label>容积率</label><div data-id="plot-ratio"></div></div>
+            <div class="info-box"><label>车位数</label><div data-id="parking"></div></div>
+            <div class="info-box"><label>物业公司</label><div data-id="property"></div></div>
+            <div class="info-box"><label>物业费</label><div data-id="property-fee"></div></div>
+        </section>
+        <hr>
+        <section>
+            <div class="info-title"><img src="/statics/imgs/icon/title-icon.png">地图坐标</div>
+            <br>
+        </section>
+        <hr>
+        <section>
+            <div class="info-title"><img src="/statics/imgs/icon/title-icon.png">交通配套</div>
+            <br>
+            <div class="info-box"><label>交通名称</label><div data-id="traffic-name"></div></div>
+            <div class="info-box"><label>状态</label><div data-id="traffic-status"></div></div>
+            <div class="info-box"><label>交通描述</label><div data-id="traffic-info"></div></div>
+        </section>
+        <hr>
+        <section>
+            <div class="info-title"><img src="/statics/imgs/icon/title-icon.png">学区配套</div>
+            <br>
+            <div class="info-box"><label>学校名称</label><div data-id="school-name"></div></div>
+            <div class="info-box"><label>学校种类</label><div data-id="school-type"></div></div>
+            <div class="info-box"><label>入学条件</label><div data-id="school-qualification"></div></div>
+            <div class="info-box"><label>学校等级</label><div data-id="school-level"></div></div>
+            <div class="info-box"><label>办学单位</label><div data-id="school-group"></div></div>
+            <div class="info-box"><label>状态</label><div data-id="school-status"></div></div>
+            <div class="info-box"><label>学校描述</label><div data-id="school-info"></div></div>
+        </section>
+        <hr>
+        <section>
+            <div class="info-title"><img src="/statics/imgs/icon/title-icon.png">医疗配套</div>
+            <br>
+            <div class="info-box"><label>医院名称</label><div data-id="hospital-name"></div></div>
+            <div class="info-box"><label>医院等级</label><div data-id="hospital-level"></div></div>
+            <div class="info-box"><label>状态</label><div data-id="hospital-status"></div></div>
+            <div class="info-box"><label>医院描述</label><div data-id="hospital-info"></div></div>
+        </section>
+        <hr>
+        <section>
+            <div class="info-title"><img src="/statics/imgs/icon/title-icon.png">楼盘图片</div>
+            <br>
+            <section name="img-block">
+                <div>获取名称</div>
+                <section name="img-box">
+                    <img src="/statics/imgs/Koala.jpg">
+                    <img src="/statics/imgs/Koala.jpg">
+                    <img src="/statics/imgs/Koala.jpg">
+                </section>
+            </section>
+            <section name="img-block">
+                <div>获取名称</div>
+                <section name="img-box">
+                    <img src="/statics/imgs/Koala.jpg">
+                    <img src="/statics/imgs/Koala.jpg">
+                    <img src="/statics/imgs/Koala.jpg">
+                    <img src="/statics/imgs/Koala.jpg">
+                    <img src="/statics/imgs/Koala.jpg">
+                    <img src="/statics/imgs/Koala.jpg">
+                    <img src="/statics/imgs/Koala.jpg">
+                    <img src="/statics/imgs/Koala.jpg">
+                    <img src="/statics/imgs/Koala.jpg">
+                    <img src="/statics/imgs/Koala.jpg">
+                    <img src="/statics/imgs/Koala.jpg">
+                </section>
+            </section>
+        </section>
+        <hr>
+        <section>
+            <div class="info-title"><img src="/statics/imgs/icon/title-icon.png">楼盘户型</div>
+            <br>
+            <section name="type-info">
+                <img src="/statics/imgs/Koala.jpg">
+                <ul>
+                    <li><div>户型名称：</div><div>击按钮，保存成功，页面跳转到{户型管理}页面</div></li>
+                    <li><div>朝向：</div><div>击按钮，保存成功，页面跳转到{户型管理}页面</div></li>
+                    <li><div>类型：</div><div>击按钮，保存成功，页面跳转到{户型管理}页面</div></li>
+                    <li><div>层高 / 米：</div><div>击按钮，保存成功，页面跳转到{户型管理}页面</div></li>
+                    <li><div>面积 / 平米：</div><div>击按钮，保存成功，页面跳转到{户型管理}页面</div></li>
+                    <li><div>参考总价 / 万：</div><div>击按钮，保存成功，页面跳转到{户型管理}页面</div></li>
+                </ul>
+            </section>
+        </section>
+        <div class="bottom-btn-40">
+            <button class="btn btn-primary" type="button">返回</button>
+        </div>
+    </section>
+{% endblock %}

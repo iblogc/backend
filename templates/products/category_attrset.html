@@ -1,0 +1,90 @@
+<script type="text/javascript">
+    var categoryAttributeList = {% autoescape off %}{{ categoryAttributeList }}{% endautoescape %};
+    var cid_attr_add = {% autoescape off %}{{ cid_attr_add }}{% endautoescape %};
+</script>
+<form class="form-horizontal" id="modal_data_attrset">
+      <div class="form-group hidden">
+          <!-- <label class="col-sm-3 control-label">id</label> -->
+          <div class="col-sm-6">
+              <input name="id" type="text">
+          </div>
+      </div>
+
+      <div class="form-group">
+          <label class="col-sm-3 control-label">类别名称</label>
+          <div class="col-sm-6">
+            <label class="control-label" id="cate_name">{{ cate_name }}</label>
+          </div>
+      </div>
+
+      <div class="form-group">
+          <label class="col-sm-3 control-label">属性列表</label>
+          <div class="col-sm-6">
+            <select name="parent_id" style="width: 100%" onchange="categoryApp.getAttr(this)">
+            </select>
+          </div>
+          <div class="cate_attr_div">
+
+              <a href="javascript:;" id="cate_attr_del" data-categoryId="{{ cid_attr_add }}" class="fa fa-minus-square" data-toggle="modal" data-target="#attrdelFromDialog" onclick=""></a>
+          </div>
+      </div>
+
+      <div class="form-group">
+          <label class="col-sm-3 control-label">type</label>
+          <div class="col-sm-6 btn-group" id="type" data-toggle="buttons">
+            <label class="btn btn-default">
+                <input type="radio" class="toggle" value="text">text
+            </label>
+            <label class="btn btn-default">
+                <input type="radio" class="toggle" value="select">select
+            </label>
+          </div>
+
+{#          <label class="checkbox-inline">#}
+{#              <input type="radio" name="optionsRadiosinline" id="optionsRadios3" #}
+{#                 value="option1" checked> 选项 1#}
+{#           </label>#}
+{#           <label class="checkbox-inline">#}
+{#              <input type="radio" name="optionsRadiosinline" id="optionsRadios4" #}
+{#                 value="option2"> 选项 2#}
+{#           </label>#}
+
+      </div>
+
+      <div class="form-group">
+            <label class="col-sm-3 control-label">default</label>
+            <div class="col-sm-6">
+            <select name="default" style="width: 100%">
+
+            </select>
+            </div>
+      </div>
+
+      <div class="form-group">
+            <label class="col-sm-3 control-label">is_search</label>
+            <div class="col-sm-6 btn-group" id="type" data-toggle="buttons">
+              <label class="btn btn-default">
+                  <input type="radio" class="toggle" value="0" name="is_search">yes
+              </label>
+              <label class="btn btn-default">
+                  <input type="radio" class="toggle" value="1" name="is_search">no
+              </label>
+            </div>
+      </div>
+
+      <div class="form-group">
+            <label class="col-sm-3 control-label">values</label>
+            <div class="col-sm-6 system-menu-table-body content-table menu-depth-{{ c.level }} content-table-data" data-menu-line="menu-{{ c.parent_id }}">
+                <ul>
+                    <li class="table-list-checkbox"><input type="checkbox" name="categoryId" value="{{ c.id }}"></li>
+                    <li class="table-list-no">{{ c.id }}</li>
+                    <li class="table-menu-name">
+                        <span class="fa{% if c.childs %} fa-minus{% endif %}"></span> {{ c.name }}</li>
+                    <li class="table-list-operation-attr-set">
+                        <a href="javascript:;" data-categoryId="{{ c.id }}" data-toggle="modal" data-target="#menuFromDialog">添加子分类</a>
+                        <a href="javascript:;" data-categoryId="{{ c.id }}" onclick="categoryApp.del_category(this)">删除</a>
+                    </li>
+                </ul>
+            </div>
+      </div>
+</form>

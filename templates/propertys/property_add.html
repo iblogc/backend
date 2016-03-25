@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}管理{% endblock %}
+
+{% block privateStyle %}
+    <link type="text/css" rel="stylesheet" media="screen" href="/statics/css/system/menu.css">
+    <link type="text/css" rel="stylesheet" media="screen" href="/statics/css/property/property_add.css">
+    <link type="text/css" rel="stylesheet" media="screen"
+          href="/statics/plugins/datetimepicker/bootstrap-datetimepicker.min.css">
+{% endblock %}
+
+{% block PageNavigator %}
+    <li>楼盘管理</li>
+    <li>楼盘添加</li>
+{% endblock %}
+
+{% block privateScript %}
+    <script type="text/javascript" src="/statics/js/property/property_add.js"></script>
+{#    <script type="text/javascript" src="/statics/plugins/ctrl_select.js"></script>#}
+    <script type="text/javascript" src="/statics/plugins/datetimepicker/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="/statics/plugins/datetimepicker/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script type="text/javascript">
+        estateAddApp.init();
+{#        ctrl_selectApp.init();#}
+        baseApp.pickDate($('div[name=date]'));
+    </script>
+{% endblock %}
+
+{% block contentBody %}
+{#    {% for item in object_list %}#}
+{#        {{ item.realname }}#}
+{#    {% endfor %}#}
+    <section class="info">
+        <div class="info-title">基础信息:</div>
+        <div class="info-box"><label>楼盘名称</label><input type="text" class="form-control"></div>
+        <div class="info-box"><label>所在区域</label><div name="district">
+            <select class="form-control"></select><select class="form-control"></select><select class="form-control"></select>
+        </div></div>
+        <div class="info-box"><label>楼盘地址</label><input type="text" class="form-control"></div>
+        <div class="info-box"><label>特色</label><select class="form-control">
+
+        </select></div>
+        <div class="info-box"><label>开发商</label><input type="text" class="form-control"></div>
+        <div class="info-box"><label>售楼处地址</label><input type="text" class="form-control"></div>
+        <div class="info-box"><label>开盘时间</label>
+            <div name="date" class="input-group date form_date" data-date-format="yyyy-mm-dd">
+                    <input sid="Date-created" class="form-control select-update-time" size="16" type="text" id="startDate-created" value=""
+                           readonly>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+            </div></div>
+        <div class="info-box"><label>交房时间</label><div name="date" class="input-group date form_date" data-date-format="yyyy-mm-dd">
+                    <input sid="Date-created" class="form-control select-update-time" size="16" type="text" id="startDate-created" value=""
+                           readonly>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+            </div></div>
+        <div class="info-box"><label>占地面积</label><input type="text" class="form-control"><span class="module module-44px">平米</span></div>
+        <div class="info-box"><label>建筑面积</label><input type="text" class="form-control"><span class="module module-44px">平米</span></div>
+        <div class="info-box"><label>建筑类型</label><select class="form-control">
+            <option>商用</option>
+            <option>住宅</option>
+            <option>商住两用</option>
+        </select></div>
+        <div class="info-box"><label>产权年限</label><select class="form-control">
+            <option>40年</option>
+            <option>50年</option>
+            <option>70年</option>
+        </select></div>
+        <div class="info-box"><label>装修状况</label><select class="form-control">
+            <option>精装</option>
+            <option>简装</option>
+            <option>毛坯</option>
+        </select></div>
+        <div class="info-box"><label>总价</label><select class="form-control">
+            <option>100万以下</option>
+            <option>100万至150万</option>
+            <option>150万至200万</option>
+            <option>200万至250万</option>
+            <option>250万至300万</option>
+            <option>300万至500万</option>
+            <option>500万以上</option>
+        </select></div>
+        <div class="info-box"><label>均价</label><input type="text" class="form-control"><span class="module module-76px">元 / 平方米</span></div>
+        <div class="info-box word">
+            <label>户型</label>
+            <div name="type">
+                <input type="radio" name="type" id="one-bedroom"><div>1室</div>
+                <input type="radio" name="type" id="two-bedroom"><div>2室</div>
+                <input type="radio" name="type" id="three-bedroom"><div>3室</div>
+                <input type="radio" name="type" id="four-bedroom"><div>4室</div>
+                <input type="radio" name="type" id="five-bedroom"><div>5室及以上</div>
+            </div>
+        </div>
+        <div class="info-box"><label>规划户数</label><input type="text" class="form-control"><span class="module module-34px">户</span></div>
+        <div class="info-box"><label>绿化率</label><input type="text" class="form-control"><span class="module module-34px">％</span></div>
+        <div class="info-box"><label>容积率</label><input type="text" class="form-control"><span class="module module-34px">％</span></div>
+        <div class="info-box"><label>车位数</label><input type="text" class="form-control"><span class="module module-34px">个</span></div>
+        <div class="info-box"><label>物业公司</label><input type="text" class="form-control"></div>
+        <div class="info-box"><label>物业费</label><input type="text" class="form-control"><span class="module module-76px">元 / 平方米</span></div>
+    </section>
+{% endblock %}

@@ -1,0 +1,362 @@
+/*楼盘信息*/
+.info {
+    min-width: 920px;
+}
+
+.info-title {
+    font-size: 14px;
+    font-weight: 600;
+    height: 50px;
+    padding-top: 20px;
+}
+
+.info-title>img {
+    vertical-align: top;
+    position: relative;
+    margin-top: 4px;
+    margin-right: 5px;
+}
+
+.info-box {
+    font-size: 0px;
+    margin-bottom: 10px;
+    padding: 0px!important;
+}
+
+.info-box > * {
+    font-size: 14px;
+    font-weight: normal;
+}
+
+.info-box > label {
+    width: 120px;
+    min-width: 120px;
+    text-align: right;
+    font-size: 12px;
+}
+
+.info-box > input {
+    margin-left: 10px;
+    display: inline-block;
+    width: 30%;
+    min-width: 430px;
+}
+
+.info-box > select {
+    margin-left: 10px;
+    display: inline-block;
+    width: 30%;
+    min-width: 430px;
+}
+
+.info-box > div[name=type] {
+    margin-left: 10px;
+    width: 30%;
+    display: inline-block;
+    min-width: 430px;
+    padding: 0!important;
+}
+
+.info-box > div[name=district] {
+    margin-left: 10px;
+    width: 30%;
+    display: inline-block;
+    min-width: 430px;
+    padding: 0!important;
+}
+
+div[name=district] > select {
+    width: 32%;
+    display: inline-block;
+    margin-left: 2%;
+}
+
+div[name=district] > select:first-child {
+    margin-left: 0% !important;
+}
+
+.info-box > div[name=date] {
+    margin-left: 10px;
+    margin-bottom: -12px;
+    width: 30%;
+    display: inline-block;
+    min-width: 430px;
+    padding: 0!important;
+}
+
+.info-box > div[name=date] > input {
+    width: 85%;
+    background-color: #fff !important;
+    -webkit-border-radius: 5px 0 0 5px!important;
+    -moz-border-radius: 5px 0 0 5px!important;
+    border-radius: 5px 0 0 5px!important;
+}
+
+.info-box > div[name=date] > span {
+    height: 34px;
+}
+
+.info-box > div[name=type] > * {
+    display: inline-block;
+}
+
+.info-box > div[name=type] > input[type=checkbox] {
+    width: 13px;
+    vertical-align: top;
+    margin-right: 3px;
+}
+
+.info-box > div[name=type] > div {
+    width: 15%;
+    font-size: 14px;
+    padding: 0!important;
+}
+
+.module {
+    position: relative;
+    font-size: 12px;
+    color: #555;
+    display: inline-block;
+    height: 34px;
+    background: #eee;
+    vertical-align: top;
+    padding-top: 9px;
+    padding-left: 9px;
+    border: 1px solid #ccc;
+    -webkit-border-radius: 0 4px 4px 0;
+    -moz-border-radius: 0 4px 4px 0;
+    border-radius: 0 4px 4px 0;
+}
+
+.module-34px {
+    width: 34px;
+    margin-left: -34px;
+}
+
+.module-44px {
+    margin-left: -44px;
+    width: 44px;
+}
+
+.module-76px {
+    margin-left: -76px;
+    width: 76px;
+}
+
+/*楼盘配套*/
+
+div[name=around]>section {
+    min-width: 920px;
+    width: 100%;
+    font-size: 12px;
+}
+
+div[name=section-info] input, div[name=section-info] select {
+    width: 30%;
+    display: inline-block;
+    margin-left: 10px;
+}
+
+div[name=section-info]>div>div{
+    display: inline-block;
+    width: 70px;
+    min-width: 70px;
+    text-align: right;
+    font-size: 12px;
+}
+
+div[name=around]>section>:first-child {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+div[name=around]>section>:first-child>img {
+    vertical-align: top;
+    padding-top: 4px;
+    padding-right: 10px;
+}
+
+div[name=around]>section[name=map] {
+    margin-top: 10px;
+}
+
+div[name=around]>section[name=other] {
+    margin-bottom: 10px;
+}
+
+.hospital {
+    width: 30%!important;
+    padding: 0!important;
+    text-align: left!important;
+    margin-left: 10px;
+}
+
+.hospital>select {
+    width: 50%!important;
+    margin: 0!important;
+    padding: 0!important;
+}
+
+/*楼盘图片*/
+div[name=img] {
+    padding: 20px!important;
+    min-width: 920px;
+    display: inline-flex;
+    display: -webkit-inline-flex;
+    flex-wrap: wrap;
+    -webkit-flex-wrap: wrap;
+}
+
+div[name=img]>.img-box {
+    width: 100px;
+    height: 135px;
+    padding: 0px;
+    margin: 10px;
+}
+
+div[name=img]>.img-box>img {
+    width: 100px;
+    height: 100px;
+}
+
+div[name=img]>.img-box>div {
+    font-size: 12px;
+    text-align: center;
+}
+
+/*楼盘户型*/
+div[name=room-type]>section[name=btn-area] {
+    margin: 20px 0 20px 10px;
+}
+
+div[name=room-type]>section[name=type-info] {
+    margin: 0 0 10px 10px;
+    border: 1px solid #ccc;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    position: relative;
+    min-width: 860px;
+    width: 98%;
+    height: 142px;
+    padding: 10px;
+}
+
+div[name=room-type]>section[name=type-info]>* {
+    display: inline-block;
+}
+
+div[name=room-type]>section[name=type-info]>img {
+    width: 120px;
+    height: 120px;
+}
+
+div[name=room-type]>section[name=type-info]>ul {
+    width: 70%;
+    min-width: 500px;
+    list-style-type: none;
+    height: 110px;
+    vertical-align: middle;
+    margin: 0 auto;
+}
+
+div[name=room-type]>section[name=type-info]>ul>li {
+    display: inline-block;
+    width: 50%;
+    height: 30px;
+}
+
+div[name=room-type]>section[name=type-info]>ul>li>div {
+    display: inline-block;
+    font-size: 12px;
+    min-width: 110px;
+    width: 110px;
+    text-align: right;
+}
+
+div[name=room-type]>section[name=type-info]>div {
+    font-size: 12px;
+    vertical-align: middle;
+}
+
+div[name=room-type]>section[name=type-info]>ul>li>div {
+    font-size: 12px;
+    width: 140px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+div[name=room-type]>section[name=type-info]>div>a {
+    color: #008AFF
+}
+
+/* tab */
+#tab {
+    padding-top: 20px;
+    width: 100%;
+    min-width: 920px;
+    position: relative;
+    margin: 0 auto;
+}
+
+#tab .tab_menu {
+    width: 100%;
+    float: left;
+    position: absolute;
+    z-index: 1;
+    padding: 0;
+}
+
+#tab .tab_menu:first-child {
+    margin-left: 90px!important;
+}
+
+#tab .tab_menu li {
+    list-style-type: none;
+    float: left;
+    width: 70px;
+    height: 30px;
+    line-height: 30px;
+    border: 1px solid #ccc;
+    border-bottom: 0px;
+    cursor: pointer;
+    text-align: center;
+    margin: 0 5px 0 0;
+    -webkit-border-radius:5px 5px 0 0;
+    -moz-border-radius:5px 5px 0 0;
+    border-radius:5px 5px 0 0;
+}
+
+#tab .tab_box {
+    min-width: 920px;
+    width: 100%;
+    font-size: 0;
+    clear: both;
+    top: 30px;
+    position: relative;
+    border: 1px solid #CCC;
+    background: #fff;
+    -webkit-border-radius:3px;
+    -moz-border-radius:3px;
+    border-radius:3px;
+}
+
+#tab .tab_menu .selected {
+    background-color: #fff;
+    cursor: pointer;
+    border-top: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    border-bottom: 0px;
+    height: 31px;
+    color: #000;
+}
+
+.tab_box div {
+    padding: 10px;
+}
+
+.mouse-over {
+    background: #E0F8FA!important;
+}

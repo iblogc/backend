@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}管理{% endblock %}
+
+{% block privateStyle %}
+    <link type="text/css" rel="stylesheet" media="screen" href="/statics/css/system/menu.css">
+    <link type="text/css" rel="stylesheet" media="screen" href="/statics/css/property/index.css">
+{% endblock %}
+
+{% block PageNavigator %}
+    <li>楼盘管理</li>
+{% endblock %}
+
+{% block privateScript %}
+    <script type="text/javascript" src="/statics/js/property/index.js"></script>
+    <script type="text/javascript" src="/statics/plugins/ctrl_select.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            adminsIndexApp.init();
+            ctrl_selectApp.init();
+        });
+    </script>
+{% endblock %}
+
+{% block contentBody %}
+{#    {% for item in object_list %}#}
+{#        {{ item.realname }}#}
+{#    {% endfor %}#}
+    <section class="system-menu-header">
+        <div class="select-box">所在地区
+            <select class="ctrl-select form-control" data-name="select1" data-group="district" name="province">
+                <option value="empty">请选择</option>
+            </select>
+            <select class="ctrl-select form-control" data-name="select2" data-for="select1" data-group="district" name="city">
+                <option value="empty">请选择</option>
+            </select>
+            <select class="ctrl-select form-control" data-name="select3" data-for="select2" data-group="district" name="town">
+                <option value="empty">请选择</option>
+            </select>
+        </div>
+        <div class="search-box">
+            &nbsp;&nbsp;&nbsp;&nbsp;关键字
+            <input id="search-box-Search" class="search form-control" placeholder="搜索...">
+            <span class="search-icon"></span>
+                <button type="button" class="btn btn-primary search-btn" id="select-Search">查询</button>
+                <button type="button" class="btn btn-warning search-btn" id="select-Reset">重置</button>
+        </div>
+        <div class="btn-box">
+            <button class="btn btn-primary" type="button">新增楼盘</button>
+            <button class="btn btn-default" type="button">批量删除</button>
+        </div>
+    </section>
+    <section class="list-group info-list">
+        <div class="info-list-box">
+            <ul>
+                <li class="list-checkbox"><input type="checkbox" name="checkAll"/></li>
+                <li class="list-name">楼盘名称</li>
+                <li class="list-developer">开发商</li>
+                <li class="list-district">区域</li>
+                <li class="list-address">地址</li>
+                <li class="list-action">操作</li>
+            </ul>
+        </div>
+        <div class="info-list-box" data-group="info">
+            <ul>
+                <li class="list-checkbox"><input type="checkbox" name="list-check"/></li>
+                <li class="list-name">西兴滨江111111</li>
+                <li class="list-developer">滨江</li>
+                <li class="list-district">杭州滨江区</li>
+                <li class="list-address">浙江杭州滨江区西兴大道110号</li>
+                <li class="list-action">
+                    <span><img src="/statics/imgs/icon/edit.png"/></span>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <span><img src="/statics/imgs/icon/Search-icon.png"/></span>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <span name="delete"><img src="/statics/imgs/icon/delete.png"/></span>
+                </li>
+            </ul>
+        </div>
+        <div class="info-list-box" data-group="info">
+            <ul>
+                <li class="list-checkbox"><input type="checkbox" name="list-check" /></li>
+                <li class="list-name">西兴滨江222222</li>
+                <li class="list-developer">滨江</li>
+                <li class="list-district">杭州滨江区</li>
+                <li class="list-address">浙江杭州滨江区西兴大道110号</li>
+                <li class="list-action">
+                    <span><img src="/statics/imgs/icon/edit.png"/></span>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <span><img src="/statics/imgs/icon/Search-icon.png"/></span>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <span name="delete"><img src="/statics/imgs/icon/delete.png"/></span>
+                </li>
+            </ul>
+        </div>
+        <div class="info-list-box" data-group="info">
+            <ul>
+                <li class="list-checkbox"><input type="checkbox" name="list-check" /></li>
+                <li class="list-name">西兴滨江3333333</li>
+                <li class="list-developer">滨江</li>
+                <li class="list-district">杭州滨江区</li>
+                <li class="list-address">浙江杭州滨江区西兴大道110号</li>
+                <li class="list-action">
+                    <span><img src="/statics/imgs/icon/edit.png"/></span>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <span><img src="/statics/imgs/icon/Search-icon.png"/></span>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <span name="delete"><img src="/statics/imgs/icon/delete.png"/></span>
+                </li>
+            </ul>
+        </div>
+        <div class="info-list-box" data-group="info">
+            <ul>
+                <li class="list-checkbox"><input type="checkbox" name="list-check" /></li>
+                <li class="list-name">西兴滨江444444</li>
+                <li class="list-developer">滨江</li>
+                <li class="list-district">杭州滨江区</li>
+                <li class="list-address">浙江杭州滨江区西兴大道110号</li>
+                <li class="list-action">
+                    <span><img src="/statics/imgs/icon/edit.png"/></span>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <span><img src="/statics/imgs/icon/Search-icon.png"/></span>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <span name="delete"><img src="/statics/imgs/icon/delete.png"/></span>
+                </li>
+            </ul>
+        </div>
+        <div class="info-list-box"></div>
+    </section>
+{% endblock %}

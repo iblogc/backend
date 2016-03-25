@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}product{% endblock %}
+
+{% block privateStyle %}
+    <link type="text/css" rel="stylesheet" media="screen" href="/statics/css/products/model.css">
+    <link type="text/css" rel="stylesheet" media="screen" href="/statics/plugins/select2/select2.min.css">
+{% endblock %}
+
+{% block PageNavigator %}
+    <li><a href="/product">产品和模型管理</a></li>
+    <li>模型管理</li>
+{% endblock %}
+
+{% block privateScript %}
+    <script type="text/javascript" src="/statics/js/products/model.js"></script>
+    <script type="text/javascript" src="/statics/js/base.js"></script>
+    <script type="text/javascript" src="/statics/plugins/select2/select2.min.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            modelApp.init();
+        });
+    </script>
+{% endblock %}
+
+
+{% block contentBody %}
+    <div class="model-body">
+        <div class="model-body-top">
+            <div class="model-body-top-div" id="model-info">
+                <div class="title"><img src="/statics/imgs/icon/title-icon.png"><span>模型信息</span></div>
+                <div><span id="id">产品编号:</span></div>
+                <div><span id="name">产品名称:</span></div>
+                <div><span id="company_id">厂家名称:</span></div>
+                <div><span id="category">产品分类:</span></div>
+                <div><span id="brand_series">品牌系列:</span></div>
+                <div><span id="createTime">创建时间:</span></div>
+            </div>
+            <div class="model-body-top-div" id="model-spec">
+                <div class="title"><img src="/statics/imgs/icon/title-icon.png"><span>模型规格</span></div>
+                <div class="model-spec">
+                    <img src="../../statics/imgs/Koala.jpg">
+                    <ul class="list-type-none">
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;规格编号:</li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;产品型号:</li>
+                        <li>尺寸（mm）:</li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;材质:</li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;颜色:</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="model-body-bottom">
+            <div class="model-body-bottom-div">
+                <div class="title"><img src="/statics/imgs/icon/title-icon.png"><span>上传模型文件</span></div>
+                <div class="model-body-bottom-div-left">
+                    <img id="viewImg" src="/statics/imgs/Koala.jpg">
+                    <button class="btn btn-info" id="addModelView">添加模型预览</button>
+                    <input class="inputHide" type="file" id="addModelViewInput" name="viewFile">
+                </div>
+                <div class="model-body-bottom-div-right">
+                    <div class="bottom-right-info">
+                        <div class="model-box">
+                            <ul class="model-ul list-type-none" id="addModelUl">
+                            </ul>
+                        </div>
+                        <div class="model-button-box">
+                            <button class="btn btn-info" id="addModel" type="button">添加模型文件</button>
+                            <p>注：当同一个格式模型文件存在多个时，只保存最后一个</p>
+                            <p id="model-error-msg">错误提示：存在相同扩展名的多个文件，请检查文件列表！</p>
+                            <input class="inputHide" type="file" id="addModelInput" multiple="multiple" name="file">
+                        </div>
+                    </div>
+                    <div class="bottom-right-info model-img">
+                        <div class="model-box">
+                            <div class="model-img-box" id="addModelImg-box">
+                            </div>
+                        </div>
+                        <div class="model-button-box">
+                            <button class="btn btn-info" id="addModelImg" type="button">添加贴图文件</button>
+                            <p>注：点击删除</p>
+                            <input class="inputHide" type="file" id="addModelImgInput" multiple="multiple" name="imgFile">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bottom-btn-40 bottom-btn-multiple">
+            <button class="btn btn-primary" type="button">返回</button>
+            <button id="inputModel" class="btn btn-success" type="button">确定</button>
+        </div>
+    </div>
+{% endblock %}

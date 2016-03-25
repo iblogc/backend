@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}部门管理{% endblock %}
+
+{% block privateStyle %}
+    <link type="text/css" rel="stylesheet" media="screen" href="/statics/css/admins/department_detail.css">
+{% endblock %}
+
+{% block PageNavigator %}
+    <li><a href="/admin">管理员管理</a></li>
+    <li><a href="/admin/department_list">部门管理</a></li>
+    <li>部门详情</li>
+{% endblock %}
+
+{% block privateScript %}
+    <script type="text/javascript" src="/statics/js/admins/department_detail.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            departmentDetailApp.init();
+        });
+    </script>
+{% endblock %}
+
+{% block contentBody %}
+    <div class="main-body">
+        <div class="body-box">
+            <div id="department-name">
+                <div class="head"><b>角色名称</b></div>
+                <div class="body"><div>123</div></div>
+            </div>
+            <div id="department-info">
+                <div class="head"><b>角色描述</b></div>
+                <div class="body"><div>123</div></div>
+            </div>
+            <div id="department-member">
+                <div class="head"><b>角色成员</b></div>
+                <div class="body"><div>123</div></div>
+            </div>
+        </div>
+    </div>
+    <div class="bottom-btn-106">
+        <button class="btn btn-primary" type="button">返回</button>
+    </div>
+{% endblock %}

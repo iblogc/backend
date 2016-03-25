@@ -1,0 +1,104 @@
+section {
+    padding: 20px;
+    min-width: 920px;
+}
+
+div[name=title] {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 20px!important;
+}
+
+div[name=prop] {
+    width: 100px;
+    min-width: 100px;
+    text-align: right;
+    font-size: 12px;
+    display: inline-block;
+    padding-right: 10px;
+}
+
+section>div {
+    margin-bottom: 10px;
+}
+
+section>div>img {
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    margin-right: 20px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+
+.is-type {
+    display: inline-block;
+    width: 30%;
+    min-width: 430px;
+}
+
+.xs-input {
+    display: inline-block;
+    width: 42px;
+    margin: 0 10px;
+}
+
+.xs-input-first {
+    margin: 0 10px 0 0!important;
+}
+
+.module {
+    position: relative;
+    font-size: 12px;
+    color: #555;
+    display: inline-block;
+    height: 34px;
+    background: #eee;
+    vertical-align: top;
+    padding-top: 9px;
+    padding-left: 9px;
+    border:1px solid #ccc;
+    -webkit-border-radius: 0 4px 4px 0;
+    -moz-border-radius: 0 4px 4px 0;
+    border-radius: 0 4px 4px 0;
+}
+
+.module-34px {
+    width: 34px;
+    margin-left: -34px;
+}
+
+.module-44px {
+    margin-left: -44px;
+    width: 44px;
+}
+
+.img-box {
+    padding: 0;
+    margin: 0;
+    font-size: 0;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.img-box>img {
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    margin-right: 10px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+
+.img-box>span {
+    display: inline-block;
+    position: relative;
+    left:-20px;
+    top: -40px;
+    width: 14px;
+    height: 14px;
+    background: url("/statics/imgs/icon/delete1.png");
+    cursor: pointer;
+}

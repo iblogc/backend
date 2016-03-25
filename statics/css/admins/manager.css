@@ -1,0 +1,189 @@
+.main-body {
+    width: 100%;
+    min-width: 920px;
+    padding: 0;
+}
+
+.main-top {
+    width: 100%;
+    padding: 20px 0;
+}
+
+.main-bottom {
+    width: 100%;
+}
+
+/*日期选择*/
+.dateText {
+    padding-top: 10px;
+}
+
+.first {
+    margin-left: 0px;
+}
+
+.form_date {
+    display: inline-table;
+    width: 140px;
+}
+
+.select-update-time {
+    display: inline;
+}
+
+input[readonly]{
+    background-color:#fff!important;
+    -webkit-border-radius: 3px!important;
+    -moz-border-radius: 3px!important;
+    border-radius: 3px!important;
+}
+
+/*搜索行*/
+.search-box {
+    width: 530px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.search {
+    display: inline-block;
+    width: 60%;
+    margin-left: 10px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+
+.search-icon{
+    top: 8px;
+    right:162px;
+    height: 16px;
+    width: 16px;
+    position: relative;
+    float: right;
+    cursor: pointer;
+    background: url("/statics/imgs/icon/Search-icon.png");
+}
+
+.search-btn {
+    margin-top: -3px;
+    margin-left: 10px;
+    vertical-align: middle;
+    width: 40px;
+    padding: 0px;
+    height: 26px;
+    line-height: 24px;
+    font-size: 12px;
+}
+
+/*按钮行*/
+.btn-box > * {
+    margin: 0 0 0 10px;
+    padding: 0px;
+    width: 80px;
+    font-size: 12px;
+}
+
+/*内容*/
+.bottom-title {
+    height: 14px;
+    font-size: 0px;
+}
+
+.bottom-title * {
+    height: 14px;
+    font-size: 12px;
+    margin: 0 auto;
+}
+
+.bottom-title-checkbox {
+    margin-left: 11px!important;
+    margin-top: 6px!important;
+}
+
+.bottom-content-checkbox {
+    margin-left: 10px!important;
+    margin-top: 1px!important;
+}
+
+.bottom-content-child {
+    padding-right: 20px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 12px;
+}
+
+.main-bottom .checkbox {
+    width: 3%;
+    height: 16px;
+    display: inline-block;
+}
+
+.main-bottom .account {
+    width: 15%;
+    display: inline-block;
+}
+
+.main-bottom .name {
+    width: 8%;
+    display: inline-block;
+}
+
+.main-bottom .mobile {
+    width: 15%;
+    display: inline-block;
+}
+
+.main-bottom .email {
+    width: 24%;
+    display: inline-block;
+}
+
+.main-bottom .created-time {
+    width: 15%;
+    display: inline-block;
+}
+
+.main-bottom .function {
+    width: 20%;
+    display: inline-block;
+}
+
+.function span {
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.fa-edit {
+    color: #428bca;
+}
+
+.fa-key {
+    color: #fbb44c;
+}
+
+.fa-remove {
+    color: #ea3f3f;
+}
+
+.bottom-content {
+    margin-top: 10px;
+    padding-top: 6px;
+    font-size: 0px;
+    border: solid #d3d3d3 1px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    background: #fff;
+    position: relative;
+    height: 30px;
+}
+
+#bottom-content-body :hover {
+    background: #E0F8FA;
+}
+
+.bottom-content > * {
+    margin: 0px;
+}

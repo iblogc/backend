@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>管理员登录 - 乐居数据中心管理</title>
+    <link type="text/css" rel="stylesheet" media="screen" href="/statics/css/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" media="screen" href="/statics/css/font-awesome.min.css">
+    <link type="text/css" rel="stylesheet" media="screen" href="/statics/plugins/sweetalert/sweetalert.css">
+    <link type="text/css" rel="stylesheet" media="screen" href="/statics/css/base.css">
+    <link type="text/css" rel="stylesheet" media="screen" href="/statics/css/accounts/login.css">
+</head>
+<body>
+<div class="account-login-body">
+    <form action="/users/login" method="post" id="loginForms">
+        {% csrf_token %}
+        <div class="account-login-login">
+            <div class="form-line">
+                <div class="account-login-text account-login-text-font">用户名</div>
+                <input type="text" class="form-control" name="username">
+{#                <input type="text" class="form-control" name="username" placeholder="用户名 / 邮箱 / 工号">#}
+            </div>
+            <div class="form-line">
+                <div class="account-login-text account-login-text-font">密码</div>
+                <input type="password" class="form-control" name="password">
+{#                <input type="password" class="form-control" name="password" placeholder="登录密码">#}
+            </div>
+            <div class="form-line">
+                <label>
+                    <input type="checkbox"> 下次自动登录
+                </label>
+                <a href="/users/forgot?">忘记密码</a>
+            </div>
+            <div class="form-line">
+                <button type="submit" class="btn btn-primary">登 录</button>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="account-login-background"></div>
+</body>
+<script type="text/javascript" src="/statics/js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="/statics/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/statics/plugins/sweetalert/sweetalert.min.js"></script>
+<script type="text/javascript" src="/statics/js/md5.min.js"></script>
+<script type="text/javascript" src="/statics/js/base.js"></script>
+<script type="text/javascript" src="/statics/js/accounts/login.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        loginApp.init();
+        if(!document.cookie.indexOf('sessionid')>-1) {
+            $.getScript('http://192.168.3.20:8000/users/getcookie/', function(){
+                console.log(sessionid);
+                if(sessionid=='')
+                        return;
+                document.cookie = "sessionid=" + sessionid;
+                location.reload();
+            });
+        }
+    });
+</script>
+</html>

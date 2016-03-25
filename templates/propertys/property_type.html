@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}管理{% endblock %}
+
+{% block privateStyle %}
+    <link type="text/css" rel="stylesheet" media="screen" href="/statics/css/property/property_type.css">
+{% endblock %}
+
+{% block PageNavigator %}
+    <li>楼盘管理</li>
+    <li>楼盘编辑</li>
+    <li>户型编辑</li>
+{% endblock %}
+
+{% block privateScript %}
+    <script type="text/javascript" src="/statics/js/property/property_type.js"></script>
+    <script type="text/javascript">
+        roomTypeAddApp.init();
+    </script>
+{% endblock %}
+
+{% block contentBody %}
+    {#    {% for item in object_list %}#}
+    {#        {{ item.realname }}#}
+    {#    {% endfor %}#}
+    <section>
+        <div name="title">户型信息</div>
+        <div>
+            <div name="prop">户型图片</div>
+            <div class="img-box"></div>
+            <img name="uploadimg" src="/statics/imgs/upload-img.png">
+        </div>
+        <input id="getImg" type="file" class="hidden">
+        <div>
+            <div name="prop">户型名称</div>
+            <input class="is-type form-control">
+        </div>
+        <div>
+            <div name="prop">户型类型</div>
+            <select class="is-type form-control"></select>
+        </div>
+        <div>
+            <div name="prop">户型</div>
+            <input class="xs-input xs-input-first form-control">室<input class="xs-input form-control">厅<input class="xs-input form-control">厨<input class="xs-input form-control">卫<input class="xs-input form-control">阳台
+        </div>
+        <div>
+            <div name="prop">面积</div>
+            <input class="is-type form-control"><span class="module module-44px">平米</span>
+        </div>
+        <div>
+            <div name="prop">朝向</div>
+            <select class="is-type form-control"></select>
+        </div>
+        <div>
+            <div name="prop">层高</div>
+            <input class="is-type form-control"><span class="module module-34px">米</span>
+        </div>
+        <div>
+            <div name="prop">参考总价</div>
+            <input class="is-type form-control"><span class="module module-44px">万元</span>
+        </div>
+    </section>
+    <section>
+        <div name="title">户型描述</div>
+        <div>
+            <div name="prop">客厅</div>
+            <input class="is-type form-control">
+        </div>
+        <div>
+            <div name="prop">卧室</div>
+            <input class="is-type form-control">
+        </div>
+        <div>
+            <div name="prop">厨房</div>
+            <input class="is-type form-control">
+        </div>
+        <div>
+            <div name="prop">卫生间</div>
+            <input class="is-type form-control">
+        </div>
+        <div>
+            <div name="prop">阳台</div>
+            <input class="is-type form-control">
+        </div>
+        <div>
+            <div name="prop">其它</div>
+            <input class="is-type form-control">
+        </div>
+    </section>
+    <div class="bottom-btn-40 bottom-btn-multiple"><button class="btn btn-primary" type="button">保存</button><button class="btn btn-default">取消</button></div>
+{% endblock %}

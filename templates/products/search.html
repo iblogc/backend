@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}检索设置{% endblock %}
+
+{% block privateStyle %}
+<link type="text/css" rel="stylesheet" media="screen" href="/statics/css/products/search.css">
+<link type="text/css" rel="stylesheet" media="screen" href="/statics/plugins/select2/select2.min.css">
+{% endblock %}
+
+{% block PageNavigator %}
+    <li><a href="/product">产品和模型管理</a></li>
+    <li><a href="/product/category">产品分类</a></li>
+    <li>{{ cname }}</li>
+{% endblock %}
+
+{% block privateScript %}
+<script type="text/javascript" src="/statics/js/products/search.js"></script>
+<script type="text/javascript" src="/statics/plugins/select2/select2.min.js"></script>
+<script type="text/javascript">
+$(function(){
+  ruleApp.init()
+});
+$.ajaxSetup({
+  data: {csrfmiddlewaretoken: '{{ csrf_token }}' }
+});
+</script>
+{% endblock %}
+
+
+{% block contentBody %}
+{#<div class="row attributes-header">#}
+{#  <h2 class="col-md-3"> {{ cname }} - <span>检索</span></h2>#}
+{#</div>#}
+
+<div id="tab">
+    <ul class="tab_menu">
+        <a href="/product/category/attrset?cid={{ cid }}"><li id="leftmost">属性设置</li></a>
+        <li class="selected" id="rightmost">检索设置</li>
+    </ul>
+    <div class="tab_box">
+        <div>
+        </div>
+        <div>
+            <table class="table">
+                  <thead>
+                        <tr>
+                              <th class="row-id">ID</th>
+                              <th class="row-rule">规则</th>
+                              <th class="row-desc">描述</th>
+                              <th class="row-operate"><button class="btn btn-default" type="button" data-categoryId="{{ cid }}" data-toggle="modal" data-target="#ruleadd">新增规则</button></th>
+                        </tr>
+                  </thead>
+                  <tbody>
+                        {% for elem in rules %}
+                        <tr class="main-line">
+                              <td class="middle row-id">{{ elem.id }}</td>
+                              <td class="middle row-rule">{{ elem.name }}</td>
+                              <td class="middle row-desc">{% if elem.values|length != 0 %}<span class="span-desc" data-target="{{ elem.id }}">展开属性</span>{% endif %}</td>
+                              <td class="middle row-operate">
+                                    <a class="main-btn" data-RuleId="{{ elem.id }}" data-toggle="modal" data-target="#descriptionadd"><img src="/statics/imgs/icon/Settings.png"></a>
+                                    <a class="main-btn" data-categoryId="{{ cid }}" data-RuleId="{{ elem.id }}" onclick="ruleApp.del_rule(this)"><img src="/statics/imgs/icon/delete.png"></a>
+                              </td>
+                        </tr>
+                            {% if elem.values|length != 0 %}
+                                {% for value in elem.values %}
+                                <tr class="children" data-id="pid-{{ elem.id }}">
+                                    <td class="row-id">{{ value.id }}</td>
+                                    <td class="row-rule"></td>
+                                    <td class="row-desc">
+                                        {{ value.name }}
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                  </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="bottom-btn-106">
+    <a href="/product/category"><button class="btn btn-primary" type="button">返回</button></a>
+</div>
+
+<div class="modal fade" id="ruleadd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" id="add-rule">新增规则</h4>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">否</button>
+        <button type="button" class="btn btn-primary" onclick="ruleApp.addrule()">是</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="descriptionadd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" id="add-descript">新增描述</h4>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">否</button>
+        <button type="button" class="btn btn-primary" onclick="ruleApp.addvalue()">是</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="descriptiondel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" id="del-descript">删除描述</h4>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">否</button>
+        <button type="button" class="btn btn-danger" onclick="ruleApp.del_attr()">是</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

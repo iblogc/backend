@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}部门管理{% endblock %}
+
+{% block privateStyle %}
+    <link type="text/css" rel="stylesheet" media="screen" href="/statics/css/admins/manager_detail.css">
+{% endblock %}
+
+{% block PageNavigator %}
+    <li><a href="/admin">管理员管理</a></li>
+    <li><a href="/admin/manager_list">用户设置</a></li>
+    <li>查看用户详情</li>
+{% endblock %}
+
+{% block privateScript %}
+    <script type="text/javascript" src="/statics/js/admins/manager_detail.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            managerDetailApp.init();
+        });
+    </script>
+{% endblock %}
+
+{% block contentBody %}
+    <div class="main-body">
+        <div class="body-box">
+            <table id="account-info">
+                <thead><tr><td class="head-td"><b>帐号信息</b></td></tr></thead>
+                <tbody><tr><td class="body-td">账号:&nbsp;&nbsp;</td></tr><tr><td class="body-td">姓名:&nbsp;&nbsp;</td></tr><tr><td class="body-td">手机:&nbsp;&nbsp;</td></tr><tr><td class="body-td">邮箱:&nbsp;&nbsp;</td></tr><tr><td class="body-td">部门:&nbsp;&nbsp;</td></tr></tbody>
+            </table>
+            <table id="account-info-role">
+                <thead><tr><td class="head-td"><b>角色权限</b></td></tr></thead>
+                <tbody><tr><td class="body-td">123</td><tr><td class="body-td">123</td><tr><td class="body-td">123</td></tbody>
+            </table>
+        </div>
+    </div>
+    <div class="bottom-btn-106 bottom-btn-multiple">
+        <button class="btn btn-primary" type="button">返回</button>
+        <button id="resetPassword" class="btn btn-danger" type="button">重置密码</button>
+    </div>
+{% endblock %}

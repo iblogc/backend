@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}部门管理{% endblock %}
+
+{% block privateStyle %}
+    <link type="text/css" rel="stylesheet" media="screen" href="/statics/css/admins/manager_add.css">
+{% endblock %}
+
+{% block PageNavigator %}
+    <li><a href="/admin">管理员管理</a></li>
+    <li><a href="/admin/manager_list">用户设置</a></li>
+    <li>查看用户详情</li>
+{% endblock %}
+
+{% block privateScript %}
+    <script type="text/javascript" src="/statics/js/admins/manager_add.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            managerAddApp.init();
+        });
+    </script>
+{% endblock %}
+
+{% block contentBody %}
+    <div class="main-body">
+        <div class="add-account-box">
+            <div><b>填写账号信息</b></div>
+            <div class="add-list important">账号<span>*</span><input class="form-control" type="text" data-id="account"></div>
+            <div class="add-list important">密码<span>*</span><input class="form-control" type="password" data-id="pwd"></div>
+            <div class="add-list important checkPwd">确认密码<span>*</span><input class="form-control" type="password" data-id="pwd2"></div>
+            <div class="add-list important">姓名<span>*</span><input class="form-control" type="text" data-id="name"></div>
+            <div class="add-list">手机<input class="form-control" type="text" data-id="mobile"></div>
+            <div class="add-list">邮箱<input class="form-control" type="text" data-id="email"></div>
+            <div class="add-list">部门<input class="form-control" type="text" data-id="department"></div>
+        </div>
+    </div>
+    <div class="bottom-btn-106 bottom-btn-multiple">
+        <button id="save" class="btn btn-primary" type="button">保存</button>
+        <button class="btn btn-danger" type="button">取消</button>
+    </div>
+{% endblock %}

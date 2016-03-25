@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}菜单管理{% endblock %}
+
+{% block privateStyle %}<link type="text/css" rel="stylesheet" media="screen" href="/statics/css/system/menu.css">
+<link type="text/css" rel="stylesheet" media="screen" href="/statics/plugins/select2/select2.min.css">
+{% endblock %}
+
+{% block privateScript %}<script type="text/javascript" src="/statics/js/system/menu.js"></script>
+<script type="text/javascript" src="/statics/plugins/select2/select2.min.js"></script>
+<script type="text/javascript">
+var __menu__ = {% autoescape off %}{{ menuAll }}{% endautoescape %}
+$(function(){
+    menuApp.init()
+});
+$.ajaxSetup({
+        data: {csrfmiddlewaretoken: '{{ csrf_token }}' }
+        });
+</script>
+{% endblock %}
+
+{% block contentBody %}
+    <div class="system-menu-header">
+        <form class="form-horizontal">
+            <div class="form-group">
+                <div class="col-sm-3">
+                    <input type="text" id="keywords" class="form-control" name="keywords" placeholder="输入关键字...">
+                </div>
+                <div class="col-sm-2">
+                    <button class="btn btn-primary">查询</button>
+                </div>
+                <div class="col-sm-3 right">
+                    <button class="btn btn-important right" type="button" data-toggle="modal" data-target="#menuFromDialog" data-menuId="0">创建新菜单</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="system-menu-table">
+        <div class="system-menu-table-title content-table">
+            <ul>
+                <li class="table-list-checkbox"></li>
+                <li class="table-list-no">ID号</li>
+                <li class="table-list-sort">排序</li>
+                <li class="table-menu-name">菜单名称</li>
+                <li class="table-menu-url">URL</li>
+                <li class="table-list-operation"></li>
+            </ul>
+        </div>
+        {% for m in menuList %}
+        <div class="system-menu-table-body content-table menu-depth-{{ m.level }} content-table-data" data-menu-line="menu-{{ m.parent_id }}">
+            <ul>
+                <li class="table-list-checkbox"><input type="checkbox" name="menuId" value="{{ m.id }}"></li>
+                <li class="table-list-no">{{ m.id }}</li>
+                <li class="table-list-sort"><input type="text" class="form-control" placeholder="0" name="sortId" value="{{ m.sort_id }}"></li>
+                <li class="table-menu-name">
+                    <span class="fa{% if m.childs %} fa-minus{% endif %}"></span> {{ m.name }}</li>
+                <li class="table-menu-url">{{ m.url }}</li>
+                <li class="table-list-operation">
+                    <a href="javascript:;" data-menuId="{{ m.id }}" data-toggle="modal" data-target="#menuFromDialog">添加子菜单</a>
+                    <a href="javascript:;" data-menuId="{{ m.id }}" data-toggle="modal" data-target="#editFromDialog">编辑</a>
+                    <a href="javascript:;" data-menuId="{{ m.id }}" onclick="menuApp.del_menu(this)">删除</a>
+                </li>
+            </ul>
+        </div>
+        {% endfor %}
+
+    </div>
+
+    <div class="modal fade" id="menuFromDialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title" id="myModalLabel">增加菜单</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            <button type="button" class="btn btn-primary" onclick="menuApp.saveaddBtn()">保存</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="editFromDialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">编辑菜单</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            <button type="button" class="btn btn-primary" onclick="menuApp.saveeditBtn()">保存</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+{% endblock %}

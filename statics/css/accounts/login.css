@@ -1,0 +1,105 @@
+@charset "UTF-8";
+
+
+body {
+    background: #00a4c7;
+}
+
+.account-login-background {
+    height: 100%;
+    width: 100%;
+    background: url("../../imgs/accounts/login-background.png") center 100% #00a4c7 repeat-x;
+    background-size:contain;
+}
+.account-login-login{
+    width: 360px;
+    background: #ffffff;
+    height: 280px;
+    left: 50%;
+    margin-top: -15px;
+    margin-left: 20px;
+}
+
+.account-login-body {
+    width: 400px;
+    position: absolute;
+    top: 0px;
+    left: 50%;
+    margin-left: -200px;
+    padding-top: 350px;
+    background: url("../../imgs/accounts/login-top-newlogo.png") 0 250px no-repeat;
+    overflow: hidden;
+}
+.account-login-body .form-line {
+    padding: 10px 0 0 0;
+    margin-left: 10%;
+    overflow: hidden;
+    width: 80%;
+    color: #9ea7b3;
+}
+.account-login-body .form-line a {
+    float: right;
+    margin-right: 10px;
+    color: #9ea7b3;
+}
+.account-login-body .form-line label {
+    float: left;
+    padding: 0 0 0 15px;
+    font-weight: normal !important;
+    position: relative;
+}
+.account-login-body .form-line label input {
+    display: inline !important;
+    position: absolute;
+    left: 0px;
+    top: -2px;
+}
+
+.account-login-body .form-line .form-control {
+    border: 1px solid #7ab1bd;
+    background: #ffffff;
+    height: 36px !important;
+    line-height: 36px !important;
+}
+.account-login-body .form-line input::-webkit-input-placeholder {
+    color: #45a3b7 !important;
+}
+.account-login-body .form-line input:-moz-placeholder {
+    color: #45a3b7 !important;
+}
+.account-login-body .form-line input::-moz-placeholder {
+    color: #45a3b7 !important;
+}
+.account-login-body .form-line input:-ms-input-placeholder {
+    color: #45a3b7 !important;
+}
+
+
+.account-login-body .form-line .form-control:focus {
+    border: 1px solid #7ab1bd;
+    background: #fff;
+    height: 36px;
+    line-height: 36px;
+}
+
+
+.account-login-body .form-line .btn {
+    border: 0px !important;
+}
+.account-login-body .form-line .btn-primary {
+    border: 0px !important;
+    background: #428bca;
+    color: #fff;
+    width: 100%;
+    height: 42px;
+    text-align: center;
+    line-height: 42px;
+    -webkit-border-radius: 5px !important;
+    -moz-border-radius: 5px !important;
+    border-radius: 5px !important;
+}
+.account-login-text {
+    line-height: 30px;
+    color: #9ea7b3 !important;
+    font-size: 13px;
+}

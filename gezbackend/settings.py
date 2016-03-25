@@ -37,6 +37,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'accounts',
+    'attachments',
+    'customers',
+    'home',
+    'orders',
+    'products',
+    'property',
+    'system',
+    'sdk',
+    'debug_toolbar',
+    'debugtools',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -48,7 +59,12 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
+
+AUTH_USER_MODEL = 'accounts.Account'
+
+INTERNAL_IPS = ('127.0.0.1')
 
 ROOT_URLCONF = 'gezbackend.urls'
 
@@ -73,13 +89,30 @@ WSGI_APPLICATION = 'gezbackend.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+import sys
+if 'test' in sys.argv:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': 'unit_test',
+            'USER': '',
+            'PASSWORD': '',
+            'HOST': '',
+            'PORT': ''
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'LeJuDBv11',
+            'USER': 'LeJuDbManager',
+            'PASSWORD': 'LjDm234@#$',
+            'HOST': '127.0.0.1',
+            # 'HOST': '127.0.0.1',
+            'PORT': '3306'
+        }
+    }
 
 
 # Password validation
@@ -118,4 +151,20 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '/statics/'
+STATIC_FILES = os.path.join(BASE_DIR, 'statics')
+STATICFILES_DIRS = (
+    STATIC_FILES,
+)
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+SESSION_CACHE_ALIAS = "default"

@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}产品分类{% endblock %}
+
+{% block privateStyle %}<link type="text/css" rel="stylesheet" media="screen" href="/statics/css/products/category.css">
+<link type="text/css" rel="stylesheet" media="screen" href="/statics/plugins/select2/select2.min.css">
+{% endblock %}
+
+{% block PageNavigator %}
+    <li><a href="/product">产品和模型管理</a></li>
+    <li>产品分类</li>
+{% endblock %}
+
+{% block privateScript %}
+<script type="text/javascript" src="/statics/js/products/category.js"></script>
+<script type="text/javascript" src="/statics/plugins/sweetalert/sweetalert.min.js"></script>
+<script type="text/javascript" src="/statics/plugins/select2/select2.min.js"></script>
+<script type="text/javascript">
+    var __menu__ = {% autoescape off %}{{ menuAll }}{% endautoescape %}
+    var category_menu = {% autoescape off %}{{ category }}{% endautoescape %}
+    $(function(){
+        categoryApp.init()
+    });
+    $.ajaxSetup({
+            data: {csrfmiddlewaretoken: '{{ csrf_token }}' }
+    });
+    </script>
+
+{% endblock %}
+
+{% block contentBody %}
+    <div class="product-category-header">
+        <form class="form-horizontal">
+            <div class="form-group category-form">
+                <div class="search-input-box">
+                   <input type="text" class="form-control" placeholder="搜索...">
+                </div>
+                <div class="search-button-box">
+                    <button class="btn btn-primary search-btn" type="submit">查询</button>
+                    <a href="/product/category"><button type="button" class="btn btn-warning search-btn" id="select-Reset">重置</button></a>
+                </div>
+                <div>
+                    <button class="btn btn-primary second-line-btn" type="button" data-toggle="modal" data-target="#menuFromDialog" data-menuId="0">创建主分类</button>
+                    <button class="btn btn-default second-line-btn" type="button" data-target="#batchDel">批量删除</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="system-menu-table list-group" data-target="div-body">
+        <div class="system-menu-table-title content-table list-group-item">
+            <ul>
+                <li class="table-list-checkbox"><input type="checkbox" name="categoryAll"></li>
+                <li class="table-list-sort">排序</li>
+                <li class="table-menu-name">分类名称</li>
+                <li class="table-list-operation">操作</li>
+            </ul>
+        </div>
+{#        {% for c in menuList %}#}
+{#        <div class="system-menu-table-body content-table menu-depth-{{ c.level }} content-table-data" data-menu-line="menu-{{ c.parent_id }}" level="{{ c.level }}">#}
+{#            <ul>#}
+{#                <li class="table-list-checkbox"><input type="checkbox" name="categoryId" value="{{ c.id }}"></li>#}
+{#                <li class="table-list-no">{{ c.id }} -- {{ forloop.revcounter }}</li>#}
+{#                <li class="table-list-sort"><input type="text" class="form-control" placeholder="0" name="sortId" value="{{ c.sort_id }}"></li>#}
+{#                <li class="table-menu-name">#}
+{#                    <span class="fa{% if c.childs %} fa-minus{% endif %}"></span> {{ c.name }}#}
+{#                </li>#}
+{#                <li class="table-list-operation">#}
+{#                    <a href="javascript:;" data-categoryId="{{ c.id }}" data-toggle="modal" data-target="#menuFromDialog">添加子分类</a>#}
+{#                    <a href="javascript:;" data-categoryId="{{ c.id }}" data-toggle="modal" data-target="#editFromDialog">编辑</a>#}
+{#                    <a href="javascript:;" data-categoryId="{{ c.id }}" onclick="categoryApp.del_category(this)">删除</a>#}
+{#                    {% if not c.childs %}#}
+{#                    <a href="/product/category/attrset?cid={{ c.id }}">属性</a>#}
+{#                    <a href="/product/category/searchset?cid={{ c.id }}">检索</a>#}
+{#                    {% else %}#}
+{#                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#}
+{#                    {% endif %}#}
+{#                </li>#}
+{#            </ul>#}
+{#        </div>#}
+{#        {% endfor %}#}
+    </div>
+
+    <div class="modal fade" id="menuFromDialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title" id="myModalLabel">添加分类</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            <button type="button" class="btn btn-primary" onclick="categoryApp.saveaddBtn()">保存</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="editFromDialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">编辑分类</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            <button type="button" class="btn btn-primary" onclick="categoryApp.saveeditBtn()">保存</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+{% endblock %}

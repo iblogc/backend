@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}部门管理{% endblock %}
+
+{% block privateStyle %}
+    <link type="text/css" rel="stylesheet" media="screen" href="/statics/css/admins/role_permission_modify.css">
+{% endblock %}
+
+{% block PageNavigator %}
+    <li><a href="/admin">管理员管理</a></li>
+    <li><a href="/admin/role_permission_list">角色管理设置</a></li>
+    <li>编辑角色权限</li>
+{% endblock %}
+
+{% block privateScript %}
+    <script type="text/javascript" src="/statics/js/admins/role_permission_modify.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            roleModifyApp.init();
+        });
+    </script>
+{% endblock %}
+
+{% block contentBody %}
+    <div class="main-body">
+        <div class="name-box">
+                角色名称<input id="role-name" class="form-control name-input">
+            </div>
+        </div>
+        <div class="main-bottom list-group">
+            <div class="role-permission-box-title list-group-item">角色权限</div>
+            <div class="role-permission-box-level1 list-group-item"><input type="checkbox"><span>产品模型管理</span></div>
+            <div class="role-permission-box-level2 list-group-item">
+                <ul class="list-type-none">
+                    <li><input type="checkbox"><span>123</span></li>
+                </ul>
+            </div>
+            <div class="role-permission-box-level1 list-group-item"><input type="checkbox"><span>装饰空间管理</span></div>
+            <div class="role-permission-box-level2 list-group-item">
+                <ul class="list-type-none">
+                    <li><input type="checkbox"><span>123</span></li>
+                </ul>
+            </div>
+            <div class="role-permission-box-level1 list-group-item"><input type="checkbox"><span>设计方案管理</span></div>
+            <div class="role-permission-box-level2 list-group-item">
+                <ul class="list-type-none">
+                    <li><input type="checkbox"><span>123</span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="bottom-btn-106">
+            <button class="btn btn-primary" type="button">返回</button>
+        </div>
+    </div>
+
+{% endblock %}

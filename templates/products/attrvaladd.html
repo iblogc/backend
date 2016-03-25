@@ -1,0 +1,47 @@
+<script></script>
+<form class="form-horizontal" id="modal-data-attrvaladd">
+  <div class="form-group hidden">
+    <div class="col-sm-6">
+      <input name="aid" type="text" value="{{ aid }}">
+    </div>
+  </div>
+    <div class="form-group hidden">
+    <div class="col-sm-6">
+      <input name="pid" type="text" value="{{ pid }}">
+    </div>
+  </div>
+{#    {% pid != 0 %}#}
+{#    <div class="form-group">#}
+{#        <label class="col-sm-3 control-label">parent val</label>#}
+{#        <div class="col-sm-6">#}
+{#            <label name="pid" value=""></label>#}
+{#        </div>#}
+{#    </div>#}
+
+  <div class="form-group">
+        <label class="col-sm-3 control-label">{{ attr_name }}的值</label>
+{#        <div class="col-sm-6">#}
+{#            <input type="text" name="attrval-name" class="form-control" onkeyup="attributeApp.attr_val_change()"></div>#}
+            <div class="col-md-8 col-md-offset-2">
+                  <br>
+                  <div class="btn-box list-group-item">
+                      <span class="fa fa-plus" name="add-list-item"></span>
+                      <span class="fa fa-edit" name="edit-list-item"></span>
+                      <span class="fa fa-arrow-up" name="up-list-item"></span>
+                      <span class="fa fa-arrow-down" name="down-list-item"></span>
+                      <span class="fa fa-close" name="del-list-item"></span>
+                  </div>
+                  <div class="list-box">
+                      <ul class="list-group">
+                            <div id="Attr-list">
+                            {% for item in attr_val %}
+                            <input name="editAttr" type="text" class="list-group-item" sid="{{ item.id }}" value="{{ item.name }}" readonly><span name="span-modifyAttr" sid="{{ item.id }}" class="span-edit-item list-group-item right hidden">确定</span>
+                            {% endfor %}
+                            </div>
+                            <div id="newAttr-list"></div>
+                      </ul>
+                  </div>
+            </div>
+        </div>
+        <label id="attr-val-repeat"></label>
+</form>

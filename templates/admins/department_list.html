@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}部门管理{% endblock %}
+
+{% block privateStyle %}
+<link type="text/css" rel="stylesheet" media="screen" href="/statics/css/system/menu.css">
+<link type="text/css" rel="stylesheet" media="screen" href="/statics/css/admins/department.css">
+<link type="text/css" rel="stylesheet" media="screen" href="/statics/plugins/select2/select2.min.css">
+{% endblock %}
+
+{% block PageNavigator %}
+    <li><a href="/admin">管理员管理</a></li>
+    <li>部门管理</li>
+{% endblock %}
+
+{% block privateScript %}<script type="text/javascript" src="/statics/js/admins/department.js"></script>
+<script type="text/javascript" src="/statics/plugins/select2/select2.min.js"></script>
+<script type="text/javascript">
+var __menu__ = {% autoescape off %}{{ menuAll }}{% endautoescape %}
+$(function(){
+    departmentApp.init()
+});
+$.ajaxSetup({
+        data: {csrfmiddlewaretoken: '{{ csrf_token }}' }
+        });
+</script>
+{% endblock %}
+
+{% block contentBody %}
+    <div class="system-menu-header">
+        <div class="search-box">
+            &nbsp;&nbsp;&nbsp;&nbsp;关键字
+            <input id="search-box-Search" class="search form-control" placeholder="搜索...">
+            <span class="search-icon"></span>
+            <a id="search-link" href="/admin/manager_list">
+                <button type="button" class="btn btn-primary search-btn" id="select-Search">查询</button>
+            </a>
+            <a href="/admin/manager_list">
+                <button type="button" class="btn btn-warning search-btn" id="select-Reset">重置</button>
+            </a>
+        </div>
+        <div class="btn-box">
+            <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#menuFromDialog" data-menuId="0">添加部门</button>
+        </div>
+    </div>
+
+    <div class="system-menu-table">
+        {% for m in object_list %}
+        <div class="system-menu-table-body content-table menu-depth-{{ m.level }} content-table-data" data-menu-line="menu-{{ m.parent_id }}">
+            <ul>
+                <li class="table-menu-name">{{ m.name }}</li>
+                <li class="table-list-operation">
+                    <a data-menuId="{{ m.id }}"><span class="fa fa-search"></span></a>
+                    <a data-menuId="{{ m.id }}" data-toggle="modal" data-target="#editFromDialog"><span class="fa fa-edit"></span></a>
+                    <a data-menuId="{{ m.id }}"><span class="fa fa-user"></span></a>
+                    <a data-menuId="{{ m.id }}" onclick="departmentApp.del_department(this)"><span class="fa fa-remove"></span></a>
+                </li>
+            </ul>
+        </div>
+        {% endfor %}
+
+    </div>
+
+    <div class="modal fade" id="menuFromDialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title">增加部门</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            <button type="button" class="btn btn-primary" onclick="departmentApp.saveaddBtn()">保存</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+{#    <div class="modal fade" id="editFromDialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">#}
+{#      <div class="modal-dialog" role="document">#}
+{#        <div class="modal-content">#}
+{#          <div class="modal-header">#}
+{#            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>#}
+{#            <h4 class="modal-title">编辑部门</h4>#}
+{#          </div>#}
+{#          <div class="modal-body"></div>#}
+{#          <div class="modal-footer">#}
+{#            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>#}
+{#            <button type="button" class="btn btn-primary" onclick="departmentApp.saveeditBtn()">保存</button>#}
+{#          </div>#}
+{#        </div>#}
+{#      </div>#}
+{#    </div>#}
+
+{% endblock %}

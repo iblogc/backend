@@ -1,0 +1,238 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}管理{% endblock %}
+
+{% block privateStyle %}
+    <link type="text/css" rel="stylesheet" media="screen" href="/statics/css/system/menu.css">
+    <link type="text/css" rel="stylesheet" media="screen" href="/statics/css/property/property_edit.css">
+    <link type="text/css" rel="stylesheet" media="screen"
+          href="/statics/plugins/datetimepicker/bootstrap-datetimepicker.min.css">
+{% endblock %}
+
+{% block PageNavigator %}
+    <li>楼盘管理</li>
+    <li>楼盘编辑</li>
+{% endblock %}
+
+{% block privateScript %}
+    <script type="text/javascript" src="/statics/js/property/property_edit.js"></script>
+    {#    <script type="text/javascript" src="/statics/plugins/ctrl_select.js"></script>#}
+    <script type="text/javascript" src="/statics/plugins/datetimepicker/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="/statics/plugins/datetimepicker/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script type="text/javascript">
+        estateAddApp.init();
+        {#        ctrl_selectApp.init();#}
+        baseApp.pickDate($('div[name=date]'));
+    </script>
+{% endblock %}
+
+{% block contentBody %}
+    {#    {% for item in object_list %}#}
+    {#        {{ item.realname }}#}
+    {#    {% endfor %}#}
+    <div id="tab">
+        <ul class="tab_menu">
+            <li id="info" class="selected">楼盘信息</li>
+            <li id="around">楼盘配套</li>
+            <li id="img">楼盘图片</li>
+            <li id="room-type">楼盘户型</li>
+        </ul>
+        <div class="tab_box">
+            <div name="info" class="info">
+                <div class="info-title"><img src="/statics/imgs/icon/title-icon.png">基础信息</div>
+                <div class="info-box"><label>楼盘名称</label><input type="text" class="form-control"></div>
+                <div class="info-box"><label>所在区域</label>
+                    <div name="district">
+                        <select class="form-control"></select><select class="form-control"></select><select
+                            class="form-control"></select>
+                    </div>
+                </div>
+                <div class="info-box"><label>楼盘地址</label><input type="text" class="form-control"></div>
+                <div class="info-box"><label>特色</label><select class="form-control">
+
+                </select></div>
+                <div class="info-box"><label>开发商</label><input type="text" class="form-control"></div>
+                <div class="info-box"><label>售楼处地址</label><input type="text" class="form-control"></div>
+                <div class="info-box"><label>开盘时间</label>
+                    <div name="date" class="input-group date form_date" data-date-format="yyyy-mm-dd">
+                        <input sid="Date-created" class="form-control select-time" size="16" type="text"
+                               id="startDate-created" value=""
+                               readonly>
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                    </div>
+                </div>
+                <div class="info-box"><label>交房时间</label>
+                    <div name="date" class="input-group date form_date" data-date-format="yyyy-mm-dd">
+                        <input sid="Date-created" class="form-control select-time" size="16" type="text"
+                               id="startDate-created" value=""
+                               readonly>
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                    </div>
+                </div>
+                <div class="info-box"><label>占地面积</label><input type="text" class="form-control"><span
+                        class="module module-44px">平米</span></div>
+                <div class="info-box"><label>建筑面积</label><input type="text" class="form-control"><span
+                        class="module module-44px">平米</span></div>
+                <div class="info-box"><label>建筑类型</label><select class="form-control">
+                    <option>商用</option>
+                    <option>住宅</option>
+                    <option>商住两用</option>
+                </select></div>
+                <div class="info-box"><label>产权年限</label><select class="form-control">
+                    <option>40年</option>
+                    <option>50年</option>
+                    <option>70年</option>
+                </select></div>
+                <div class="info-box"><label>装修状况</label><select class="form-control">
+                    <option>精装</option>
+                    <option>简装</option>
+                    <option>毛坯</option>
+                </select></div>
+                <div class="info-box"><label>总价</label><select class="form-control">
+                    <option>100万以下</option>
+                    <option>100万至150万</option>
+                    <option>150万至200万</option>
+                    <option>200万至250万</option>
+                    <option>250万至300万</option>
+                    <option>300万至500万</option>
+                    <option>500万以上</option>
+                </select></div>
+                <div class="info-box"><label>均价</label><input type="text" class="form-control"><span
+                        class="module module-76px">元 / 平方米</span></div>
+                <div class="info-box word">
+                    <label>户型</label>
+                    <div name="type">
+                        <input type="checkbox" name="type" id="one-bedroom">
+                        <div>1室</div>
+                        <input type="checkbox" name="type" id="two-bedroom">
+                        <div>2室</div>
+                        <input type="checkbox" name="type" id="three-bedroom">
+                        <div>3室</div>
+                        <input type="checkbox" name="type" id="four-bedroom">
+                        <div>4室</div>
+                        <input type="checkbox" name="type" id="five-bedroom">
+                        <div>5室及以上</div>
+                    </div>
+                </div>
+                <div class="info-box"><label>规划户数</label><input type="text" class="form-control"><span
+                        class="module module-34px">户</span></div>
+                <div class="info-box"><label>绿化率</label><input type="text" class="form-control"><span class="module module-34px">％</span></div>
+                <div class="info-box"><label>容积率</label><input type="text" class="form-control"><span class="module module-34px">％</span></div>
+                <div class="info-box"><label>车位数</label><input type="text" class="form-control"><span class="module module-34px">个</span></div>
+                <div class="info-box"><label>物业公司</label><input type="text" class="form-control"></div>
+                <div class="info-box"><label>物业费</label><input type="text" class="form-control"><span class="module module-76px">元 / 平方米</span></div>
+                <div class="bottom-btn-40"><a href="/product/pdt"><button id="info-btn" class="btn btn-primary" type="button">保存</button></a></div>
+            </div>
+            <div name="around">
+                <section name="map">
+                    <div class="title"><img src="/statics/imgs/icon/title-icon.png">地图坐标</div>
+                    <div></div>
+                    <div></div>
+                </section>
+                <hr>
+                <section>
+                    <div><img src="/statics/imgs/icon/title-icon.png">交通配套</div>
+                    <div><button class="btn btn-primary" data-id="btn-add" data-name="traffic">新增交通</button></div>
+                    <div name="section-info" data-id="0">
+                        <div><div>交通名称</div><input class="form-control"></div>
+                        <div><div>状态</div><select class="form-control"></select></div>
+                        <div><div>交通描述</div><input class="form-control"></div>
+                        <div><button class="btn btn-danger hidden" data-id="btn-delete" data-btn-name="traffic">删除</button></div>
+                    </div>
+                </section>
+                <hr>
+                <section>
+                    <div><img src="/statics/imgs/icon/title-icon.png">学区配套</div>
+                    <div><button class="btn btn-primary" data-id="btn-add" data-name="school">新增学校</button></div>
+                    <div name="section-info" data-id="0">
+                        <div><div>学校名称</div><input class="form-control"></div>
+                        <div><div>学校种类</div><select class="form-control"></select></div>
+                        <div><div>入学条件</div><input class="form-control"></div>
+                        <div><div>学校等级</div><select class="form-control"></select></div>
+                        <div><div>办学单位</div><select class="form-control"></select></div>
+                        <div><div>状态</div><select class="form-control"></select></div>
+                        <div><div>学校描述</div><input class="form-control"></div>
+                        <div><button class="btn btn-danger hidden" data-id="btn-delete" data-btn-name="school">删除</button></div>
+                    </div>
+                </section>
+                <hr>
+                <section>
+                    <div><img src="/statics/imgs/icon/title-icon.png">医疗配套</div>
+                    <div><button class="btn btn-primary" data-id="btn-add" data-name="hospital">新增医院</button></div>
+                    <div name="section-info" data-id="0">
+                        <div><div>医院名称</div><input class="form-control"></div>
+                        <div><div>医院等级</div><div class="hospital"><select class="form-control"></select><select class="form-control"></select></div></div>
+                        <div><div>状态</div><select class="form-control"></select></div>
+                        <div><div>医院描述</div><input class="form-control"></div>
+                        <div><button class="btn btn-danger hidden" data-id="btn-delete" data-btn-name="hospital">删除</button></div>
+                    </div>
+                </section>
+                <hr>
+                <section name="other">
+                    <div><img src="/statics/imgs/icon/title-icon.png">其他配套</div>
+                    <div><button class="btn btn-primary" data-id="btn-add" data-name="other">新增配套</button></div>
+                    <div name="section-info" data-id="0">
+                        <div><div>名称</div><input class="form-control"></div>
+                        <div><div>状态</div><select class="form-control"></select></div>
+                        <div><div>描述</div><input class="form-control"></div>
+                        <div><button class="btn btn-danger hidden" data-id="btn-delete" data-btn-name="other">删除</button></div>
+                    </div>
+                </section>
+		<div class="bottom-btn-40"><a href="/product/pdt"><button id="info-btn" class="btn btn-primary" type="button">保存</button></a></div>
+            </div>
+            <div name="img">
+                <div class="img-box"><img src="/statics/imgs/Koala.jpg"><div>封面图</div></div>
+                <div class="img-box"><img src="/statics/imgs/Koala.jpg"><div>效果图</div></div>
+                <div class="img-box"><img src="/statics/imgs/Koala.jpg"><div>规划图</div></div>
+                <div class="img-box"><img src="/statics/imgs/Koala.jpg"><div>样板间</div></div>
+                <div class="img-box"><img src="/statics/imgs/Koala.jpg"><div>实景图</div></div>
+                <div class="img-box"><img src="/statics/imgs/Koala.jpg"><div>配套图</div></div>
+                <div class="img-box"><img src="/statics/imgs/Koala.jpg"><div>交通图</div></div>
+                <div class="img-box"><img src="/statics/imgs/Koala.jpg"><div>沙盘图</div></div>
+                <div class="img-box"><img src="/statics/imgs/Koala.jpg"><div>项目现场</div></div>
+                <div class="img-box"><img src="/statics/imgs/Koala.jpg"><div>其它</div></div>
+            </div>
+            <div name="room-type">
+                <section name="btn-area">
+                    <button class="btn btn-primary">添加户型</button>
+                </section>
+                <section name="type-info">
+                    <img src="/statics/imgs/Koala.jpg">
+                    <ul>
+                        <li><div>户型名称：</div><div>击按钮，保存成功，页面跳转到{户型管理}页面</div></li>
+                        <li><div>朝向：</div><div>击按钮，保存成功，页面跳转到{户型管理}页面</div></li>
+                        <li><div>类型：</div><div>击按钮，保存成功，页面跳转到{户型管理}页面</div></li>
+                        <li><div>层高 / 米：</div><div>击按钮，保存成功，页面跳转到{户型管理}页面</div></li>
+                        <li><div>面积 / 平米：</div><div>击按钮，保存成功，页面跳转到{户型管理}页面</div></li>
+                        <li><div>参考总价 / 万：</div><div>击按钮，保存成功，页面跳转到{户型管理}页面</div></li>
+                    </ul>
+                    <div><a>编辑户型</a><br><br><a>删除户型</a></div>
+                </section>
+                <section name="type-info">
+                    <img src="/statics/imgs/Koala.jpg">
+                    <ul>
+                        <li><div>户型名称：</div></li>
+                        <li><div>朝向：</div></li>
+                        <li><div>类型：</div></li>
+                        <li><div>层高 / 米：</div></li>
+                        <li><div>面积 / 平米：</div></li>
+                        <li><div>参考总价 / 万：</div></li>
+                    </ul>
+                    <div><a>编辑户型</a><br><br><a>删除户型</a></div>
+                </section>
+                <section name="type-info">
+                    <img src="/statics/imgs/Koala.jpg">
+                    <ul>
+                        <li><div>户型名称：</div></li>
+                        <li><div>朝向：</div></li>
+                        <li><div>类型：</div></li>
+                        <li><div>层高 / 米：</div></li>
+                        <li><div>面积 / 平米：</div></li>
+                        <li><div>参考总价 / 万：</div></li>
+                    </ul>
+                    <div><a>编辑户型</a><br><br><a>删除户型</a></div>
+                </section>
+            </div>
+        </div>
+    </div>
+{% endblock %}

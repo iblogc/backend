@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}属性设置{% endblock %}
+
+{% block privateStyle %}
+<link type="text/css" rel="stylesheet" media="screen" href="/statics/css/products/attribute.css">
+<link type="text/css" rel="stylesheet" media="screen" href="/statics/plugins/select2/select2.min.css">
+{% endblock %}
+
+{% block PageNavigator %}
+    <li><a href="/product">产品和模型管理</a></li>
+    <li><a href="/product/category">产品分类</a></li>
+    <li>{{ cname }}</li>
+{% endblock %}
+
+{% block privateScript %}
+<script type="text/javascript" src="/statics/js/products/attribute.js"></script>
+<script type="text/javascript" src="/statics/plugins/select2/select2.min.js"></script>
+<script type="text/javascript">
+$(function(){
+    attributeApp.init();
+});
+$.ajaxSetup({
+  data: {csrfmiddlewaretoken: '{{ csrf_token }}' }
+});
+</script>
+{% endblock %}
+
+
+{% block contentBody %}
+{#<div class="row attributes-header">#}
+{#  <h2 class="page-title"> {{ cname }} - <span>属性设置</span></h2>#}
+{#</div>#}
+<div id="tab">
+    <ul class="tab_menu">
+        <li class="selected" id="leftmost">属性设置</li>
+        <a href="/product/category/searchset?cid={{ cid }}"><li id="rightmost">检索设置</li></a>
+    </ul>
+    <div class="tab_box">
+        <div>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th class="row-id">ID</th>
+                  <th>属性名</th>
+                  <th>属性值</th>
+                  <th>默认值</th>
+                  <th>属性类型</th>
+                  <th>允许搜索</th>
+                  <th class="row-operate"><button class="btn btn-default" type="button" data-categoryId="{{ cid }}" data-toggle="modal" data-target="#attraddFromDialog">新增属性</button></th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for elem in attributes %}
+                <tr class="main-line">
+                    <td class="middle row-id">{{ elem.id }}</td>
+                    <td class="middle row-name">{{ elem.name }}</td>
+                    <td class="middle row-value">{% if elem.type != "text"%}<span class="span-value" data-target="{{ elem.id }}">展开属性</span>{% endif %}</td>
+                    <td class="middle row-default" name="default">
+                    {% if elem.type == "text"%}
+                        {{ elem.default }}
+                    {% else %}
+                        <select name="attr-default" class="form-control" data-aid="{{ elem.id }}">
+                        {% for foo in elem.values %}
+                            {% if foo.name == elem.default %}
+                                <option value="{{ foo.name }}" selected="true">{{ foo.name }}</option>
+                            {% else %}
+                                <option value="{{ foo.name }}">{{ foo.name }}</option>
+                            {% endif %}
+                        {% endfor %}
+                        </select>
+                    {% endif %}
+                  </td>
+                    <td class="middle row-type">
+                        {{ elem.type }}
+                    </td>
+                    <td class="middle row-canSearch">
+                    <select name="attr-cansearch" class="form-control" data-aid="{{ elem.id }}" onchange="attributeApp.canseach_change(this)">
+
+                      {% if elem.is_search == 0 %}
+                      <option value="0" selected="true">允许</option>
+                      <option value="1">不允许</option>
+                      {% else %}
+                      <option value="0" >允许</option>
+                      <option value="1" selected="true">不允许</option>
+                      {% endif %}
+                    </select>
+                    </td>
+                    <td class="middle row-operate">
+
+                    <a class="main-btn" data-AttrId="{{ elem.id }}" data-type="{{ elem.type }}" data-ValId="0" data-toggle="modal" data-target="#valueaddFromDialog"><img src="/statics/imgs/icon/Settings.png"></a>
+
+                    <a class="main-btn" data-categoryId="{{ cid }}" data-AttrId="{{ elem.id }}" data-toggle="modal" data-target="#attrdelFromDialog"><img src="/statics/imgs/icon/delete.png"></a>
+                  </td>
+                </tr>
+                    {% if elem.values|length != 0 %}
+                        {% for value in elem.values %}
+                        <tr class="children" data-id="pid-{{ elem.id }}">
+                            <td></td><td></td>
+                            <td>
+                                {{ value.name }}
+                            </td><td></td><td></td><td></td><td></td>
+                        </tr>
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+              </tbody>
+            </table>
+        </div>
+        <div>
+        </div>
+    </div>
+
+
+
+<div class="bottom-btn-106">
+    <a href="/product/category"><button class="btn btn-primary" type="button">返回</button></a>
+</div>
+
+<div class="modal fade" id="attraddFromDialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" id="add-attr">新增属性</h4>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">否</button>
+        <button type="button" class="btn btn-primary" onclick="attributeApp.addattr()">是</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="valueaddFromDialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" id="add-attrval">修改属性值</h4>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">否</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal">是</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="attrdelFromDialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" id="del-attr">删除属性</h4>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">否</button>
+        <button type="button" class="btn btn-danger" onclick="attributeApp.del_attr()">是</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
