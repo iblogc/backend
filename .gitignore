@@ -1,0 +1,7 @@
+*.pyc
+*/*.pyc
+.idea/
+.idea/**/*
+resources/*
+norms/*
+.python-version
