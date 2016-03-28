@@ -15,6 +15,8 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from gezbackend.utils import get_random_code
 from django.db.models import Q
+from gezbackend.utils import get_password
+from .models import Account
 
 class LoginView(TemplateView):
     template_name = 'accounts/login.html'
@@ -23,12 +25,11 @@ class LoginView(TemplateView):
         return super(LoginView, self).get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        import ipdb;ipdb.set_trace()
         username = request.POST.get('username')
         password = request.POST.get('password')
-
         try:
-            user = User.objects.filter(Q(username=username)|Q(email=username))
+            user = Account.objects.filter(Q(username=username)|Q(
+                email=username))
             if not user.exists():
                 return HttpResponse(json.dumps({
                         'result': 1,
@@ -38,6 +39,16 @@ class LoginView(TemplateView):
             user = user[0]
             user = authenticate(username=user.username, password=password)
             if not user:
+                # 登录密码错误
+                return HttpResponse(json.dumps({
+                    'result': 1,
+                    'message': '',
+                    'data': ''
+                }))
+            import hashlib
+            if not user.password == hashlib.sha1(
+                            password + hashlib.sha1(
+                        user.security).hexdigest()).hexdigest():
                 # 登录密码错误
                 return HttpResponse(json.dumps({
                     'result': 1,

@@ -1,5 +1,6 @@
 from django.conf.urls import include, url
-from home.views import *
+from products.views import *
 
 urlpatterns = [
+    url(r'pdt/$', Pdt.as_view(), name='login'),
 ]

@@ -158,6 +158,7 @@ var baseApp = function () {
             var copyR = window.innerWidth / 2 - $('#copyRight').width() / 2;
             $('#copyRight').attr('style', 'right:' + copyR + 'px');
             //if(navigator.userAgent.toLowerCase().match('firefox')) $('.content-body-title-hr').attr('style','top:8px');
+            
         },
         compareDate: function (s, e) {
             var start = $(s);
@@ -187,6 +188,7 @@ var baseApp = function () {
                 forceParse: 0,
             });
         },
+
     }
 }();
 

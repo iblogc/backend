@@ -106,8 +106,8 @@ else:
         'default': {
             'ENGINE': 'django.db.backends.mysql',
             'NAME': 'LeJuDBv11',
-            'USER': 'LeJuDbManager',
-            'PASSWORD': 'LjDm234@#$',
+            'USER': 'root',
+            'PASSWORD': 'root',
             'HOST': '127.0.0.1',
             # 'HOST': '127.0.0.1',
             'PORT': '3306'
@@ -156,6 +156,23 @@ STATIC_FILES = os.path.join(BASE_DIR, 'statics')
 STATICFILES_DIRS = (
     STATIC_FILES,
 )
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+
 
 CACHES = {
     "default": {

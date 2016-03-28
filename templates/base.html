@@ -6,19 +6,15 @@
     <link type="text/css" rel="stylesheet" media="screen" href="/statics/css/bootstrap.min.css">
     <link type="text/css" rel="stylesheet" media="screen" href="/statics/css/font-awesome.min.css">
     <link type="text/css" rel="stylesheet" media="screen" href="/statics/plugins/sweetalert/sweetalert.css">
+    <link type="text/css" rel="stylesheet" media="screen"
+          href="/statics/plugins/jquery-easyui/themes/default/easyui.css">
     <link type="text/css" rel="stylesheet" media="screen" href="/statics/css/base.css">
     {% block privateStyle %}{% endblock %}
 </head>
-<body class="body-normal{% if openMenu %} left-menu-open{% endif %}">
+<body class="body-normal left-menu-open">
     <!-- public header -->
     <div class="public-header-body">
         <div class="menu-logo left"></div>
-        <div class="left-menu-icon left">
-            <a href="javascript:;">
-                <span class="fa fa-bars"></span>
-                <span class="fa fa-th-large"></span>
-            </a>
-        </div>
         <div class="header-clock left" id="clock"></div>
 
         <!-- account menu -->
@@ -28,11 +24,11 @@
                 hxhuang
             </a>
             <ul class="dropdown-menu">
-                <li><a href="/users/profile">个人信息</a></li>
-                <li><a href="/users/password">修改密码</a></li>
-                <li><a href="/users/message">我的信息</a></li>
+                <li><a href="/accounts/profile">个人信息</a></li>
+                <li><a href="/accounts/password">修改密码</a></li>
+                <li><a href="/accounts/message">我的信息</a></li>
                 <li><hr></li>
-                <li><a href="/users/logout">退出</a> </li>
+                <li><a href="/accounts/logout">退出</a> </li>
             </ul>
         </div>
         <!-- account menu end -->
@@ -67,8 +63,8 @@
         </div>
 
         {% for m in menu %}
-        <div class="menu-item{% if menuActive.parentKeyCode == m.keycode %} actived{% endif %}">
-            <a href="{{ m.url }}" style="{{ m.style_css }}">
+        <div class="menu-item" >
+            <a href="javascript:void(0);" style="{{ m.style_css }}" class="js-parent-menu">
                 <span class="{{ m.icon_class }}"></span>
                 <span class="menu-name">&nbsp;&nbsp;{{ m.name }}</span>
                 <span class="right" id="menu-point">&nbsp;</span>
@@ -76,7 +72,8 @@
             {% if m.childs|length > 0 %}
             <div class="menu-item-child">
             {% for c in m.childs %}
-                <a href="{{ c.url }}" class="{% if c.keycode == menuActive.keyCode %} actived{% endif %}">
+                <a href="javascript:void(0);" data-url="{{ c.url }}" class=
+                        "js-sub-menu">
                     <span class="menu-name">&nbsp;&nbsp;{{ c.name }}</span>
                 </a>
             {% endfor %}
@@ -89,7 +86,7 @@
 
     <div class="content-body-main-title">
         <div id="content-body-main-title-img"><img src="/statics/imgs/content-body-main-head.jpg"></div>
-        <div class="breadcrumbs-link">
+        <div class="breadcrumbs-link tab-selector">
             <ol class="breadcrumb" id="breadcrumb"><li><a href="/">首页</a></li>{% block PageNavigator %}{% endblock %}</ol>
         </div>
         <hr class="content-body-title-hr">
@@ -105,8 +102,8 @@
 {#        <input class="body-main-search form-control" placeholder="搜索...">#}
 {#        <span class="body-main-search-icon"><img src="/statics/imgs/icon/Search-icon.png"></span>#}
 {#        <hr class="content-body-title-hr">#}
-        <div class="content-body-sheet" id="content-body-sheet">
-                {% block contentBody %}{% endblock %}
+        <div class="content-body-sheet easyui-tabs" id="content-body-sheet">
+
         </div>
         <div class="content-footer"><p class="footer-copyright" id="copyRight">Copyright &copy; 2015 杭州格菱网络科技有限公司 版权所有</p></div>
     </div>
@@ -118,19 +115,20 @@
     -->
 
     <!-- content body end -->
-
 </body>
 <script type="text/javascript" src="/statics/js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="/statics/js/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="/statics/js/jquery.cookie.js"></script>
 <script type="text/javascript" src="/statics/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="/statics/plugins/sweetalert/sweetalert.min.js"></script>
 <script type="text/javascript" src="/statics/js/md5.min.js"></script>
 <script type="text/javascript" src="/statics/js/base.js"></script>
+<script type="text/javascript" src="/statics/js/tabs.js"></script>
 <script type="text/javascript" src="/statics/js/csrf.js"></script>
 <script type="text/javascript">
 $(function(){
     baseApp.init();
-
+    Tab.init();
 
 })
 </script>

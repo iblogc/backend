@@ -9,3 +9,4 @@ gunicorn==19.4.5
 djangorestframework==3.3.3
 markdown==2.6.6
 django-filter==0.13.0
+django-braces==1.8.1

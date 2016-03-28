@@ -1,14 +1,14 @@
 # -*- encoding:utf-8 -*-
 from django.db import models
 from django.conf import settings
-from django.contrib.auth.models import User
 from .manager import UserManager
+from django.contrib.auth.base_user import AbstractBaseUser
 
 
 # Create your models here.
 # 系统帐户数据表
-class Account(models.Model):
-    REQUIRED_FIELDS = ()
+class Account(AbstractBaseUser):
+    REQUIRED_FIELDS = ('email',)
     USERNAME_FIELD = 'username'
     username = models.CharField(unique=True, max_length=100, default='',
                                 null=False)
@@ -17,8 +17,22 @@ class Account(models.Model):
     status = models.IntegerField(default=0, null=False)
     create_time = models.IntegerField(default=0, null=False)
     update_time = models.IntegerField(default=0, null=False)
-
+    is_staff = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
     objects = UserManager()
+
+    def check_password(self, password):
+        return True
+
+    def has_perm(self, perm, obj=None):
+        return self.is_superuser
+
+    def has_module_perms(self, app_label):
+        return self.is_superuser
+
+    def get_short_name(self):
+        return self.username
+
 
 # 帐户日志管理表
 class AccountLog(models.Model):

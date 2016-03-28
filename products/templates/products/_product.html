@@ -1,0 +1,103 @@
+    <link type="text/css" rel="stylesheet" media="screen" href="/statics/css/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" media="screen" href="/statics/css/font-awesome.min.css">
+    <link type="text/css" rel="stylesheet" media="screen" href="/statics/plugins/sweetalert/sweetalert.css">
+    <link type="text/css" rel="stylesheet" media="screen"
+          href="/statics/plugins/jquery-easyui/themes/default/easyui.css">
+    <link type="text/css" rel="stylesheet" media="screen" href="/statics/css/base.css">
+<div class="select">
+     <div class="select-table">
+        <div class="dateText first left">创建时间&nbsp;&nbsp;&nbsp;&nbsp;</div>
+        <div class="input-group date form_date" data-date-format="yyyy-mm-dd">
+            <input sid="Date-created" class="form-control select-update-time" size="16" type="text" id="startDate-created" value=""
+                   readonly>
+            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+        </div>
+        <div class="dateText left">&nbsp;&nbsp;&nbsp;&nbsp;到&nbsp;&nbsp;&nbsp;&nbsp;</div>
+        <div class="input-group date form_date" data-date-format="yyyy-mm-dd">
+            <input sid="Date-created" class="form-control select-update-time" size="16" type="text" id="endDate-created" value="" readonly>
+            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+        </div>
+    </div>
+    <div class="select-table">
+        <div class="dateText first left">更新时间&nbsp;&nbsp;&nbsp;&nbsp;</div>
+        <div class="input-group date form_date" data-date-format="yyyy-mm-dd">
+            <input sid="Date-update" class="form-control select-update-time" size="16" type="text" id="startDate-update" value=""
+                   readonly>
+            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+        </div>
+        <div class="dateText left">&nbsp;&nbsp;&nbsp;&nbsp;到&nbsp;&nbsp;&nbsp;&nbsp;</div>
+        <div class="input-group date form_date" data-date-format="yyyy-mm-dd">
+            <input sid="Date-update" class="form-control select-update-time" size="16" type="text" id="endDate-update" value="" readonly>
+            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+        </div>
+    </div>
+</div>
+<div class="select">
+     <div class="select-table">
+         &nbsp;&nbsp;&nbsp;&nbsp;关键字
+         <input id="product-Search" class="select-search form-control" placeholder="搜索...">
+         <span class="select-search-icon"></span>
+         <a id="search-link" href="/product/pdt"><button type="button" class="btn btn-primary select-search-btn" id="select-Search">查询</button></a>
+         <a href="/product/pdt"><button type="button" class="btn btn-warning select-search-btn" id="select-Reset">重置</button></a>
+     </div>
+</div>
+<div class="product-body">
+    {% for product in products %}
+        {% autoescape off %}
+            <div class="product-info-box">
+                <ul class="list-type-none inline-block product-body-number">
+                    <li>{{ product.id }}</li>
+                </ul>
+                <ul class="list-type-none inline-block product-info-box-imgBox">
+                    <li><img src="/{{ product.charlet }}" class="inline-table product-info-box-img"></li>
+                </ul>
+                <ul class="list-type-none inline-block product-info-box-text">
+                    <li class="">产品编号：{{ product.product_no }}</li>
+                    <li class="">分类：{{ product.cname }}</li>
+                    <li class="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;风格：{{ product.style }}</li>
+                    <li class="">产品名称：{{ product.name }}</li>
+                    <li class="">品牌：{{ product.brand }}</li>
+                    <li class="">上传时间：{{ product.create_time }}</li>
+                    <li class="">厂家名称：{{ product.company }}</li>
+                    <li class="">系列：{{ product.series }}</li>
+                    <li class="">更新时间：{{ product.update_time }}</li>
+                </ul>
+                <ul class="list-type-none link-info">
+                    <a href="/product/pdt/detail?_={{ product.id }}">查看详情</a>
+                </ul>
+            </div>
+        {% endautoescape %}
+    {% endfor %}
+    <div class="right pagination-div">
+        <nav>
+            <ul class="pagination">
+                {% ifnotequal cur_page 1 %}
+                    <li><a href="/product/pdt">|&lt;</a></li>
+                    <li><a href="/product/pdt?page_id={{ cur_page|add:-1 }}&{{ url }}"><span>&lt;</span></a></li>
+                {% else %}
+                    <li><span style="color: #d1d1d1;">|&lt;</span></li>
+                    <li><span style="color: #d1d1d1;">&lt;</span></li>
+                {% endifnotequal %}
+
+                <li><a href="/product/pdt?page_id={{ cur_page }}&{{ url }}">{{ cur_page }}</a></li>
+
+                {% ifnotequal cur_page total_page %}
+                    <li><a href="/product/pdt?page_id={{ cur_page|add:1 }}&{{ url }}">{{ cur_page|add:1 }}</a></li>
+                {% endifnotequal %}
+
+                {% if next %}
+                    <li><a href="/product/pdt?page_id={{ cur_page|add:2 }}&{{ url }}"><span>&gt;</span></a></li>
+                {% else %}
+                    <li><span style="color: #d1d1d1;">&gt;</span></li>
+                {% endif %}
+
+                {% ifnotequal cur_page total_page %}
+                    <li><a href="/product/pdt?page_id={{ total_page }}&{{ url }}"><span>&gt;|</span></a></li>
+                {% else %}
+                    <li><span style="color: #d1d1d1">&gt;|</span></li>
+                {% endifnotequal %}
+            </ul>
+        </nav>
+    </div>
+    <div class="bottom-btn-106"><a href="/product/pdt"><button class="btn btn-primary" type="button">返回</button></a></div>
+</div>
