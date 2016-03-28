@@ -7,6 +7,10 @@
     margin-top: 20px;
 }
 
+.select2{
+    margin-left: 20px;
+}
+
 .form_date {
     display: inline-table;
     width: 140px;
@@ -14,7 +18,21 @@
 
 .select-table {
     display: inline-table;
-    width: 530px;
+    width: 230px;
+    vertical-align: top;
+    margin-top: 20px;
+}
+
+.select-filter {
+    display: inline-table;
+    width: 730px;
+    vertical-align: top;
+    margin-top: 20px;
+}
+
+.select-text {
+    display: inline-table;
+    width: 140px;
     vertical-align: top;
 }
 

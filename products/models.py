@@ -24,7 +24,8 @@ class Product(models.Model):
 
 # 产品模型关系数据表
 class ProductModel(models.Model):
-    product_id = models.IntegerField(default=0, null=False)
+    product = models.ForeignKey("Product", related_name='models', default=None, null=True, blank=True,
+                                on_delete=models.SET_NULL)
     version_no = models.CharField(max_length=200, default='')
     norms_no = models.CharField(max_length=200, default='', null=False)
     name = models.CharField(max_length=200, default='', null=False)

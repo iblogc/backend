@@ -6,11 +6,14 @@ except:
 from django.views.generic import TemplateView, ListView
 from django.shortcuts import render
 from braces.views import LoginRequiredMixin
-from .models import Product, ProductCategory, ProductBrand
+from .models import Product, ProductCategory, ProductBrand, ProductBrandSeries, ProductModel
+from customers.models import Company
 from accounts.authorize import AccountLoginMixin
 from django.core.paginator import Paginator
 from django.core.cache import cache
 from django.db.models import Q
+from product_utils import *
+from gezbackend.utils import *
 # Create your views here.
 
 class Pdt(LoginRequiredMixin, AccountLoginMixin, ListView):
@@ -22,29 +25,28 @@ class Pdt(LoginRequiredMixin, AccountLoginMixin, ListView):
         if cache.get('category'):
             res = cache.get('category')
         else:
-            for category in ProductCategory.objects.filter(status=1, step=1).all():
-                res.append({
-                    "id": category.id,
-                    "name": category.name,
+            for c1 in ProductCategory.objects.prefetch_related('sub_categories','sub_categories__sub_categories').filter(status=1, step=1).all():
+                c1_dict = {
+                    "id": c1.id,
+                    "name": c1.name,
                     "second": []
-                })
-                cache.set(category.id,(0,category.name))
-            for elem in res:
-                for category in ProductCategory.objects.filter(status=1, step=2, parent_id=elem["id"]).all():
-                    temp2 = {
-                        "id": category.id,
-                        "name": category.name,
+                }
+                res.append(c1_dict)
+                for c2 in c1.sub_categories.all():
+                    c2_dict = {
+                        "id": c2.id,
+                        "name": c2.name,
                         "third": []
                     }
-                    cache.set(category.id,(category.parent_id,category.name))
-                    for c3 in ProductCategory.objects.filter(status=1, step=3, parent_id=category.id).all():
-                        temp2["third"].append({
+                    c1_dict['second'].append(c2_dict)
+                    for c3 in c2.sub_categories.all():
+                        c3_dict = {
                             "id": c3.id,
                             "name": c3.name
-                        })
-                        cache.set(c3.id,(c3.parent_id,c3.name))
-                    elem["second"].append(temp2)
-            cache.set("category",res)
+                        }
+                        c2_dict['third'].append(c3_dict)
+            cache.set('category',res)
+
         return res
 
     def is_category(self, c):
