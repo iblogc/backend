@@ -21,7 +21,7 @@ $('select[name=product1]').bind('change', function () {
     $('select[name=product2]').html('<option value="0">请选择</option>');
     $('select[name=product3]').html('<option value="0">请选择</option>');
     changeSearchLink();
-    if($(this).val() == '0')
+    if ($(this).val() == '0')
         return;
     s1_val = $('select[name=product1] :selected').attr('name');
     for (var i = 0; i < category[s1_val].second.length; i++) {
@@ -32,7 +32,7 @@ $('select[name=product1]').bind('change', function () {
 $('select[name=product2]').bind('change', function () {
     $('select[name=product3]').html('<option value="0">请选择</option>');
     changeSearchLink();
-    if($(this).val() == '0')
+    if ($(this).val() == '0')
         return;
     var s2_val = $('select[name=product2] :selected').attr('name');
     for (var i = 0; i < category[s1_val].second[s2_val].third.length; i++) {
@@ -91,10 +91,10 @@ var changeSearchLink = function () {
     series = $('.js-series').val();
     date_from = $('.js-df').val();
     date_to = $('.js-dt').val();
-    var url = '//' + location.host + location.pathname + '?kw=' + kw + '&pn=' + pn + '&c1=' + c1 + '&c2=' + c2 + '&c3=' + c3 + '&c=' + com + '&b=' + brand + '&s=' + series + '&df=' + date_from + '&dt=' + date_to + '&order=' + order + '&desc=' + (desc?1:0);
+    var url = '//' + location.host + location.pathname + '?kw=' + kw + '&pn=' + pn + '&c1=' + c1 + '&c2=' + c2 + '&c3=' + c3 + '&c=' + com + '&b=' + brand + '&s=' + series + '&df=' + date_from + '&dt=' + date_to + '&order=' + order + '&desc=' + (desc ? 1 : 0);
 
-    localStorage.setItem('lastUrl', 'kw=' + kw + '&pn=' + pn + '&c1=' + c1 + '&c2=' + c2 + '&c3=' + c3 + '&c=' + com + '&b=' + brand + '&s=' + series + '&df=' + date_from + '&dt=' + date_to + '&order=' + order + '&desc=' + (desc?1:0));
-    searchUrl = '/product/pdt?kw=' + kw + '&pn=' + pn + '&c1=' + c1 + '&c2=' + c2 + '&c3=' + c3 + '&c=' + com + '&b=' + brand + '&s=' + series + '&df=' + date_from + '&dt=' + date_to + '&order=' + order + '&desc=' + (desc?1:0);
+    localStorage.setItem('lastUrl', 'kw=' + kw + '&pn=' + pn + '&c1=' + c1 + '&c2=' + c2 + '&c3=' + c3 + '&c=' + com + '&b=' + brand + '&s=' + series + '&df=' + date_from + '&dt=' + date_to + '&order=' + order + '&desc=' + (desc ? 1 : 0));
+    searchUrl = '/product/pdt?kw=' + kw + '&pn=' + pn + '&c1=' + c1 + '&c2=' + c2 + '&c3=' + c3 + '&c=' + com + '&b=' + brand + '&s=' + series + '&df=' + date_from + '&dt=' + date_to + '&order=' + order + '&desc=' + (desc ? 1 : 0);
     $('#search-link').attr('href', searchUrl);
 
 };
@@ -107,30 +107,55 @@ $('#product-Search').keyup(function (e) {
     }
 });
 
-$('.js-header').on('click', function(){
-    var order = $(this).attr('name');
-    desc = !desc;
+$('.js-header').on('click', function () {
+    if(order==$(this).attr('name'))
+        desc = !desc;
+    order = $(this).attr('name');
+
     changeSearchLink();
     localStorage.setItem('url_temp', kw + ',' + pn + ',' + c1 + ',' + c2 + ',' + c3 + ',' + com + ',' + brand + ',' + series + ',' + date_from + ',' + date_to + ',' + order + ',' + desc);
     location.href = searchUrl;
 });
 
-$('.js-product-detail').on('click', function(){
+$('.js-product-detail').on('click', function () {
+    var id = $(this).attr('data-id');
+    $.post('/products/detail/' + id + '/', {'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()}, function (data) {
+        console.log(data);
+        $('.js-modal-product-no').html(data.product_no);
+        $('.js-modal-product-name').html(data.product_name);
+        $('.js-modal-product-category').html(data.category_name);
+        $('.js-modal-product-company').html(data.company_name);
+        $('.js-modal-product-brand').html(data.brand);
+        $('.js-modal-product-series').html(data.series);
+        if(data.model) {
+            $('.js-modal-model-no').html(data.model.norm_no);
+            $('.js-modal-model-version').html(data.model.version);
+            if(data.model.norms)
+                $('.js-modal-model-size').html('长-' + data.model.norms['length'] + ' 宽-' + data.model.norms['width'] + ' 高-' + data.model.norms['height']);
+            $('.js-modal-model-material').html(data.model.material);
+            $('.js-modal-model-color').html(data.model.color);
+            $('.js-modal-product-img').attr('src',data.model.chartlet);
+        }
+        $('.js-modal-args').empty();
+        for(var key in data.args){
+            $('.js-modal-args').append('<li><span>'+key+':</span><span>'+data.args[key]+'</span></li>');
+        }
+        $('.js-modal-product-remarks').html(data.remarks);
+    }, 'JSON');
 });
 
-$('.js-active').on('click', function(){
-    var id=$(this).attr('data-id');
-    $.post('/products/', $this.serialize(), function(data){
-                    console.log(typeof data);
-                    if(data.result==0){
-                        $("button[type=submit]").attr('disabled', true).html('登录成功，正在等跳转...');
-                        setTimeout(function(){
-                            location.href = '/';
-                        }, 2000);
-                    }else{
-                        sweetAlert("登录失败", "用户名和密码错误，请重新登录", "error");
-                    }
-                }, 'JSON');
+$('.js-active').on('click', function () {
+    var id = $(this).attr('data-id');
+    $.post('/products/active/' + id + '/', {'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()}, function (data) {
+        $('.js-status-text-' + id).html('启用');
+    }, 'JSON');
+});
+
+$('.js-void').on('click', function () {
+    var id = $(this).attr('data-id');
+    $.post('/products/void/' + id + '/', {'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()}, function (data) {
+        $('.js-status-text-' + id).html('禁用');
+    }, 'JSON');
 });
 
 var productApp = function () {
@@ -147,11 +172,11 @@ var productApp = function () {
                 $('.js-kw').val(temp[0]);
                 $('.js-pn').val(temp[1]);
                 $('.js-c1').val(temp[2]);
-                if(temp[2]!='0') {
+                if (temp[2] != '0') {
                     $('select[name=product1]').change();
                 }
                 $('.js-c2').val(temp[3]);
-                if(temp[3]!='0') {
+                if (temp[3] != '0') {
                     $('select[name=product2]').change();
                 }
                 $('.js-c3').val(temp[4]);

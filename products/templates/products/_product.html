@@ -14,7 +14,14 @@
       href="/statics/plugins/select2/select2.min.css">
 <link type="text/css" rel="stylesheet" media="screen"
       href="/statics/plugins/datetimepicker/bootstrap-datetimepicker.min.css">
+<link type="text/css" rel="stylesheet" media="screen"
+      href="/statics/css/products/category.css">
+<link type="text/css" rel="stylesheet" media="screen"
+      href="/statics/plugins/select2/select2.min.css">
+<link type="text/css" rel="stylesheet" media="screen"
+      href="/statics/css/jquery-ui.css">
 <div class="main-body content-body-main">
+    {% csrf_token %}
     {#  <h2 class="col-md-3"> {{ cname }} - <span>属性设置</span></h2>#}
     {#  <div class="utils-area col-md-2 right">#}
     {#    <a href="/product/category" role="button" class="btn btn-important" > 返回到分类设置 </a>#}
@@ -51,7 +58,8 @@
                         <option value="0">请选择</option>
                     </select>
                 </div>
-                <button id="select-Search" class="btn btn-primary select1 select2 js-search-button"
+                <button id="select-Search"
+                        class="btn btn-primary select1 select2 js-search-button"
                         type="button">查询
                 </button>
             </div>
@@ -78,17 +86,27 @@
                 </div>
                 <div class="left select-table">
                     <div class="dateText first left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上传日期：</div>
-                    <div class="input-group date form_date" data-date-format="yyyy-mm-dd">
-                        <input sid="Date-update" class="form-control select-update-time js-df" size="16" type="text" id="startDate-update" value=""
+                    <div class="input-group date form_date"
+                         data-date-format="yyyy-mm-dd">
+                        <input sid="Date-update"
+                               class="form-control select-update-time js-df"
+                               size="16" type="text" id="startDate-update"
+                               value=""
                                readonly>
-                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                        <span class="input-group-addon"><span
+                                class="glyphicon glyphicon-calendar"></span></span>
                     </div>
                 </div>
                 <div class="left select-table">
                     <div class="dateText left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;至</div>
-                    <div class="input-group date form_date" data-date-format="yyyy-mm-dd">
-                        <input sid="Date-update" class="form-control select-update-time js-dt" size="16" type="text" id="endDate-update" value="" readonly>
-                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                    <div class="input-group date form_date"
+                         data-date-format="yyyy-mm-dd">
+                        <input sid="Date-update"
+                               class="form-control select-update-time js-dt"
+                               size="16" type="text" id="endDate-update"
+                               value="" readonly>
+                        <span class="input-group-addon"><span
+                                class="glyphicon glyphicon-calendar"></span></span>
                     </div>
                 </div>
                 {#            <button class="btn btn-primary select1 select2" type="button">导出</button>#}
@@ -126,11 +144,17 @@
                         <div class="header">{{ product.brand }}</div>
                         <div class="header">{{ product.series }}</div>
                         <div class="header">{{ product.create_time }}</div>
-                        <div class="header">{{ product.status }}</div>
+                        <div class="header js-status-text-{{ product.id }}">{{ product.status }}</div>
                         <div class="header">
-                            <a href="javascript:void(0);" class="js-product-detail">详细信息</a>
-                            &nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0);" class="js-active" data-id="{{ product.id }}">启用</a>
-                            &nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0);" class="js-void" data-id="{{ product.id }}">禁用</a>
+                            <a href="javascript:void(0);"
+                               class="js-product-detail" data-toggle="modal"
+                               data-target="#menuFromDialog" data-menuId="0" data-id="{{ product.id }}">详细信息</a>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<a
+                                href="javascript:void(0);" class="js-active"
+                                data-id="{{ product.id }}">启用</a>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<a
+                                href="javascript:void(0);" class="js-void"
+                                data-id="{{ product.id }}">禁用</a>
                         </div>
                     </div>
                 {% endautoescape %}
@@ -138,39 +162,150 @@
         </div>
 
         <div class="right pagination-div">
-                <nav>
-                    <ul class="pagination">
-                        {% ifnotequal cur_page 1 %}
-                            <li><a href="/product/pdt">|&lt;</a></li>
-                            <li><a href="/product/pdt?page_id={{ cur_page|add:-1 }}&{{ url }}"><span>&lt;</span></a></li>
-                        {% else %}
-                            <li><span style="color: #d1d1d1;">|&lt;</span></li>
-                            <li><span style="color: #d1d1d1;">&lt;</span></li>
-                        {% endifnotequal %}
+            <nav>
+                <ul class="pagination">
+                    {% ifnotequal cur_page 1 %}
+                        <li><a href="/product/pdt">|&lt;</a></li>
+                        <li>
+                            <a href="/product/pdt?page_id={{ cur_page|add:-1 }}&{{ url }}"><span>&lt;</span></a>
+                        </li>
+                    {% else %}
+                        <li><span style="color: #d1d1d1;">|&lt;</span></li>
+                        <li><span style="color: #d1d1d1;">&lt;</span></li>
+                    {% endifnotequal %}
 
-                        <li><a href="/product/pdt?page_id={{ cur_page }}&{{ url }}">{{ cur_page }}</a></li>
+                    <li>
+                        <a href="/product/pdt?page_id={{ cur_page }}&{{ url }}">{{ cur_page }}</a>
+                    </li>
 
-                        {% ifnotequal cur_page total_page %}
-                            <li><a href="/product/pdt?page_id={{ cur_page|add:1 }}&{{ url }}">{{ cur_page|add:1 }}</a></li>
-                        {% endifnotequal %}
+                    {% ifnotequal cur_page total_page %}
+                        <li>
+                            <a href="/product/pdt?page_id={{ cur_page|add:1 }}&{{ url }}">{{ cur_page|add:1 }}</a>
+                        </li>
+                    {% endifnotequal %}
 
-                        {% if next %}
-                            <li><a href="/product/pdt?page_id={{ cur_page|add:2 }}&{{ url }}"><span>&gt;</span></a></li>
-                        {% else %}
-                            <li><span style="color: #d1d1d1;">&gt;</span></li>
-                        {% endif %}
+                    {% if next %}
+                        <li>
+                            <a href="/product/pdt?page_id={{ cur_page|add:2 }}&{{ url }}"><span>&gt;</span></a>
+                        </li>
+                    {% else %}
+                        <li><span style="color: #d1d1d1;">&gt;</span></li>
+                    {% endif %}
 
-                        {% ifnotequal cur_page total_page %}
-                            <li><a href="/product/pdt?page_id={{ total_page }}&{{ url }}"><span>&gt;|</span></a></li>
-                        {% else %}
-                            <li><span style="color: #d1d1d1">&gt;|</span></li>
-                        {% endifnotequal %}
-                    </ul>
-                </nav>
-            </div>
+                    {% ifnotequal cur_page total_page %}
+                        <li>
+                            <a href="/product/pdt?page_id={{ total_page }}&{{ url }}"><span>&gt;|</span></a>
+                        </li>
+                    {% else %}
+                        <li><span style="color: #d1d1d1">&gt;|</span></li>
+                    {% endifnotequal %}
+                </ul>
+            </nav>
+        </div>
         <div class="bottom-btn-106"><a href="/product/pdt">
             <button class="btn btn-primary" type="button">返回</button>
         </a></div>
+        <div class="modal fade" id="menuFromDialog" tabindex="-1" role="dialog"
+             aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"
+                                aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">详细信息</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div id="tabs">
+                            <ul>
+                                <li><a href="#tabs-1">产品信息</a></li>
+                                <li><a href="#tabs-2">产品规格</a></li>
+                                <li><a href="#tabs-3">产品参数</a></li>
+                                <li><a href="#tabs-4">产品图片</a></li>
+                                <li><a href="#tabs-5">备注信息</a></li>
+                            </ul>
+                            <div id="tabs-1">
+                                <table>
+                                    <tr>
+                                        <th width="200px">名称</th>
+                                        <th width="300px">详细信息</th>
+                                    </tr>
+                                    <tr>
+                                        <th>产品编号</th>
+                                        <td class="js-modal-product-no"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>产品名称</th>
+                                        <td class="js-modal-product-name"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>产品分类</th>
+                                        <td class="js-modal-product-category"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>厂家名称</th>
+                                        <td class="js-modal-product-company"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>品牌</th>
+                                        <td class="js-modal-product-brand"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>系列</th>
+                                        <td class="js-modal-product-series"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div id="tabs-2">
+                                <table>
+                                    <tr>
+                                        <th width="200px">名称</th>
+                                        <th width="300px">详细信息</th>
+                                    </tr>
+                                    <tr>
+                                        <th>规格编号</th>
+                                        <td class="js-modal-model-no"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>产品型号</th>
+                                        <td class="js-modal-model-version"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>长宽高</th>
+                                        <td class="js-modal-model-size"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>材质</th>
+                                        <td class="js-modal-model-material"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>颜色</th>
+                                        <td class="js-modal-model-color"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div id="tabs-3">
+                                <ul class="product-param list-type-none js-modal-args">
+                                    {% for k, v in arg.items %}
+                                        <li><span>{{ k }}:</span><span>{{ v }}</span></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <div id="tabs-4">
+                                <img class="js-modal-product-img" src="../../statics/imgs/icon/title-icon.png">
+                            </div>
+                            <div id="tabs-5">
+                                <p class="js-modal-product-remarks"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -184,12 +319,14 @@
 <script type="text/javascript"
         src="/statics/plugins/datetimepicker/bootstrap-datetimepicker.zh-CN.js"></script>
 <script src="/statics/js/bootstrap.min.js"></script>
+<script src="/statics/js/jquery-ui.js"></script>
 <script type="text/javascript">
     var category = {% autoescape off %}{{ category }}{% endautoescape %};
     var url = {% autoescape off %}{{ urls }}{% endautoescape %};
     $(function () {
         productApp.init();
         baseApp.pickDate($('.form_date'));
+        $("#tabs").tabs();
     });
 
 </script>

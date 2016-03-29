@@ -19,7 +19,7 @@ from gezbackend.utils import *
 
 # Create your views here.
 
-class Pdt(LoginRequiredMixin, AccountLoginMixin, TemplateView):
+class Pdt(LoginRequiredMixin, TemplateView):
     template_name = "products/_product.html"
 
     def get_context_data(self, **kwargs):
@@ -200,3 +200,44 @@ class Pdt(LoginRequiredMixin, AccountLoginMixin, TemplateView):
     def post(self, request, *args, **kwargs):
 
         return resp(0, "action success", "")
+
+class ProductActiveView(LoginRequiredMixin, TemplateView):
+    def post(self, request, *args, **kwargs):
+        Product.objects.filter(pk=kwargs['pk']).update(status=1)
+        return resp(0, "action success", "")
+
+class ProductVoidView(LoginRequiredMixin, TemplateView):
+    def post(self, request, *args, **kwargs):
+        Product.objects.filter(pk=kwargs['pk']).update(status=0)
+        return resp(0, "action success", "")
+
+class ProductDetailView(LoginRequiredMixin, TemplateView):
+    template_name = "products/_product.html"
+    def post(self, request, *args, **kwargs):
+        p = Product.objects.get(id=kwargs['pk'])
+        self.product = {
+            "id": p.id,
+            "product_no": p.product_no,
+            "product_name": p.name,
+            "company_name": p.company.name,
+            "category_name": get_category(p.category.id),
+            "brand": p.brand.name,
+            "series": p.series.name,
+            "model": {},
+            "args": {},
+            "remarks": p.remark,
+        }
+        if p.models.exists():
+            model = p.models.all()[0]
+            self.product['model'] = {
+                "model_id": model.id,
+                "norm_no": model.norms_no,
+                "version": model.version_no,
+                # "model_name": model.name,
+                "norms": json.loads(model.norms),
+                "material": model.material,
+                "color": model.color,
+                'chartlet': model.chartlet_path
+            }
+        self.product['args'] = json.loads(p.args.decode('utf-8'))
+        return HttpResponse(json.dumps(self.product))
