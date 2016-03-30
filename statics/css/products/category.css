@@ -139,3 +139,9 @@
 .list-group-item {
     padding: 0px!important;
 }
+
+.category-body {
+    width: 250px;
+    border: 1px solid #000;
+    margin-left: 20px;
+}

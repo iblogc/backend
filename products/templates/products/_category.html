@@ -1,0 +1,185 @@
+<link type="text/css" rel="stylesheet" media="screen"
+      href="/statics/css/font-awesome.min.css">
+<link type="text/css" rel="stylesheet" media="screen"
+      href="/statics/plugins/sweetalert/sweetalert.css">
+<link type="text/css" rel="stylesheet" media="screen"
+      href="/statics/plugins/jquery-easyui/themes/default/easyui.css">
+<link type="text/css" rel="stylesheet" media="screen"
+      href="/statics/css/bootstrap.min.css">
+<link type="text/css" rel="stylesheet" media="screen"
+      href="/statics/css/base.css">
+<link type="text/css" rel="stylesheet" media="screen"
+      href="/statics/css/products/product.css">
+<link type="text/css" rel="stylesheet" media="screen"
+      href="/statics/plugins/select2/select2.min.css">
+<link type="text/css" rel="stylesheet" media="screen"
+      href="/statics/plugins/datetimepicker/bootstrap-datetimepicker.min.css">
+<link type="text/css" rel="stylesheet" media="screen"
+      href="/statics/css/products/category.css">
+<link type="text/css" rel="stylesheet" media="screen"
+      href="/statics/plugins/select2/select2.min.css">
+<link type="text/css" rel="stylesheet" media="screen"
+      href="/statics/css/jquery-ui.css">
+<div class="main-body content-body-main">
+    {% csrf_token %}
+    {#  <h2 class="col-md-3"> {{ cname }} - <span>属性设置</span></h2>#}
+    {#  <div class="utils-area col-md-2 right">#}
+    {#    <a href="/product/category" role="button" class="btn btn-important" > 返回到分类设置 </a>#}
+    {#  </div>#}
+    <h1>产品分类</h1>
+    <div class="product-body">
+        <div class="select select1">
+            <div class="select">
+                <div class="left select-table">
+                    &nbsp;&nbsp;&nbsp;&nbsp;关键字：
+                    <input id="product-Search"
+                           class="select-text form-control js-kw"
+                           placeholder="搜索...">
+                </div>
+                <button id="select-Search"
+                        class="btn btn-primary select1 select2 js-search-button"
+                        type="button">查询
+                </button>
+                <button id="select-Search"
+                        class="btn btn-primary select1 select2 js-search-button"
+                        type="button">批量上传
+                </button>
+                <button id="select-Search"
+                        class="btn btn-primary select1 select2 js-search-button"
+                        type="button">批量删除
+                </button>
+                <button id="select-Search"
+                        class="btn btn-primary select1 select2 js-search-button"
+                        type="button">导出
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="product-body">
+        <div class="category-body left">
+            <div class="equal">
+                <div class="row">
+                    <div class="header"><h5>一级分类</h5></div>
+                </div>
+            </div>
+
+        </div>
+        <div class="category-body left">
+            <div class="equal">
+                <div class="row">
+                    <div class="header"><h5>二级分类</h5></div>
+                </div>
+            </div>
+
+        </div>
+        <div class="category-body left">
+            <div class="equal">
+                <div class="row">
+                    <div class="header"><h5>三级分类</h5></div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="category-body left">
+            <div class="equal">
+                <div class="row">
+                    <div class="header"><h5>厂家</h5></div>
+                </div>
+            </div>
+
+        </div>
+        <div class="category-body left">
+            <div class="equal">
+                <div class="row">
+                    <div class="header"><h5>品牌</h5></div>
+                </div>
+            </div>
+
+        </div>
+        <div class="category-body left">
+            <div class="equal">
+                <div class="row">
+                    <div class="header"><h5>一级分类</h5></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="product-body">
+        <div class="category-body left">
+            <div class="equal">
+                {% for category in categories %}
+                <div class="row">
+                    <div class="header"><a href="javascript:void(0);"><h5><input type="checkbox">{{ category.name }}</h5></a></div>
+                </div>
+                {%  endfor %}
+
+            </div>
+
+        </div>
+        <div class="category-body left">
+            <div class="equal">
+                <div class="row">
+                    <div class="header"><h5>二级分类</h5></div>
+                </div>
+            </div>
+
+        </div>
+        <div class="category-body left">
+            <div class="equal">
+                <div class="row">
+                    <div class="header"><h5>三级分类</h5></div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="category-body left">
+            <div class="equal">
+                <div class="row">
+                    <div class="header"><h5>厂家</h5></div>
+                </div>
+            </div>
+
+        </div>
+        <div class="category-body left">
+            <div class="equal">
+                <div class="row">
+                    <div class="header"><h5>品牌</h5></div>
+                </div>
+            </div>
+
+        </div>
+        <div class="category-body left">
+            <div class="equal">
+                <div class="row">
+                    <div class="header"><h5>系列</h5></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="/statics/js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="/statics/js/products/product.js"></script>
+<script type="text/javascript" src="/statics/js/base.js"></script>
+<script type="text/javascript"
+        src="/statics/plugins/select2/select2.min.js"></script>
+<script type="text/javascript"
+        src="/statics/plugins/datetimepicker/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript"
+        src="/statics/plugins/datetimepicker/bootstrap-datetimepicker.zh-CN.js"></script>
+<script src="/statics/js/bootstrap.min.js"></script>
+<script src="/statics/js/jquery-ui.js"></script>
+<script type="text/javascript">
+    var category = {% autoescape off %}{{ category }}{% endautoescape %};
+    var url = {% autoescape off %}{{ urls }}{% endautoescape %};
+    $(function () {
+        productApp.init();
+        baseApp.pickDate($('.form_date'));
+        $("#tabs").tabs();
+    });
+
+</script>

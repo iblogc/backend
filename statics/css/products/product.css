@@ -110,6 +110,7 @@ input[readonly] {
     min-width: 920px;
     border: 5px;
     padding: 10px 0 0 0;
+    float: left;
 }
 
 .product-info-box {

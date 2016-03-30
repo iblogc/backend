@@ -19,11 +19,11 @@ from gezbackend.utils import *
 
 # Create your views here.
 
-class Pdt(LoginRequiredMixin, TemplateView):
+class ProductView(LoginRequiredMixin, TemplateView):
     template_name = "products/_product.html"
 
     def get_context_data(self, **kwargs):
-        context = super(Pdt, self).get_context_data(**kwargs)
+        context = super(ProductView, self).get_context_data(**kwargs)
         context['products'] = self.products
         context['cur_page'] = self.page_id
         context['total_page'] = self.pages
@@ -207,7 +207,7 @@ class Pdt(LoginRequiredMixin, TemplateView):
             self.page = 0
             self.pages = 0
             self.next_page = False
-        return super(Pdt, self).get(request, *args, **kwargs)
+        return super(ProductView, self).get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
 
@@ -256,4 +256,16 @@ class ProductDetailView(LoginRequiredMixin, TemplateView):
                 'chartlet': model.chartlet_path
             }
         self.product['args'] = json.loads(p.args.decode('utf-8'))
-        return HttpResponse(json.dumps(self.product))
+        return HttpResponse(json.dumps(self.product))\
+
+class CategoryView(LoginRequiredMixin, TemplateView):
+    template_name = "products/_category.html"
+
+    def get(self, request, *args, **kwargs):
+        self.categories = get_categories()
+        return super(CategoryView, self).get(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(CategoryView, self).get_context_data(**kwargs)
+        context['categories'] = self.categories
+        return context
