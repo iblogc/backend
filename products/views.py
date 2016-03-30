@@ -96,28 +96,6 @@ class Pdt(LoginRequiredMixin, TemplateView):
             ct_q = Q(create_time__gt=self.df, create_time__lt=self.dt)
         select_q = Q()
 
-        order_key = '-id'
-        if self.order == 'n':
-            order_key = '%sname' % (self.desc == 0 and '-' or '')
-        elif self.order == 'pn':
-            order_key = '%sproduct_no' % (self.desc == 0 and '-' or '')
-        elif self.order == 'c1':
-            order_key = '%scategory__parent_category__parent_category__name' % (
-            self.desc == 0 and '-' or '')
-        elif self.order == 'c2':
-            order_key = '%scategory__parent_category__name' % (
-            self.desc == 0 and '-' or '')
-        elif self.order == 'c3':
-            order_key = '%scategory__name' % (self.desc == 0 and '-' or '')
-        elif self.order == 'c':
-            order_key = '%scompany__name' % (self.desc == 0 and '-' or '')
-        elif self.order == 'b':
-            order_key = '%sbrand__name' % (self.desc == 0 and '-' or '')
-        elif self.order == 's':
-            order_key = '%sseries__name' % (self.desc == 0 and '-' or '')
-        elif self.order == 'd':
-            order_key = '%screate_time' % (self.desc == 0 and '-' or '')
-        print order_key
         products = Product.objects.select_related('brand', 'series',
                                                   'company',
                                                   'category',
@@ -125,7 +103,41 @@ class Pdt(LoginRequiredMixin, TemplateView):
                                                   'category__parent_category__parent_category').prefetch_related(
             'models').filter(kw_q, com_q, b_q, pn_q, categroy_q, s_q,
                              ct_q).order_by(
-            order_key)
+            '-id')
+        if self.order == 'n':
+            products = products.extra(select={
+                'gbk_title': 'convert(`products_product`.`name` using gbk)'}).order_by(
+                '%sgbk_title' % (self.desc == 0 and '-' or ''))
+        elif self.order == 'pn':
+            products = products.extra(select={
+                'gbk_title': 'convert(`products_product`.`product_no` using gbk)'}).order_by(
+                '%sgbk_title' % (self.desc == 0 and '-' or ''))
+        elif self.order == 'c1':
+            products = products.order_by(
+                '%scategory__parent_category__parent_category__name' % (self.desc == 0 and '-' or ''))
+        elif self.order == 'c2':
+            products = products.extra(select={
+                'gbk_title': 'convert(`products_productcategory`.`name` using gbk)'}).order_by(
+                '%sgbk_title' % (self.desc == 0 and '-' or ''))
+        elif self.order == 'c3':
+            products = products.order_by(
+                '%scategory__parent_category__name' % (self.desc == 0 and '-' or ''))
+        elif self.order == 'c':
+            products = products.extra(select={
+                'gbk_title': 'convert(`customers_company`.`name` using gbk)'}).order_by(
+                '%sgbk_title' % (self.desc == 0 and '-' or ''))
+        elif self.order == 'b':
+            products = products.extra(select={
+                'gbk_title': 'convert(`products_productbrand`.`name` using gbk)'}).order_by(
+                '%sgbk_title' % (self.desc == 0 and '-' or ''))
+        elif self.order == 's':
+            products = products.extra(select={
+                'gbk_title': 'convert(`products_productbrandseries`.`name` using gbk)'}).order_by(
+                '%sgbk_title' % (self.desc == 0 and '-' or ''))
+        elif self.order == 'd':
+            products = products.order_by('%screate_time' % (self.desc == 0 and '-' or ''))
+        # print order_key
+
         self.products = []
 
         per_page = 5
@@ -201,18 +213,22 @@ class Pdt(LoginRequiredMixin, TemplateView):
 
         return resp(0, "action success", "")
 
+
 class ProductActiveView(LoginRequiredMixin, TemplateView):
     def post(self, request, *args, **kwargs):
         Product.objects.filter(pk=kwargs['pk']).update(status=1)
         return resp(0, "action success", "")
+
 
 class ProductVoidView(LoginRequiredMixin, TemplateView):
     def post(self, request, *args, **kwargs):
         Product.objects.filter(pk=kwargs['pk']).update(status=0)
         return resp(0, "action success", "")
 
+
 class ProductDetailView(LoginRequiredMixin, TemplateView):
     template_name = "products/_product.html"
+
     def post(self, request, *args, **kwargs):
         p = Product.objects.get(id=kwargs['pk'])
         self.product = {
