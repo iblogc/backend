@@ -46,8 +46,8 @@ INSTALLED_APPS = [
     'property',
     'system',
     'sdk',
-    'debug_toolbar',
-    'debugtools',
+    # 'debug_toolbar',
+    # 'debugtools',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -59,12 +59,12 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    # 'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 AUTH_USER_MODEL = 'accounts.Account'
 
-INTERNAL_IPS = ('127.0.0.1')
+# INTERNAL_IPS = ('127.0.0.1')
 
 ROOT_URLCONF = 'gezbackend.urls'
 
@@ -107,7 +107,8 @@ else:
             'ENGINE': 'django.db.backends.mysql',
             'NAME': 'LeJuDBv11',
             'USER': 'root',
-            'PASSWORD': 'root',
+            # 'PASSWORD': 'root',
+            'PASSWORD': '123456',
             'HOST': '127.0.0.1',
             # 'HOST': '127.0.0.1',
             'PORT': '3306'
