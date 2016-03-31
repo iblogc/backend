@@ -670,7 +670,7 @@ a:hover, a:active, a:focus, a:visited, a:link {
 
 /** content main **/
 .content-body-main {
-    margin-top: 2px;
+    margin-top: 22px;
     overflow: hidden;
     /*background: url("/statics/imgs/content-body-main-head.jpg") no-repeat;*/
     /*-webkit-border-radius: 10px 0px 0px 0px;*/
@@ -678,10 +678,21 @@ a:hover, a:active, a:focus, a:visited, a:link {
     /*border-radius: 10px 0px 0px 0px;*/
     position: relative;
     overflow-y: auto;
-    height: 830px;
     background: #f5f5f5;
 }
-.content-body-main .content-body-sheet {
+.content-body {
+    margin-top: 22px;
+    overflow: hidden;
+    /*background: url("/statics/imgs/content-body-main-head.jpg") no-repeat;*/
+    /*-webkit-border-radius: 10px 0px 0px 0px;*/
+    /*-moz-border-radius: 10px 0px 0px 0px;*/
+    /*border-radius: 10px 0px 0px 0px;*/
+    position: relative;
+    overflow-y: auto;
+    /*background: #f5f5f5;*/
+    background: pink;
+}
+.content-body .content-body-sheet {
     position: relative;
     /*overflow: hidden;*/
     padding: 0 40px 100px 40px;
@@ -809,7 +820,7 @@ a:hover, a:active, a:focus, a:visited, a:link {
 }
 
 .footer-copyright {
-    padding-top: 20px;
+    padding-top: 10px;
     float: right;
     position: relative;
 }
@@ -1018,4 +1029,14 @@ li.select2-results__option .menu-depth-7 {
     width:10px;
     border-radius: 5px;
     background: #fff;
+}
+
+/*jquery ui*/
+div[title] {
+    margin-top: -2px;
+    min-width: 1260px;
+}
+
+.tabs-wrap > .tabs {
+    border-bottom-color: transparent;
 }

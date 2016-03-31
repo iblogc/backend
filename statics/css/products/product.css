@@ -1,15 +1,8 @@
 .select {
     margin-top: 10px;
     height: 34px;
+    line-height:34px;
     width: 1280px;
-}
-
-.select1 {
-    margin-top: 20px;
-}
-
-.select2 {
-    margin-left: 20px;
 }
 
 .form_date {
@@ -21,14 +14,12 @@
     display: inline-table;
     width: 230px;
     vertical-align: top;
-    margin-top: 20px;
 }
 
 .select-filter {
     display: inline-table;
     width: 730px;
     vertical-align: top;
-    margin-top: 20px;
 }
 
 .select-text {
@@ -52,15 +43,15 @@
     margin-left: 10px;
 }
 
-.select .dateText {
-    padding-top: 10px;
-}
-
 input[readonly] {
     background-color: #fff !important;
     -webkit-border-radius: 3px 0 0 3px !important;
     -moz-border-radius: 3px 0 0 3px !important;
     border-radius: 3px 0 0 3px !important;
+}
+
+.js-search-button {
+    margin-top: 24px;
 }
 
 .first {
@@ -183,16 +174,65 @@ input[readonly] {
 }
 
 .row {
-    display: table-row;
+    margin: 10px 0 0 10px;
 }
 
 .row div {
-    display: table-cell;
-}
-
-.row .header {
-    margin-left: 10px;
-    width: 140px;
+    display: inline-block;
     text-align: center;
 }
+
+div[data-name=main] {
+    border: solid #d3d3d3 1px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    background: #fff;
+    position: relative;
+    height: 100px;
+    color: #7f8995;
+}
+
+div[data-name=main]>div {
+    height: 98px;
+    line-height: 98px;
+}
+
+div[name=img], div[name=n], div[name=pn] {
+    width: 120px;
+    max-width: 120px;
+    padding: 0 5px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+div[name=c1], div[name=c2], div[name=c3], div[name=c], div[name=b], div[name=s], div[name=status] {
+    width: 100px;
+    max-width: 100px;
+    padding: 0 5px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+div[name=edit], div[name=d] {
+    width: 100px;
+    max-width: 100px;
+
+    word-wrap: break-word;
+    vertical-align: top;
+}
+
+div[data-name=main] div[name=edit] {
+    padding: 20px 5px 0 5px;
+    line-height: 20px!important;
+}
+
+div[data-name=main] div[name=d] {
+    padding: 30px 5px 0 5px;
+    line-height: 20px!important;
+}
+
+
 
