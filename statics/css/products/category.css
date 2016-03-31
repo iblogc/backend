@@ -153,13 +153,25 @@
 .category-body {
     width: 250px;
     border: 1px solid #000;
-    margin-left: 20px;
 }
 
 .category-body-list {
     width: 250px;
     border: 1px solid #000;
-    margin-left: 20px;
     height: 420px;
+}
+
+.overflow {
+    width: 220px;
     overflow: auto;
+    height: 400px;
+}
+
+.center-line {
+    width: 216px;
+    text-align: center;
+}
+
+.active {
+    background-color: #009DD9;
 }

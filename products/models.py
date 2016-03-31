@@ -81,7 +81,8 @@ class ProductCategory(models.Model):
     name = models.CharField(max_length=100, default='', null=False)
     step = models.IntegerField(default=1, null=False)   #分类目录树所处等级
     no = models.IntegerField(default=0, null=False)
-    companies = models.ManyToManyField("customers.Company", through='CategoryCompany')
+    companies = models.ManyToManyField("customers.Company", through='CategoryCompany',related_name='categories')
+    brands = models.ManyToManyField('ProductBrand', through='CategoryBrand',related_name='categories')
 
     @property
     def category_no(self):
@@ -96,6 +97,13 @@ class CategoryCompany(models.Model):
     category = models.ForeignKey('ProductCategory')
     company = models.ForeignKey('customers.Company')
 
+class CategoryBrand(models.Model):
+    category = models.ForeignKey('ProductCategory')
+    brand = models.ForeignKey('ProductBrand')
+
+class CompanyBrand(models.Model):
+    company = models.ForeignKey('customers.Company')
+    brand = models.ForeignKey('ProductBrand')
 
 # 产品分类属性关系数据表
 class ProductCategoryAttribute(models.Model):
@@ -138,9 +146,7 @@ class ProductCategorySearchValue(models.Model):
 # 产品品牌关系数据
 class ProductBrand(models.Model):
     name = models.CharField(max_length=100, default='', null=False)
-    company = models.ForeignKey("customers.Company", related_name='brands', default=None, null=True, blank=True, on_delete=models.SET_NULL)
     no = models.IntegerField(default=0, null=False)
-    category = models.ForeignKey("ProductCategory", related_name='brands', default=None, null=True, blank=True, on_delete=models.SET_NULL)
 
     @property
     def brand_no(self):

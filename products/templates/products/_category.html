@@ -43,7 +43,7 @@
                         type="button">批量上传
                 </button>
                 <button id="select-Search"
-                        class="btn btn-primary select1 select2 js-search-button"
+                        class="btn btn-primary select1 select2 js-batch-delete-button"
                         type="button">批量删除
                 </button>
                 <button id="select-Search"
@@ -55,7 +55,7 @@
     </div>
     <div class="product-body">
         <div class="category-body left">
-            <div class="equal">
+            <div class="">
                 <div class="row">
                     <div class="header"><h5>一级分类</h5></div>
                 </div>
@@ -63,7 +63,7 @@
 
         </div>
         <div class="category-body left">
-            <div class="equal">
+            <div class="">
                 <div class="row">
                     <div class="header"><h5>二级分类</h5></div>
                 </div>
@@ -71,7 +71,7 @@
 
         </div>
         <div class="category-body left">
-            <div class="equal">
+            <div class="">
                 <div class="row">
                     <div class="header"><h5>三级分类</h5></div>
                 </div>
@@ -80,7 +80,7 @@
         </div>
 
         <div class="category-body left">
-            <div class="equal">
+            <div class="">
                 <div class="row">
                     <div class="header"><h5>厂家</h5></div>
                 </div>
@@ -88,7 +88,7 @@
 
         </div>
         <div class="category-body left">
-            <div class="equal">
+            <div class="">
                 <div class="row">
                     <div class="header"><h5>品牌</h5></div>
                 </div>
@@ -96,7 +96,7 @@
 
         </div>
         <div class="category-body left">
-            <div class="equal">
+            <div class="">
                 <div class="row">
                     <div class="header"><h5>系列</h5></div>
                 </div>
@@ -106,11 +106,11 @@
     </div>
     <div class="product-body">
         <div class="category-body-list left">
-            <div class="equal">
+            <div class=" overflow">
                 {% for category in categories %}
                     <div class="row">
                         <div class="header js-first-category" data-id="{{ category.id }}"><a href="javascript:void(0);">
-                            <h5><input type="checkbox">{{ category.name }}</h5></a></div>
+                            <h5><div class="center-line">{{ category.name }}</div></h5></a></div>
                     </div>
                 {% endfor %}
 
@@ -118,41 +118,41 @@
 
         </div>
         <div class="category-body-list left">
-            <div class="equal"><i class="icon-plus-sign js-add-second-category">&nbsp;添加</i><i
+            <div class=""><i class="icon-plus-sign js-add-second-category">&nbsp;添加</i><i
                     class="icon-plus-sign js-delete-second-category">&nbsp;删除</i><i
                     class="icon-plus-sign js-edit-second-category">&nbsp;修改</i></div>
-            <div class="equal js-second-category-div">
+            <div class=" js-second-category-div overflow">
             </div>
 
         </div>
         <div class="category-body-list left">
-            <div class="equal"><i class="icon-plus-sign js-add-third-category">&nbsp;添加</i><i
+            <div class=""><i class="icon-plus-sign js-add-third-category">&nbsp;添加</i><i
                     class="icon-plus-sign js-add-third-category">&nbsp;删除</i><i
                     class="icon-plus-sign js-add-third-category">&nbsp;修改</i></div>
-            <div class="equal js-third-category-div">
+            <div class=" js-third-category-div overflow">
             </div>
 
         </div>
 
         <div class="category-body-list left">
-            <div class="equal"><i class="icon-plus-sign js-add-comnapy">&nbsp;添加</i><i class="icon-plus-sign">&nbsp;删除</i><i
+            <div class=""><i class="icon-plus-sign js-add-comnapy">&nbsp;添加</i><i class="icon-plus-sign">&nbsp;删除</i><i
                     class="icon-plus-sign">&nbsp;修改</i></div>
-            <div class="equal js-company-div">
+            <div class=" js-company-div overflow">
             </div>
 
         </div>
         <div class="category-body-list left">
-            <div class="equal"><i class="icon-plus-sign js-add-brand">&nbsp;添加</i><i class="icon-plus-sign">&nbsp;删除</i><i
+            <div class=""><i class="icon-plus-sign js-add-brand">&nbsp;添加</i><i class="icon-plus-sign">&nbsp;删除</i><i
                     class="icon-plus-sign">&nbsp;修改</i></div>
-            <div class="equal js-brand-div">
+            <div class=" js-brand-div overflow">
             </div>
 
         </div>
         <div class="category-body-list left">
-            <div class="equal"><i class="icon-plus-sign js-add-series">&nbsp;添加</i><i class="icon-plus-sign">&nbsp;删除</i><i
+            <div class=""><i class="icon-plus-sign js-add-series">&nbsp;添加</i><i class="icon-plus-sign">&nbsp;删除</i><i
                     class="icon-plus-sign">&nbsp;修改</i><i
                     class="icon-plus-sign">&nbsp;编辑</i></div>
-            <div class="equal js-series-div">
+            <div class=" js-series-div overflow">
             </div>
 
         </div>

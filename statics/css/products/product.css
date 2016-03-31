@@ -183,6 +183,7 @@ input[readonly] {
 }
 
 .row {
+    width: 216px;
     display: table-row;
 }
 

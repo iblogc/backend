@@ -7,6 +7,7 @@ from django.conf import settings
 class Company(models.Model):
     name = models.CharField(max_length=200, default='', null=False)
     no = models.IntegerField(default=0, null=False)
+    brands = models.ManyToManyField('products.ProductBrand',through='products.CompanyBrand',related_name='companies')
 
     @property
     def company_no(self):

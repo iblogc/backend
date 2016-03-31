@@ -9,7 +9,7 @@ from django.views.generic import TemplateView, ListView
 from django.shortcuts import render
 from braces.views import LoginRequiredMixin
 from .models import Product, ProductCategory, ProductBrand, ProductBrandSeries, \
-    ProductModel, CategoryCompany
+    ProductModel, CategoryCompany, CategoryBrand, CompanyBrand
 from customers.models import Company
 from accounts.authorize import AccountLoginMixin
 from django.core.paginator import Paginator
@@ -258,6 +258,7 @@ class ProductDetailView(LoginRequiredMixin, TemplateView):
         self.product['args'] = json.loads(p.args.decode('utf-8'))
         return HttpResponse(json.dumps(self.product))
 
+
 class CategoryView(LoginRequiredMixin, TemplateView):
     template_name = "products/_category.html"
 
@@ -270,68 +271,74 @@ class CategoryView(LoginRequiredMixin, TemplateView):
         context['categories'] = self.categories
         return context
 
+
 class SubCategoryView(LoginRequiredMixin, TemplateView):
     def get(self, request, *args, **kwargs):
         categories = get_sub_categories(kwargs['pk'])
         return HttpResponse(json.dumps(categories))
 
+
 class SubCategoryCreateView(LoginRequiredMixin, TemplateView):
     def post(selfself, request, *args, **kwargs):
-        name = request.POST.get('name')
-        step = request.POST.get('step')
+        name = request.POST.get('name').strip()
+        step = request.POST.get('step').strip()
         parent_category = ProductCategory.objects.get(pk=kwargs['pk'])
-        category_dict = {'id':0,'name':name}
+        category_dict = {'id': 0, 'name': name}
         category = ProductCategory()
         category.parent_category = parent_category
         category.name = name
         category.step = step
         category.status = 1
         category.save()
-        category_dict['id']=category.id
+        category_dict['id'] = category.id
         return HttpResponse(json.dumps(category_dict))
+
 
 class SubCategoryCompaniesView(LoginRequiredMixin, TemplateView):
     def get(self, request, *args, **kwargs):
         companies = get_category_companies(kwargs['pk'])
         return HttpResponse(json.dumps(companies))
 
+
 class SubCategoryCompanyCreateView(LoginRequiredMixin, TemplateView):
     def post(selfself, request, *args, **kwargs):
-        name = request.POST.get('name')
+        name = request.POST.get('name').strip()
         category = ProductCategory.objects.get(pk=kwargs['pk'])
         company_dict = {'id': 0, 'name': name}
-        company,flag = Company.objects.get_or_create(name=name)
-        CategoryCompany.objects.get_or_create(category=category,company=company)
+        company, flag = Company.objects.get_or_create(name=name)
+        CategoryCompany.objects.get_or_create(category=category, company=company)
         company_dict['id'] = company.id
         return HttpResponse(json.dumps(company_dict))
 
+
 class CompanyBrandView(LoginRequiredMixin, TemplateView):
     def get(self, request, *args, **kwargs):
-        brands = get_company_brands(kwargs['category_id'],kwargs['company_id'])
+        brands = get_company_brands(kwargs['category_id'], kwargs['company_id'])
         return HttpResponse(json.dumps(brands))
+
 
 class CompanyBrandCreateView(LoginRequiredMixin, TemplateView):
     def post(selfself, request, *args, **kwargs):
-        name = request.POST.get('name')
+        name = request.POST.get('name').strip()
         category = ProductCategory.objects.get(pk=kwargs['category_id'])
         company = Company.objects.get(pk=kwargs['company_id'])
         brand_dict = {'id': 0, 'name': name}
-        brand = ProductBrand()
-        brand.name = name
-        brand.company = company
-        brand.category = category
-        brand.save()
+        brand, flag = ProductBrand.objects.get_or_create(name=name)
+        CategoryBrand.objects.get_or_create(category=category, brand=brand)
+        CompanyBrand.objects.get_or_create(company=company, brand=brand)
         brand_dict['id'] = brand.id
         return HttpResponse(json.dumps(brand_dict))
+
 
 class BrandSeriesView(LoginRequiredMixin, TemplateView):
     def get(self, request, *args, **kwargs):
         series = get_brand_series(kwargs['pk'])
         return HttpResponse(json.dumps(series))
 
+
 class BrandSeriesCreateView(LoginRequiredMixin, TemplateView):
     def post(selfself, request, *args, **kwargs):
-        name = request.POST.get('name')
+        name = request.POST.get('name').strip()
         brand = ProductBrand.objects.get(pk=kwargs['pk'])
         series_dict = {'id': 0, 'name': name}
         series = ProductBrandSeries()

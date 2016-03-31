@@ -159,7 +159,7 @@ def get_category_companies(category_id):
     return res
 
 def get_company_brands(category_id,company_id):
-    brands = ProductBrand.objects.filter(category=category_id,company=company_id)
+    brands = ProductBrand.objects.filter(categories=category_id,companies=company_id)
     res = []
     for brand in brands:
         res.append({'id':brand.id,'name':brand.name})
