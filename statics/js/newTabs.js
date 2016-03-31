@@ -6,6 +6,8 @@
 var newTabs = function () {
     var tabsIdArr = new Array;
 
+    var tabHistory = new Array;
+
     var resizeFun = function(){
         $('.content-body>.tabs-main>div').css({height : (window.innerHeight - 160) + 'px'})
     };
@@ -13,6 +15,27 @@ var newTabs = function () {
     var resizeIframe = function(){
         var tmp = $(this).contents().find('div.main-body').height() - 20;
         $(this).height(tmp);
+    };
+
+    var tabActive = function(tabs, num){
+        var thisTab = tabs.selector;
+        var tmp = $(thisTab + ' .tab-main>div');
+        for(var i = 1; i < tmp.length; i++){$(tmp[i]).hide()}
+        $(document).on('click', thisTab + '>.tab-title>div', function(){
+            var index = $(this).index();
+            var cssArr = [{left:'-50px', opacity:'0'}, {left:'0px', opacity:'1'}, {left:'5  0px', opacity:'0'}];
+            var tmpDom1 = 'div[data-name=' + $(this.parentNode.parentNode).attr('data-name') + ']>:eq(1)>:eq(' + tabHistory[num] + ')';
+            var tmpDom2 = 'div[data-name=' + $(this.parentNode.parentNode).attr('data-name') + ']>:eq(1)>:eq(' + index + ')';
+            if(index > tabHistory[num]) {
+                var tmp = cssArr[2]; cssArr[2] = cssArr[0]; cssArr[0] = tmp;
+            } else if(index == tabHistory[num]) {
+                return;
+            }
+            $(tmpDom1).animate(cssArr[2], 100).hide(100);
+            $(tmpDom2).css(cssArr[0]).show().animate(cssArr[1], 100);
+            $(this).addClass('selected').siblings().removeClass('selected');
+            tabHistory[num] = index;
+        })
     };
 
     $(window).resize(function () {
@@ -87,6 +110,14 @@ var newTabs = function () {
                 $(this.parentNode).remove();
                 $('.content-body>.tabs-main>div>iframe[data-for=' + temp + ']').remove();
             });
+        },
+
+        iTab: function(domArr){
+            var arr = domArr;
+            for(var i = 0; i < arr.length; i++) {
+                tabActive($('div[data-name=' + $(arr[i]).attr('data-name') + ']'), $(arr[i]).index());
+                tabHistory[i] = 0;
+            }
         }
     }
 }();
