@@ -294,6 +294,15 @@ class SubCategoryCreateView(LoginRequiredMixin, TemplateView):
         return HttpResponse(json.dumps(category_dict))
 
 
+class SubCategoryDeleteView(LoginRequiredMixin, TemplateView):
+    def post(selfself, request, *args, **kwargs):
+        parent_category = ProductCategory.objects.get(pk=kwargs['pk'])
+        if parent_category.sub_categories.exists():
+            parent_category.sub_categories.all().delete()
+        parent_category.delete()
+        return HttpResponse(json.dumps({'success': 1}))
+
+
 class SubCategoryCompaniesView(LoginRequiredMixin, TemplateView):
     def get(self, request, *args, **kwargs):
         companies = get_category_companies(kwargs['pk'])
@@ -309,6 +318,14 @@ class SubCategoryCompanyCreateView(LoginRequiredMixin, TemplateView):
         CategoryCompany.objects.get_or_create(category=category, company=company)
         company_dict['id'] = company.id
         return HttpResponse(json.dumps(company_dict))
+
+
+class SubCategoryCompanyDeleteView(LoginRequiredMixin, TemplateView):
+    def post(selfself, request, *args, **kwargs):
+        category = ProductCategory.objects.get(pk=kwargs['category_id'])
+        company = Company.objects.get(pk=kwargs['company_id'])
+        CategoryCompany.objects.filter(company=company, category=category).delete()
+        return HttpResponse(json.dumps({'success': 1}))
 
 
 class CompanyBrandView(LoginRequiredMixin, TemplateView):
@@ -330,6 +347,17 @@ class CompanyBrandCreateView(LoginRequiredMixin, TemplateView):
         return HttpResponse(json.dumps(brand_dict))
 
 
+class CompanyBrandDeleteView(LoginRequiredMixin, TemplateView):
+    def post(selfself, request, *args, **kwargs):
+        category = ProductCategory.objects.get(pk=kwargs['category_id'])
+        company = Company.objects.get(pk=kwargs['company_id'])
+        brand = ProductBrand.objects.get(pk=kwargs['brand_id'])
+        CompanyBrand.objects.filter(company=company, brand=brand).delete()
+        if not brand.companies.exists():
+            CategoryBrand.objects.filter(category=category,brand=brand).delete()
+        return HttpResponse(json.dumps({'success': 1}))
+
+
 class BrandSeriesView(LoginRequiredMixin, TemplateView):
     def get(self, request, *args, **kwargs):
         series = get_brand_series(kwargs['pk'])
@@ -347,3 +375,8 @@ class BrandSeriesCreateView(LoginRequiredMixin, TemplateView):
         series.save()
         series_dict['id'] = series.id
         return HttpResponse(json.dumps(series_dict))
+
+class SeriesDeleteView(LoginRequiredMixin, TemplateView):
+    def post(selfself, request, *args, **kwargs):
+        ProductBrandSeries.objects.filter(pk=kwargs['pk']).delete()
+        return HttpResponse(json.dumps({'success':1}))

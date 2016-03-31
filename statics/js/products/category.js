@@ -34,7 +34,7 @@ var categoryApp = function () {
                 for (var index in data) {
                     var category = data[index];
                     $('.js-second-category-div').append('<div class="row">' +
-                        '<div class="header js-second-category" data-id="' + category.id + '"><a href="javascript:void(0);"><h5><div><input type="checkbox" name="second-category-id" class="hide" value="'+category.id+'"></div><div class="center-line">' + category.name + '</div></h5></a></div>' +
+                        '<div class="header js-second-category" data-id="' + category.id + '"><a href="javascript:void(0);"><h5><div><input type="checkbox" name="second-category-id" value="' + category.id + '"></div><div class="center-line">' + category.name + '</div></h5></a></div>' +
                         '</div>');
                 }
                 $('.js-second-category').bind('click', second_category_onclick);
@@ -69,7 +69,7 @@ var categoryApp = function () {
                 for (var index in data) {
                     var category = data[index];
                     $('.js-third-category-div').append('<div class="row">' +
-                        '<div class="header js-third-category" data-id="' + category.id + '"><a href="javascript:void(0);"><h5><div><input type="checkbox"></div><div class="center-line">' + category.name + '</div></h5></a></div>' +
+                        '<div class="header js-third-category" data-id="' + category.id + '"><a href="javascript:void(0);"><h5><div><input type="checkbox" name="third-category-id" value="' + category.id + '"></div><div class="center-line">' + category.name + '</div></h5></a></div>' +
                         '</div>');
                 }
                 $('.js-third-category').bind('click', third_category_onclick);
@@ -102,7 +102,7 @@ var categoryApp = function () {
                 for (var index in data) {
                     var category = data[index];
                     $('.js-company-div').append('<div class="row">' +
-                        '<div class="header js-company" data-id="' + category.id + '"><a href="javascript:void(0);"><h5><div><input type="checkbox"></div><div class="center-line">' + category.name + '</div></h5></a></div>' +
+                        '<div class="header js-company" data-id="' + category.id + '"><a href="javascript:void(0);"><h5><div><input type="checkbox" name="company-id" value="' + category.id + '"></div><div class="center-line">' + category.name + '</div></h5></a></div>' +
                         '</div>');
                 }
                 $('.js-company').bind('click', company_onclick);
@@ -133,7 +133,7 @@ var categoryApp = function () {
                 for (var index in data) {
                     var category = data[index];
                     $('.js-brand-div').append('<div class="row">' +
-                        '<div class="header js-brand" data-id="' + category.id + '"><a href="javascript:void(0);"><h5><div><input type="checkbox"></div><div class="center-line">' + category.name + '</div></h5></a></div>' +
+                        '<div class="header js-brand" data-id="' + category.id + '"><a href="javascript:void(0);"><h5><div><input type="checkbox" name="brand-id" value="' + category.id + '"></div><div class="center-line">' + category.name + '</div></h5></a></div>' +
                         '</div>');
                 }
                 $('.js-brand').bind('click', brand_onclick);
@@ -162,13 +162,27 @@ var categoryApp = function () {
                 for (var index in data) {
                     var category = data[index];
                     $('.js-series-div').append('<div class="row">' +
-                        '<div class="header js-series" data-id="' + category.id + '"><a href="javascript:void(0);"><h5><div><input type="checkbox"></div><div class="center-line">' + category.name + '</div></h5></a></div>' +
+                        '<div class="header js-series" data-id="' + category.id + '"><a href="javascript:void(0);"><h5><div><input type="checkbox"  name="series-id" value="' + category.id + '"></div><div class="center-line">' + category.name + '</div></h5></a></div>' +
                         '</div>');
                 }
+                $('.js-series').bind('click', series_onclick);
             },
             "json"
         );
     };
+
+    var series_onclick = function(){
+        series = $(this).attr('data-id');
+        $('.js-series').each(function () {
+            if ($(this).attr('data-id') == series) {
+                if (!$(this).hasClass('active'))
+                    $(this).addClass('active');
+            } else {
+                if ($(this).hasClass('active'))
+                    $(this).removeClass('active');
+            }
+        });
+    }
 
     var add_second_category = function () {
         console.log(first_category);
@@ -221,7 +235,7 @@ var categoryApp = function () {
                 },
                 function (data) {
                     $('.js-second-category-div').append('<div class="row">' +
-                        '<div class="header js-second-category" data-id="' + data.id + '"><a href="javascript:void(0);"><h5><div><input type="checkbox"></div><div class="center-line">' + data.name + '</div></h5></a></div>' +
+                        '<div class="header js-second-category" data-id="' + data.id + '"><a href="javascript:void(0);"><h5><div><input type="checkbox" name="second-category-id" value="' + data.id + '"></div><div class="center-line">' + data.name + '</div></h5></a></div>' +
                         '</div>');
                     $('div.js-second-category[data-id="' + data.id + '"]').on('click', second_category_onclick);
                 },
@@ -244,7 +258,7 @@ var categoryApp = function () {
                 },
                 function (data) {
                     $('.js-third-category-div').append('<div class="row">' +
-                        '<div class="header js-third-category" data-id="' + data.id + '"><a href="javascript:void(0);"><h5><div><input type="checkbox"></div><div class="center-line">' + data.name + '</div></h5></a></div>' +
+                        '<div class="header js-third-category" data-id="' + data.id + '"><a href="javascript:void(0);"><h5><div><input type="checkbox" name="third-category-id" value="' + data.id + '"></div><div class="center-line">' + data.name + '</div></h5></a></div>' +
                         '</div>');
                     $('div.js-third-category[data-id="' + data.id + '"]').on('click', third_category_onclick);
                 },
@@ -266,7 +280,7 @@ var categoryApp = function () {
                 },
                 function (data) {
                     $('.js-company-div').append('<div class="row">' +
-                        '<div class="header js-company" data-id="' + data.id + '"><a href="javascript:void(0);"><h5><div><input type="checkbox"></div><div class="center-line">' + data.name + '</div></h5></a></div>' +
+                        '<div class="header js-company" data-id="' + data.id + '"><a href="javascript:void(0);"><h5><div><input type="checkbox" name="company-id" value="' + data.id + '"></div><div class="center-line">' + data.name + '</div></h5></a></div>' +
                         '</div>');
                     $('div.js-company[data-id="' + data.id + '"]').on('click', company_onclick);
                 },
@@ -288,7 +302,7 @@ var categoryApp = function () {
                 },
                 function (data) {
                     $('.js-brand-div').append('<div class="row">' +
-                        '<div class="header js-brand" data-id="' + data.id + '"><a href="javascript:void(0);"><h5><div><input type="checkbox"></div><div class="center-line">' + data.name + '</div></h5></a></div>' +
+                        '<div class="header js-brand" data-id="' + data.id + '"><a href="javascript:void(0);"><h5><div><input type="checkbox" name="brand-id" value="' + data.id + '"></div><div class="center-line">' + data.name + '</div></h5></a></div>' +
                         '</div>');
                     $('div.js-brand[data-id="' + data.id + '"]').on('click', brand_onclick);
                 },
@@ -310,35 +324,195 @@ var categoryApp = function () {
                 },
                 function (data) {
                     $('.js-series-div').append('<div class="row">' +
-                        '<div class="header js-series" data-id="' + data.id + '"><a href="javascript:void(0);"><h5><div><input type="checkbox"></div><div class="center-line">' + data.name + '</div></h5></a></div>' +
+                        '<div class="header js-series" data-id="' + data.id + '"><a href="javascript:void(0);"><h5><div><input type="checkbox" name="series-id" value="' + data.id + '"></div><div class="center-line">' + data.name + '</div></h5></a></div>' +
                         '</div>');
+                    $('div.js-series[data-id="' + data.id + '"]').on('click', series_onclick);
                 },
                 "json"
             );
         }
         $('.js-modal-save-button').unbind('click');
         $('#addCategoryForm').modal('hide');
+    };
+
+    var delete_second_category = function () {
+        if (second_category != 0) {
+            $('#deleteCategoryForm').modal('show');
+            $('.js-modal-confirm-button').bind('click', delete_second_category_confirm);
+        }
+
+    };
+
+    var delete_third_category = function () {
+        if (third_category != 0) {
+            $('#deleteCategoryForm').modal('show');
+            $('.js-modal-confirm-button').bind('click', delete_third_category_confirm);
+        }
+    };
+
+    var delete_company = function () {
+        if (third_category != 0 && company != 0) {
+            $('#deleteCategoryForm').modal('show');
+            $('.js-modal-confirm-button').bind('click', delete_company_confirm);
+        }
+    };
+
+    var delete_brand = function () {
+        if (third_category != 0 && company != 0 && brand != 0){
+            $('#deleteCategoryForm').modal('show');
+            $('.js-modal-confirm-button').bind('click', delete_brand_confirm);
+        }
+    };
+
+    var delete_series = function () {
+        if (series != 0){
+            $('#deleteCategoryForm').modal('show');
+            $('.js-modal-confirm-button').bind('click', delete_series_confirm);
+        }
+    }
+
+    var delete_second_category_confirm = function () {
+        if (second_category != 0) {
+            $.post(
+                "/products/sub_category/" + second_category + "/delete/",
+                {
+                    'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+                },
+                function (data) {
+                    if (data.success == 1) {
+                        $('div.js-second-category[data-id="' + second_category + '"]').remove();
+                        second_category = 0;
+                        $('.js-third-category-div').empty();
+                        $('.js-company-div').empty();
+                        $('.js-brand-div').empty();
+                        $('.js-series-div').empty();
+                    }
+                },
+                "json"
+            );
+        }
+        $('#deleteCategoryForm').modal('hide');
+        $('.js-modal-confirm-button').unbind('click');
+    };
+
+    var delete_third_category_confirm = function () {
+        if (third_category != 0) {
+            $.post(
+                "/products/sub_category/" + third_category + "/delete/",
+                {
+                    'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+                },
+                function (data) {
+                    if (data.success == 1) {
+                        $('div.js-third-category[data-id="' + third_category + '"]').remove();
+                        third_category = 0;
+                        $('.js-company-div').empty();
+                        $('.js-brand-div').empty();
+                        $('.js-series-div').empty();
+                    }
+                },
+                "json"
+            );
+        }
+        $('#deleteCategoryForm').modal('hide');
+        $('.js-modal-confirm-button').unbind('click');
+    };
+
+    var delete_company_confirm = function () {
+        if (third_category != 0 && company != 0) {
+            $.post(
+                "/products/company/" + third_category + "/" + company + "/delete/",
+                {
+                    'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+                },
+                function (data) {
+                    if (data.success == 1) {
+                        $('div.js-company[data-id="' + company + '"]').remove();
+                        company = 0;
+                        $('.js-brand-div').empty();
+                        $('.js-series-div').empty();
+                    }
+                },
+                "json"
+            );
+        }
+        $('#deleteCategoryForm').modal('hide');
+        $('.js-modal-confirm-button').unbind('click');
+    };
+
+    var delete_brand_confirm = function () {
+        if (third_category != 0 && company != 0 && brand != 0) {
+            $.post(
+                "/products/brand/" + third_category + "/" + company + "/" + brand + "/delete/",
+                {
+                    'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+                },
+                function (data) {
+                    if (data.success == 1) {
+                        $('div.js-brand[data-id="' + brand + '"]').remove();
+                        brand = 0;
+                        $('.js-series-div').empty();
+                    }
+                },
+                "json"
+            );
+        }
+        $('#deleteCategoryForm').modal('hide');
+        $('.js-modal-confirm-button').unbind('click');
+    };
+
+    var delete_series_confirm = function () {
+        if (series != 0) {
+            $.post(
+                "/products/series/" + series + "/delete/",
+                {
+                    'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+                },
+                function (data) {
+                    if (data.success == 1) {
+                        $('div.js-series[data-id="' + series + '"]').remove();
+                        brand = 0;
+                        $('.js-series-div').empty();
+                    }
+                },
+                "json"
+            );
+        }
+        $('#deleteCategoryForm').modal('hide');
+        $('.js-modal-confirm-button').unbind('click');
     }
 
     return {
 
         init: function () {
             $('.js-first-category').on('click', first_category_onclick);
-            $('.js-first-category').mouseover(function(){
-                if(!$(this).hasClass('active')){
-                    $(this).css('background-color','#009DD9');
-                }
-            });
-            $('.js-first-category').mouseout(function(){
-                if(!$(this).hasClass('active')){
-                    $(this).css('background-color', '#7f8995');
-                }
-            });
+            // $('.js-first-category').mouseover(function(){
+            //     if(!$(this).hasClass('active')){
+            //         $(this).css('background-color','#009DD9');
+            //     }
+            // });
+            // $('.js-first-category').mouseout(function(){
+            //     if(!$(this).hasClass('active')){
+            //         $(this).css('background-color', '#7f8995');
+            //     }
+            // });
             $('.js-add-second-category').on('click', add_second_category);
             $('.js-add-third-category').on('click', add_third_category);
             $('.js-add-comnapy').on('click', add_company);
             $('.js-add-brand').on('click', add_brand);
             $('.js-add-series').on('click', add_series);
+            $('.js-delete-second-category').on('click', delete_second_category);
+            $('.js-delete-third-category').on('click', delete_third_category);
+            $('.js-delete-company').on('click', delete_company);
+            $('.js-delete-brand').on('click', delete_brand);
+            $('.js-delete-series').on('click', delete_series);
+            $('.js-batch-delete-button').on('click', function () {
+                $('input[type="checkbox"]').show();
+            });
+            $('.js-modal-cancel-button').on('click', function () {
+                $('#deleteCategoryForm').modal('hide');
+            });
+
         }
     }
 }();
