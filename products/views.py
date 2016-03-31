@@ -293,6 +293,11 @@ class SubCategoryCreateView(LoginRequiredMixin, TemplateView):
         category_dict['id'] = category.id
         return HttpResponse(json.dumps(category_dict))
 
+class SubCategoryUpdateView(LoginRequiredMixin, TemplateView):
+    def post(selfself, request, *args, **kwargs):
+        name = request.POST.get('name').strip()
+        ProductCategory.objects.filter(pk=kwargs['pk']).update(name=name)
+        return HttpResponse(json.dumps({'success':1}))
 
 class SubCategoryDeleteView(LoginRequiredMixin, TemplateView):
     def post(selfself, request, *args, **kwargs):
@@ -328,6 +333,12 @@ class SubCategoryCompanyDeleteView(LoginRequiredMixin, TemplateView):
         return HttpResponse(json.dumps({'success': 1}))
 
 
+class CompanyUpdateView(LoginRequiredMixin, TemplateView):
+    def post(selfself, request, *args, **kwargs):
+        name = request.POST.get('name').strip()
+        Company.objects.filter(pk=kwargs['pk']).update(name=name)
+        return HttpResponse(json.dumps({'success': 1}))
+
 class CompanyBrandView(LoginRequiredMixin, TemplateView):
     def get(self, request, *args, **kwargs):
         brands = get_company_brands(kwargs['category_id'], kwargs['company_id'])
@@ -358,6 +369,12 @@ class CompanyBrandDeleteView(LoginRequiredMixin, TemplateView):
         return HttpResponse(json.dumps({'success': 1}))
 
 
+class CompanyBrandUpdateView(LoginRequiredMixin, TemplateView):
+    def post(selfself, request, *args, **kwargs):
+        name = request.POST.get('name').strip()
+        ProductBrand.objects.filter(pk=kwargs['pk']).update(name=name)
+        return HttpResponse(json.dumps({'success': 1}))
+
 class BrandSeriesView(LoginRequiredMixin, TemplateView):
     def get(self, request, *args, **kwargs):
         series = get_brand_series(kwargs['pk'])
@@ -380,3 +397,9 @@ class SeriesDeleteView(LoginRequiredMixin, TemplateView):
     def post(selfself, request, *args, **kwargs):
         ProductBrandSeries.objects.filter(pk=kwargs['pk']).delete()
         return HttpResponse(json.dumps({'success':1}))
+
+class SeriesUpdateView(LoginRequiredMixin, TemplateView):
+    def post(selfself, request, *args, **kwargs):
+        name = request.POST.get('name').strip()
+        ProductBrandSeries.objects.filter(pk=kwargs['pk']).update(name=name)
+        return HttpResponse(json.dumps({'success': 1}))
