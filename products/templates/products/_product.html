@@ -9,13 +9,7 @@
 <link type="text/css" rel="stylesheet" media="screen"
       href="/statics/css/products/product.css">
 <link type="text/css" rel="stylesheet" media="screen"
-      href="/statics/plugins/select2/select2.min.css">
-<link type="text/css" rel="stylesheet" media="screen"
       href="/statics/plugins/datetimepicker/bootstrap-datetimepicker.min.css">
-<link type="text/css" rel="stylesheet" media="screen"
-      href="/statics/css/products/category.css">
-<link type="text/css" rel="stylesheet" media="screen"
-      href="/statics/plugins/select2/select2.min.css">
 <link type="text/css" rel="stylesheet" media="screen"
       href="/statics/css/jquery-ui.css">
 <div class="main-body content-body-main">
@@ -24,134 +18,120 @@
     {#  <div class="utils-area col-md-2 right">#}
     {#    <a href="/product/category" role="button" class="btn btn-important" > 返回到分类设置 </a>#}
     {#  </div>#}
-<h1>产品管理</h1>
     <div>
-        <div class="select select1">
-            <div class="select">
-                <div class="left select-table">
-                    &nbsp;&nbsp;&nbsp;&nbsp;关键字：
-                    <input id="product-Search"
-                           class="select-text form-control js-kw"
-                           placeholder="搜索...">
-                </div>
-                <div class="left select-table">
-                    &nbsp;&nbsp;&nbsp;&nbsp;产品编号：
-                    <input id="product-Search"
-                           class="select-text form-control js-pn"
-                           placeholder="搜索...">
-                </div>
-                <div class="left select-filter">
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;分类：
-                    <select name="product1"
-                            class="select-text form-control js-c1">
-                        <option value="0">请选择</option>
-                    </select>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <select name="product2"
-                            class="select-product form-control js-c2">
-                        <option value="0">请选择</option>
-                    </select>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <select name="product3"
-                            class="select-product form-control js-c3">
-                        <option value="0">请选择</option>
-                    </select>
-                </div>
-                <button id="select-Search"
-                        class="btn btn-primary select1 select2 js-search-button"
-                        type="button">查询
-                </button>
+        <div class="select">
+            <div class="left select-table">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;品牌：
+                <input id="product-Search" class="select-text form-control js-brand" placeholder="搜索...">
             </div>
+            <div class="left select-table">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;系列：
+                <input id="product-Search" class="select-text form-control js-series" placeholder="搜索...">
+            </div>
+            <div class="left select-filter">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;分类：
+                <select name="product1" class="select-text form-control js-c1">
+                    <option value="0">请选择</option>
+                </select>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <select name="product2" class="select-product form-control js-c2">
+                    <option value="0">请选择</option>
+                </select>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <select name="product3" class="select-product form-control js-c3">
+                    <option value="0">请选择</option>
+                </select>
+            </div>
+            <button id="select-Search" class="btn btn-primary js-search-button" type="button">查询</button>
         </div>
-        <div class="select select1">
-            <div class="select">
-                <div class="left select-table">
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;厂家：
-                    <input id="product-Search"
-                           class="select-text form-control js-company"
-                           placeholder="搜索...">
-                </div>
-                <div class="left select-table">
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;品牌：
-                    <input id="product-Search"
-                           class="select-text form-control js-brand"
-                           placeholder="搜索...">
-                </div>
-                <div class="left select-table">
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;系列：
-                    <input id="product-Search"
-                           class="select-text form-control js-series"
-                           placeholder="搜索...">
-                </div>
-                <div class="left select-table">
-                    <div class="dateText first left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上传日期：</div>
-                    <div class="input-group date form_date"
-                         data-date-format="yyyy-mm-dd">
-                        <input sid="Date-update"
-                               class="form-control select-update-time js-df"
-                               size="16" type="text" id="startDate-update"
-                               value=""
-                               readonly>
-                        <span class="input-group-addon"><span
-                                class="glyphicon glyphicon-calendar"></span></span>
-                    </div>
-                </div>
-                <div class="left select-table">
-                    <div class="dateText left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;至</div>
-                    <div class="input-group date form_date"
-                         data-date-format="yyyy-mm-dd">
-                        <input sid="Date-update"
-                               class="form-control select-update-time js-dt"
-                               size="16" type="text" id="endDate-update"
-                               value="" readonly>
-                        <span class="input-group-addon"><span
-                                class="glyphicon glyphicon-calendar"></span></span>
-                    </div>
-                </div>
-                {#            <button class="btn btn-primary select1 select2" type="button">导出</button>#}
+        <div class="select">
+            <div class="left select-table">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;厂家：
+                <input id="product-Search"
+                       class="select-text form-control js-company"
+                       placeholder="搜索...">
             </div>
+            <div class="left select-table">
+                &nbsp;&nbsp;&nbsp;&nbsp;关键字：
+                <input id="product-Search"
+                       class="select-text form-control js-kw"
+                       placeholder="搜索...">
+            </div>
+            <div class="left select-table">
+                &nbsp;&nbsp;&nbsp;&nbsp;产品编号：
+                <input id="product-Search"
+                       class="select-text form-control js-pn"
+                       placeholder="搜索...">
+            </div>
+            <div class="left select-table">
+                <div class="dateText first left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上传日期：</div>
+                <div class="input-group date form_date"
+                     data-date-format="yyyy-mm-dd">
+                    <input sid="Date-update"
+                           class="form-control select-update-time js-df"
+                           size="16" type="text" id="startDate-update"
+                           value=""
+                           readonly>
+                    <span class="input-group-addon"><span
+                            class="glyphicon glyphicon-calendar"></span></span>
+                </div>
+            </div>
+            <div class="left select-table">
+                <div class="dateText left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;至&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                <div class="input-group date form_date"
+                     data-date-format="yyyy-mm-dd">
+                    <input sid="Date-update"
+                           class="form-control select-update-time js-dt"
+                           size="16" type="text" id="endDate-update"
+                           value="" readonly>
+                    <span class="input-group-addon"><span
+                            class="glyphicon glyphicon-calendar"></span></span>
+                </div>
+            </div>
+                {#            <button class="btn btn-primary select1 select2" type="button">导出</button>#}
         </div>
     </div>
     <div class="product-body left">
         <div class="equal">
             <div class="row">
-                <div class="header">图片</div>
-                <div class="header js-header" name="n">名称</div>
-                <div class="header js-header" name="pn">产品编号</div>
-                <div class="header js-header" name="c1">一级分类</div>
-                <div class="header js-header" name="c2">二级分类</div>
-                <div class="header js-header" name="c3">三级分类</div>
-                <div class="header js-header" name="c">厂家</div>
-                <div class="header js-header" name="b">品牌</div>
-                <div class="header js-header" name="s">系列</div>
-                <div class="header js-header" name="d">上传日期</div>
-                <div class="header">状态</div>
-                <div class="header">编辑</div>
+                <div name="img">图片</div>
+                <div class="js-header" name="n">名称</div>
+                <div class="js-header" name="pn">产品编号</div>
+                <div class="js-header" name="c1">一级分类</div>
+                <div class="js-header" name="c2">二级分类</div>
+                <div class="js-header" name="c3">三级分类</div>
+                <div class="js-header" name="c">厂家</div>
+                <div class="js-header" name="b">品牌</div>
+                <div class="js-header" name="s">系列</div>
+                <div class="js-header" name="d">上传日期</div>
+                <div name="status">状态</div>
+                <div name="edit">编辑</div>
             </div>
             {% for product in products %}
                 {% autoescape off %}
-                    <div class="row">
-                        <div class="header"><img src="/{{ product.charlet }}"
+                    <br>
+                    <div class="row" data-name="main">
+                        <div name="img"><img src="/{{ product.charlet }}"
                                                  class="inline-table product-info-box-img">
                         </div>
-                        <div class="header">{{ product.name }}</div>
-                        <div class="header">{{ product.product_no }}</div>
-                        <div class="header">{{ product.c1 }}</div>
-                        <div class="header">{{ product.c2 }}</div>
-                        <div class="header">{{ product.c3 }}</div>
-                        <div class="header">{{ product.company }}</div>
-                        <div class="header">{{ product.brand }}</div>
-                        <div class="header">{{ product.series }}</div>
-                        <div class="header">{{ product.create_time }}</div>
-                        <div class="header js-status-text-{{ product.id }}">{{ product.status }}</div>
-                        <div class="header">
+                        <div name="n">{{ product.name }}</div>
+                        <div name="pn">{{ product.product_no }}</div>
+                        <div name="c1">{{ product.c1 }}</div>
+                        <div name="c2">{{ product.c2 }}</div>
+                        <div name="c3">{{ product.c3 }}</div>
+                        <div name="c">{{ product.company }}</div>
+                        <div name="b">{{ product.brand }}</div>
+                        <div name="s">{{ product.series }}</div>
+                        <div name="d">{{ product.create_time }}</div>
+                        <div name="status" class="js-status-text-{{ product.id }}">{{ product.status }}</div>
+                        <div name="edit">
                             <a href="javascript:void(0);"
                                class="js-product-detail" data-toggle="modal"
                                data-target="#menuFromDialog" data-menuId="0" data-id="{{ product.id }}">详细信息</a>
-                            &nbsp;&nbsp;&nbsp;&nbsp;<a
+                            <br><a
                                 href="javascript:void(0);" class="js-active"
                                 data-id="{{ product.id }}">启用</a>
-                            &nbsp;&nbsp;&nbsp;&nbsp;<a
+                            <br><a
                                 href="javascript:void(0);" class="js-void"
                                 data-id="{{ product.id }}">禁用</a>
                         </div>

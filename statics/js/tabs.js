@@ -5,10 +5,11 @@ var Tab = function () {
     return {
         init: function () {
             $('.js-parent-menu').on('click', function () {
-                if ($(this).parent().hasClass('actived'))
+                if ($(this).parent().hasClass('actived')){
                     $(this).parent().removeClass('actived');
-                else
+                }else{
                     $(this).parent().addClass('actived');
+                }
             });
             $('.js-sub-menu').on('click', function () {
                 var url = $(this).attr('data-url');

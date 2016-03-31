@@ -6,8 +6,7 @@
     <link type="text/css" rel="stylesheet" media="screen" href="/statics/css/bootstrap.min.css">
     <link type="text/css" rel="stylesheet" media="screen" href="/statics/css/font-awesome.min.css">
     <link type="text/css" rel="stylesheet" media="screen" href="/statics/plugins/sweetalert/sweetalert.css">
-    <link type="text/css" rel="stylesheet" media="screen"
-          href="/statics/css/easyui.css">
+{#    <link type="text/css" rel="stylesheet" media="screen" href="/statics/css/easyui.css">#}
     <link type="text/css" rel="stylesheet" media="screen" href="/statics/css/base.css">
     {% block privateStyle %}{% endblock %}
 </head>
@@ -74,7 +73,7 @@
             {% for c in m.childs %}
                 <a href="javascript:void(0);" data-url="{{ c.url }}" class=
                         "js-sub-menu">
-                    <span class="menu-name">&nbsp;&nbsp;{{ c.name }}</span>
+                    <span class="menu-name" data-id="{{ m.id }}-{{ forloop.counter }}">&nbsp;&nbsp;{{ c.name }}</span>
                 </a>
             {% endfor %}
             </div>
@@ -92,10 +91,16 @@
 {#        <input class="body-main-search form-control" placeholder="搜索...">#}
 {#        <span class="body-main-search-icon"><img src="/statics/imgs/icon/Search-icon.png"></span>#}
 {#        <hr class="content-body-title-hr">#}
-        <div class="content-body-main-title content-body-sheet easyui-tabs" id="content-body-sheet">
 
+
+{#    <div class="content-body-main-title content-body-sheet easyui-tabs" id="content-body-sheet"></div>#}
+    <div class="content-body">
+        <div class="tabs-title"></div>
+        <div class="tabs-main">
+            <div></div>
         </div>
-        <div class="content-footer"><p class="footer-copyright" id="copyRight">Copyright &copy; 2015 杭州格菱网络科技有限公司 版权所有</p></div>
+    </div>
+    <div class="content-footer"><p class="footer-copyright" id="copyRight">Copyright &copy; 2015 杭州格菱网络科技有限公司 版权所有</p></div>
 
     <!--
     <div class="footer">
@@ -113,12 +118,13 @@
 <script type="text/javascript" src="/statics/js/md5.min.js"></script>
 <script type="text/javascript" src="/statics/js/base.js"></script>
 <script type="text/javascript" src="/statics/js/tabs.js"></script>
+<script type="text/javascript" src="/statics/js/newTabs.js"></script>
 <script type="text/javascript" src="/statics/js/csrf.js"></script>
 <script type="text/javascript">
 $(function(){
     baseApp.init();
-    Tab.init();
-
+{#    Tab.init();#}
+    newTabs.init();
 })
 </script>
 {% block privateScript %}{% endblock %}
