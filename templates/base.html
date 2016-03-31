@@ -73,7 +73,7 @@
             {% for c in m.childs %}
                 <a href="javascript:void(0);" data-url="{{ c.url }}" class=
                         "js-sub-menu">
-                    <span class="menu-name">&nbsp;&nbsp;{{ c.name }}</span>
+                    <span class="menu-name" data-id="{{ m.id }}-{{ forloop.counter }}">&nbsp;&nbsp;{{ c.name }}</span>
                 </a>
             {% endfor %}
             </div>
@@ -94,7 +94,12 @@
 
 
 {#    <div class="content-body-main-title content-body-sheet easyui-tabs" id="content-body-sheet"></div>#}
-    <div class="content-body"></div>
+    <div class="content-body">
+        <div class="tabs-title"></div>
+        <div class="tabs-main">
+            <div></div>
+        </div>
+    </div>
     <div class="content-footer"><p class="footer-copyright" id="copyRight">Copyright &copy; 2015 杭州格菱网络科技有限公司 版权所有</p></div>
 
     <!--
@@ -113,11 +118,13 @@
 <script type="text/javascript" src="/statics/js/md5.min.js"></script>
 <script type="text/javascript" src="/statics/js/base.js"></script>
 <script type="text/javascript" src="/statics/js/tabs.js"></script>
+<script type="text/javascript" src="/statics/js/newTabs.js"></script>
 <script type="text/javascript" src="/statics/js/csrf.js"></script>
 <script type="text/javascript">
 $(function(){
     baseApp.init();
-    Tab.init();
+{#    Tab.init();#}
+    newTabs.init();
 })
 </script>
 {% block privateScript %}{% endblock %}

@@ -104,7 +104,7 @@ var baseApp = function () {
     var resizeFun = function(){
         var innerH = window.innerHeight - 130;
         $('.content-body').css({height: innerH + 'px'});
-        //$('#content-body-sheet').attr('style', 'min-height:' + (innerH - 50) + 'px');
+        $('.content-body .tabs-main>div').css({height: (innerH-30) + 'px'});
         var copyR = window.innerWidth / 2 - $('#copyRight').width() / 2;
         $('#copyRight').attr('style', 'right:' + copyR + 'px');
         $('.left-menu-body').height(innerH + 50);
@@ -130,15 +130,6 @@ var baseApp = function () {
             setInterval(function () {
                 return headerClock();
             }, 500);
-
-            //breadcrumb();
-            var innerH = window.innerHeight - 130;
-            $('.content-body').css({height: innerH + 'px'});
-            //$('#content-body-sheet').attr('style', 'min-height:' + innerH + 'px');
-            $('.left-menu-body').height(innerH + 50);
-            var copyR = window.innerWidth / 2 - $('#copyRight').width() / 2;
-            $('#copyRight').attr('style', 'right:' + copyR + 'px');
-            //if(navigator.userAgent.toLowerCase().match('firefox')) $('.content-body-title-hr').attr('style','top:8px');
             resizeFun();
             
         },
