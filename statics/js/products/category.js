@@ -318,7 +318,7 @@ var categoryApp = function () {
         }
         $('.js-modal-save-button').unbind('click');
         $('#addCategoryForm').modal('hide');
-    }
+    };
 
     return {
 
