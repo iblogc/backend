@@ -80,10 +80,21 @@ class ProductCategory(models.Model):
     parent_category = models.ForeignKey('ProductCategory', related_name='sub_categories', default=None, null=True, blank=True, on_delete=models.SET_NULL)
     name = models.CharField(max_length=100, default='', null=False)
     step = models.IntegerField(default=1, null=False)   #分类目录树所处等级
-    status = models.IntegerField(default=1, null=False) #分类状态
-    sort_id = models.IntegerField(default=0, null=False)
-    create_time = models.IntegerField(default=0, null=False)
-    update_time = models.IntegerField(default=0, null=False)
+    no = models.IntegerField(default=0, null=False)
+    companies = models.ManyToManyField("customers.Company", through='CategoryCompany')
+
+    @property
+    def category_no(self):
+        if self.step == 1:
+            return 'a%s' % self.no
+        elif self.step == 2:
+            return 'b%s' % self.no
+        else:
+            return 'c%s' ^ self.no
+
+class CategoryCompany(models.Model):
+    category = models.ForeignKey('ProductCategory')
+    company = models.ForeignKey('customers.Company')
 
 
 # 产品分类属性关系数据表
@@ -127,23 +138,21 @@ class ProductCategorySearchValue(models.Model):
 # 产品品牌关系数据
 class ProductBrand(models.Model):
     name = models.CharField(max_length=100, default='', null=False)
-    name_en = models.CharField(max_length=100, default='', null=False)
-    alias_name = models.CharField(max_length=100, default='', null=False)
-    description = models.CharField(max_length=300, default='', null=False)
     company = models.ForeignKey("customers.Company", related_name='brands', default=None, null=True, blank=True, on_delete=models.SET_NULL)
-    status = models.IntegerField(default=0, null=False)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='brands', default=None, null=True, blank=True, on_delete=models.SET_NULL)
-    create_time = models.IntegerField(default=0, null=False)
-    update_time = models.IntegerField(default=0, null=False)
+    no = models.IntegerField(default=0, null=False)
+    category = models.ForeignKey("ProductCategory", related_name='brands', default=None, null=True, blank=True, on_delete=models.SET_NULL)
+
+    @property
+    def brand_no(self):
+        return 'e%s' % self.no
 
 
 # 产品品牌与系列关系数据表
 class ProductBrandSeries(models.Model):
-    company = models.ForeignKey("customers.Company", related_name='series', default=None, null=True, blank=True, on_delete=models.SET_NULL)
-    brand_id = models.IntegerField(default=0, null=False)
+    brand = models.ForeignKey("ProductBrand", related_name='series', default=None, null=True, blank=True, on_delete=models.SET_NULL)
     name = models.CharField(max_length=100, default='', null=False)
-    description = models.CharField(max_length=300, default='', null=False)
-    status = models.IntegerField(default=0, null=False)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='series', default=None, null=True, blank=True, on_delete=models.SET_NULL)
-    create_time = models.IntegerField(default=0, null=False)
-    update_time = models.IntegerField(default=0, null=False)
+    no = models.IntegerField(default=0, null=False)
+
+    @property
+    def series_no(self):
+        return 'f%s' % self.no

@@ -6,26 +6,11 @@ from django.conf import settings
 # 客户单位数据表
 class Company(models.Model):
     name = models.CharField(max_length=200, default='', null=False)
-    alias_name = models.CharField(max_length=200, default='', null=False)
-    province = models.CharField(max_length=200, default='', null=False)
-    address = models.CharField(max_length=200, default='', null=False)
-    zipcode = models.CharField(max_length=200, default='', null=False)
-    telephone = models.CharField(max_length=200, default='', null=False)
-    fax = models.CharField(max_length=200, default='', null=False)
-    website = models.CharField(max_length=200, default='', null=False)
-    email = models.CharField(max_length=200, default='', null=False)
-    license = models.CharField(max_length=200, default='', db_index=True, null=False)
-    license_thumb = models.CharField(max_length=300, default='', null=False)
-    logo = models.CharField(max_length=300, default='', null=False)
-    thumb = models.CharField(max_length=300, default='', null=False)
-    legal_name = models.CharField(max_length=300, default='', null=False)
-    legal_thumb = models.CharField(max_length=300, default='', null=False)
-    status = models.IntegerField(default=0, null=False)
-    examine_id = models.IntegerField(default=0, null=False)
-    account_id = models.IntegerField(default=0, null=False)
-    create_time = models.IntegerField(default=0, null=False)
-    update_time = models.IntegerField(default=0, null=False)
+    no = models.IntegerField(default=0, null=False)
 
+    @property
+    def company_no(self):
+        return 'd%s' % self.no
 
 # 客户单位与帐户关系绑定数据表
 class CompanyExamine(models.Model):

@@ -1,11 +1,9 @@
 <link type="text/css" rel="stylesheet" media="screen"
-      href="/statics/css/font-awesome.min.css">
-<link type="text/css" rel="stylesheet" media="screen"
       href="/statics/plugins/sweetalert/sweetalert.css">
 <link type="text/css" rel="stylesheet" media="screen"
-      href="/statics/plugins/jquery-easyui/themes/default/easyui.css">
-<link type="text/css" rel="stylesheet" media="screen"
       href="/statics/css/bootstrap.min.css">
+<link type="text/css" rel="stylesheet" media="screen"
+      href="/statics/css/font-awesome.min.css">
 <link type="text/css" rel="stylesheet" media="screen"
       href="/statics/css/base.css">
 <link type="text/css" rel="stylesheet" media="screen"
@@ -100,70 +98,90 @@
         <div class="category-body left">
             <div class="equal">
                 <div class="row">
-                    <div class="header"><h5>一级分类</h5></div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-    <div class="product-body">
-        <div class="category-body left">
-            <div class="equal">
-                {% for category in categories %}
-                <div class="row">
-                    <div class="header"><a href="javascript:void(0);"><h5><input type="checkbox">{{ category.name }}</h5></a></div>
-                </div>
-                {%  endfor %}
-
-            </div>
-
-        </div>
-        <div class="category-body left">
-            <div class="equal">
-                <div class="row">
-                    <div class="header"><h5>二级分类</h5></div>
-                </div>
-            </div>
-
-        </div>
-        <div class="category-body left">
-            <div class="equal">
-                <div class="row">
-                    <div class="header"><h5>三级分类</h5></div>
-                </div>
-            </div>
-
-        </div>
-
-        <div class="category-body left">
-            <div class="equal">
-                <div class="row">
-                    <div class="header"><h5>厂家</h5></div>
-                </div>
-            </div>
-
-        </div>
-        <div class="category-body left">
-            <div class="equal">
-                <div class="row">
-                    <div class="header"><h5>品牌</h5></div>
-                </div>
-            </div>
-
-        </div>
-        <div class="category-body left">
-            <div class="equal">
-                <div class="row">
                     <div class="header"><h5>系列</h5></div>
                 </div>
             </div>
 
         </div>
     </div>
+    <div class="product-body">
+        <div class="category-body-list left">
+            <div class="equal">
+                {% for category in categories %}
+                    <div class="row">
+                        <div class="header js-first-category" data-id="{{ category.id }}"><a href="javascript:void(0);">
+                            <h5><input type="checkbox">{{ category.name }}</h5></a></div>
+                    </div>
+                {% endfor %}
+
+            </div>
+
+        </div>
+        <div class="category-body-list left">
+            <div class="equal"><i class="icon-plus-sign js-add-second-category">&nbsp;添加</i><i
+                    class="icon-plus-sign js-delete-second-category">&nbsp;删除</i><i
+                    class="icon-plus-sign js-edit-second-category">&nbsp;修改</i></div>
+            <div class="equal js-second-category-div">
+            </div>
+
+        </div>
+        <div class="category-body-list left">
+            <div class="equal"><i class="icon-plus-sign js-add-third-category">&nbsp;添加</i><i
+                    class="icon-plus-sign js-add-third-category">&nbsp;删除</i><i
+                    class="icon-plus-sign js-add-third-category">&nbsp;修改</i></div>
+            <div class="equal js-third-category-div">
+            </div>
+
+        </div>
+
+        <div class="category-body-list left">
+            <div class="equal"><i class="icon-plus-sign js-add-comnapy">&nbsp;添加</i><i class="icon-plus-sign">&nbsp;删除</i><i
+                    class="icon-plus-sign">&nbsp;修改</i></div>
+            <div class="equal js-company-div">
+            </div>
+
+        </div>
+        <div class="category-body-list left">
+            <div class="equal"><i class="icon-plus-sign js-add-brand">&nbsp;添加</i><i class="icon-plus-sign">&nbsp;删除</i><i
+                    class="icon-plus-sign">&nbsp;修改</i></div>
+            <div class="equal js-brand-div">
+            </div>
+
+        </div>
+        <div class="category-body-list left">
+            <div class="equal"><i class="icon-plus-sign js-add-series">&nbsp;添加</i><i class="icon-plus-sign">&nbsp;删除</i><i
+                    class="icon-plus-sign">&nbsp;修改</i><i
+                    class="icon-plus-sign">&nbsp;编辑</i></div>
+            <div class="equal js-series-div">
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="addCategoryForm" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">添加分类:</h4>
+            </div>
+            <div class="modal-body-2">
+                <div class="modal-text left">分类名称:</div>
+                <div class="input-group"><input name="name" class="js-modal-category-name select-text form-control">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary js-modal-save-button">保存</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script type="text/javascript" src="/statics/js/jquery-2.1.4.min.js"></script>
-<script type="text/javascript" src="/statics/js/products/product.js"></script>
 <script type="text/javascript" src="/statics/js/base.js"></script>
 <script type="text/javascript"
         src="/statics/plugins/select2/select2.min.js"></script>
@@ -173,11 +191,10 @@
         src="/statics/plugins/datetimepicker/bootstrap-datetimepicker.zh-CN.js"></script>
 <script src="/statics/js/bootstrap.min.js"></script>
 <script src="/statics/js/jquery-ui.js"></script>
+<script type="text/javascript" src="/statics/js/products/category.js"></script>
 <script type="text/javascript">
-    var category = {% autoescape off %}{{ category }}{% endautoescape %};
-    var url = {% autoescape off %}{{ urls }}{% endautoescape %};
     $(function () {
-        productApp.init();
+        categoryApp.init();
         baseApp.pickDate($('.form_date'));
         $("#tabs").tabs();
     });

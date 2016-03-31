@@ -87,6 +87,16 @@
     height: 380px;
 }
 
+.modal-body-2{
+    margin-top: 20px;
+    height: 40px;
+    text-align: center;
+    margin-left: 130px;
+}
+.modal-text {
+    margin-top: 8px;
+}
+
 .form-group{
     margin-top: 20px;
 }
@@ -144,4 +154,12 @@
     width: 250px;
     border: 1px solid #000;
     margin-left: 20px;
+}
+
+.category-body-list {
+    width: 250px;
+    border: 1px solid #000;
+    margin-left: 20px;
+    height: 420px;
+    overflow: auto;
 }

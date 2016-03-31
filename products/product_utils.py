@@ -1,7 +1,7 @@
 #coding:utf-8
 import json
 import time
-from models import ProductCategory
+from models import ProductCategory, ProductBrand, ProductBrandSeries
 from django.core.cache import cache
 
 class Node(object):
@@ -98,7 +98,7 @@ TIME_MIN = 1000000000
 
 def get_category(c3_id):
     try:
-        c3 = ProductCategory.objects.select_related('parent_category', 'parent_category__parent_category').get(id=c3_id, status=1)
+        c3 = ProductCategory.objects.select_related('parent_category', 'parent_category__parent_category').get(id=c3_id)
         c3_name = c3.name
         c2 = c3.parent_category
         c2_name = c2.name
@@ -115,8 +115,7 @@ def get_categories():
     if cache.get('category'):
         res = cache.get('category')
     else:
-        for c1 in ProductCategory.objects.prefetch_related('sub_categories', 'sub_categories__sub_categories').filter(
-                status=1, step=1).all():
+        for c1 in ProductCategory.objects.prefetch_related('sub_categories', 'sub_categories__sub_categories').filter(step=1).all():
             c1_dict = {
                 "id": c1.id,
                 "name": c1.name,
@@ -138,4 +137,37 @@ def get_categories():
                     c2_dict['third'].append(c3_dict)
         cache.set('category', res)
 
+    return res
+
+def get_sub_categories(category_id):
+    category = ProductCategory.objects.prefetch_related('sub_categories').get(pk=category_id)
+    res = []
+    for c in category.sub_categories.all():
+        c_dict = {
+            "id": c.id,
+            "name": c.name,
+        }
+        res.append(c_dict)
+    return res
+
+def get_category_companies(category_id):
+    category = ProductCategory.objects.prefetch_related('companies').get(pk=category_id)
+    companies = category.companies.all()
+    res = []
+    for comp in companies:
+        res.append({'id':comp.id,'name':comp.name})
+    return res
+
+def get_company_brands(category_id,company_id):
+    brands = ProductBrand.objects.filter(category=category_id,company=company_id)
+    res = []
+    for brand in brands:
+        res.append({'id':brand.id,'name':brand.name})
+    return res
+
+def get_brand_series(brand_id):
+    series = ProductBrandSeries.objects.filter(brand=brand_id)
+    res = []
+    for se in series:
+        res.append({'id': se.id, 'name': se.name})
     return res
