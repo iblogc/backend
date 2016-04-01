@@ -1,1 +1,157 @@
 @charset "UTF-8";
+
+.category-top, .category-main {
+    min-width: 1200px;
+    display: block;
+}
+
+.category-top>div, .category-top>div>* {
+    display: inline-block;
+}
+
+.category-top>:nth-child(1) {
+    width: 420px;
+    padding-left: 35px;
+}
+
+.category-top>:nth-child(1)>input {
+    width: 300px;
+}
+
+.category-top>:nth-child(2) {
+    width: 450px;
+}
+
+.category-top>:nth-child(2)>button {
+    width: 100px;
+    margin-right: 10px;
+}
+
+.category-top {
+    margin-bottom: 20px;
+}
+
+.category-main {
+    margin-left: 20px;
+    font-size: 0px;
+}
+
+.category-main>div {
+    display: inline-block;
+    width: 200px;
+    border-left: 1px #d3d3d3 solid;
+    border-right: 1px #d3d3d3 solid;
+    user-select: none;
+    -ms-user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    font-size: 14px;
+    background: #fff;
+    margin-left: -1px;
+}
+
+.category-main>.category-main-title {
+    height: 25px;
+    text-align: center;
+    border-top: 1px #d3d3d3 solid;
+    cursor: default;
+    line-height: 25px;
+}
+
+.category-main>.category-main-title:first-child {
+    -webkit-border-radius: 3px 0 0 0;
+    -moz-border-radius: 3px 0 0 0;
+    border-radius: 3px 0 0 0;
+}
+
+.category-main>.category-main-title:last-child {
+    -webkit-border-radius: 0 3px 0 0;
+    -moz-border-radius: 0 3px 0 0;
+    border-radius: 0 3px 0 0;
+}
+
+.category-main>.category-main-list {
+    height: 360px;
+    border-bottom: 1px #d3d3d3 solid;
+    -webkit-border-radius: 0 0 3px 3px;
+    -moz-border-radius: 0 0 3px 3px;
+    border-radius: 0 0 3px 3px;
+    overflow: hidden;
+    position: relative;
+}
+
+.category-main>.category-main-list:first-child {
+    -webkit-border-radius: 0 0 0 3px;
+    -moz-border-radius: 0 0 0 3px;
+    border-radius: 0 0 0 3px;
+}
+
+.category-main>.category-main-list:last-child {
+    -webkit-border-radius: 0 0 3px 0;
+    -moz-border-radius: 0 0 3px 0;
+    border-radius: 0 0 3px 0;
+}
+
+.category-main>.category-main-list>.edit {
+    /*width: 80px;*/
+    /*height: 30px;*/
+    /*line-height: 30px;*/
+    /*position: relative;*/
+    /*margin: 0 auto;*/
+    width: 198px;
+    height: 30px;
+    line-height: 30px;
+    position: absolute;
+    top: 330px;
+    border-top: 1px solid #d3d3d3;
+    padding-top: 2px;
+}
+
+.category-main>.category-main-list>.edit span {
+    font-size: 20px;
+    width: 20px!important;
+    height: 20px!important;
+    display: inline-block;
+    /*margin-left: 4px;*/
+    cursor: pointer;
+    margin-left: 32px;
+}
+
+.category-main>.category-main-list>.edit span:hover {
+    color: #333;
+}
+
+.category-main>.category-main-list>.js-first-category {
+    padding-left: 18px;
+}
+
+.category-main>.category-main-list>.overflow {
+    width: 198px;
+    height: 330px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.category-main>.category-main-list> .header {
+    width: 198px!important;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.category-main-list>.overflow input , .category-main-list>.overflow div {
+    cursor: pointer;
+}
+
+.category-main>.category-main-list>.overflow>div>* {
+    display: inline-block;
+}
+
+.category-main>.category-main-list>.overflow>div>input {
+    vertical-align: top;
+    width: 48px;
+    text-align: center;
+}
+
+.category-main>.category-main-list>.overflow>div>div {
+    width: 150px;
+}

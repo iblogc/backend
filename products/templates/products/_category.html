@@ -4,6 +4,8 @@
       href="/statics/css/base.css">
 <link type="text/css" rel="stylesheet" media="screen"
       href="/statics/css/products/category.css">
+<link type="text/css" rel="stylesheet" media="screen"
+      href="/statics/css/font-awesome.min.css">
 <div class="main-body content-body-main">
     {% csrf_token %}
     {#  <h2 class="col-md-3"> {{ cname }} - <span>属性设置</span></h2>#}
@@ -11,143 +13,100 @@
     {#    <a href="/product/category" role="button" class="btn btn-important" > 返回到分类设置 </a>#}
     {#  </div>#}
     <h1>产品分类</h1>
-    <div class="product-body">
-        <div class="select select1">
-            <div class="select">
-                <div class="left select-table">
-                    &nbsp;&nbsp;&nbsp;&nbsp;关键字：
-                    <input id="product-Search"
-                           class="select-text form-control js-kw"
-                           placeholder="搜索...">
-                </div>
-                <button id="select-Search"
-                        class="btn btn-primary select1 select2 js-search-button"
-                        type="button">查询
-                </button>
-                <button id="select-Search"
-                        class="btn btn-primary select1 select2 js-search-button"
-                        type="button" data-toggle="modal"
+    <div class="category-top">
+         <div>
+             关键字：
+             <input id="product-Search"
+                    class="select-text form-control js-kw"
+                    placeholder="搜索...">
+         </div>
+         <div>
+             <button id="select-Search"
+                     class="btn btn-primary select1 select2 js-search-button"
+                     type="button">查询
+             </button>
+             <button id="select-Search"
+                     class="btn btn-primary select1 select2 js-search-button"
+                     type="button" data-toggle="modal"
                         data-target="#importForm" data-menuId="0">批量上传
-                </button>
-                <button id="select-Search"
-                        class="btn btn-primary select1 select2 js-batch-delete-button"
-                        type="button">批量删除
-                </button>
-                <button id="select-Search"
-                        class="btn btn-primary select1 select2 js-search-button"
-                        type="button">导出
-                </button>
-            </div>
-        </div>
+             </button>
+             <button id="select-Search"
+                     class="btn btn-primary select1 select2 js-batch-delete-button"
+                     type="button">批量删除
+             </button>
+             <button id="select-Search"
+                     class="btn btn-primary select1 select2 js-search-button"
+                     type="button">导出
+             </button>
+         </div>
     </div>
-    <div class="product-body">
-        <div class="category-body left">
-            <div class="">
-                <div class="row">
-                    <div class="header"><h5>一级分类</h5></div>
-                </div>
-            </div>
-
-        </div>
-        <div class="category-body left">
-            <div class="">
-                <div class="row">
-                    <div class="header"><h5>二级分类</h5></div>
-                </div>
-            </div>
-
-        </div>
-        <div class="category-body left">
-            <div class="">
-                <div class="row">
-                    <div class="header"><h5>三级分类</h5></div>
-                </div>
-            </div>
-
-        </div>
-
-        <div class="category-body left">
-            <div class="">
-                <div class="row">
-                    <div class="header"><h5>厂家</h5></div>
-                </div>
-            </div>
-
-        </div>
-        <div class="category-body left">
-            <div class="">
-                <div class="row">
-                    <div class="header"><h5>品牌</h5></div>
-                </div>
-            </div>
-
-        </div>
-        <div class="category-body left">
-            <div class="">
-                <div class="row">
-                    <div class="header"><h5>系列</h5></div>
-                </div>
-            </div>
-
-        </div>
+    <div class="category-main">
+        <div class="category-main-title">一级分类</div>
+        <div class="category-main-title">二级分类</div>
+        <div class="category-main-title">三级分类</div>
+        <div class="category-main-title">厂家</div>
+        <div class="category-main-title">品牌</div>
+        <div class="category-main-title">系列</div>
     </div>
-    <div class="product-body">
-        <div class="category-body-list left">
-            <div class=" overflow">
-                {% for category in categories %}
-                    <div class="row">
-                        <div class="header js-first-category" data-id="{{ category.id }}"><a href="javascript:void(0);">
-                            <h5>
-                                <div class="center-line">{{ category.name }}</div>
-                            </h5>
-                        </a></div>
-                    </div>
-                {% endfor %}
-
-            </div>
-
+    <div class="category-main">
+        <div class="category-main-list">
+            {% for category in categories %}
+                <div class="header js-first-category" data-id="{{ category.id }}">
+                    <div class="center-line">{{ category.name }}</div>
+                </div>
+            {% endfor %}
         </div>
-        <div class="category-body-list left">
-            <div class=""><i class="icon-plus-sign js-add-second-category">&nbsp;添加</i><i
-                    class="icon-plus-sign js-delete-second-category">&nbsp;删除</i><i
-                    class="icon-plus-sign js-edit-second-category">&nbsp;修改</i></div>
+
+
+        <div class="category-main-list">
+            <div class="edit">
+                <span class="icon-plus-sign js-add-second-category fa fa-plus"></span>
+                <span class="icon-plus-sign js-delete-second-category fa fa-close"></span>
+                <span class="icon-plus-sign js-edit-second-category fa fa-edit"></span>
+            </div>
             <div class=" js-second-category-div overflow">
+
             </div>
 
         </div>
-        <div class="category-body-list left">
-            <div class=""><i class="icon-plus-sign js-add-third-category">&nbsp;添加</i><i
-                    class="icon-plus-sign js-delete-third-category">&nbsp;删除</i><i
-                    class="icon-plus-sign js-edit-third-category">&nbsp;修改</i></div>
+        <div class="category-main-list">
+            <div class="edit">
+                <span class="icon-plus-sign js-add-third-category fa fa-plus"></span>
+                <span class="icon-plus-sign js-delete-third-category fa fa-close"></span>
+                <span class="icon-plus-sign js-add-third-category fa fa-edit"></span>
+            </div>
             <div class=" js-third-category-div overflow">
             </div>
-
         </div>
 
-        <div class="category-body-list left">
-            <div class=""><i class="icon-plus-sign js-add-comnapy">&nbsp;添加</i><i
-                    class="icon-plus-sign js-delete-company">&nbsp;删除</i><i
-                    class="icon-plus-sign js-edit-company">&nbsp;修改</i></div>
+        <div class="category-main-list">
+            <div class="edit">
+                <span class="icon-plus-sign js-add-company fa fa-plus"></span>
+                <span class="icon-plus-sign js-delete-company fa fa-close"></span>
+                <span class="icon-plus-sign js-add-company fa fa-edit"></span>
+            </div>
             <div class=" js-company-div overflow">
             </div>
 
         </div>
-        <div class="category-body-list left">
-            <div class=""><i class="icon-plus-sign js-add-brand">&nbsp;添加</i><i class="icon-plus-sign js-delete-brand">
-                &nbsp;删除</i><i
-                    class="icon-plus-sign js-edit-brand">&nbsp;修改</i></div>
+        <div class="category-main-list">
+            <div class="edit">
+                <span class="icon-plus-sign js-add-brand fa fa-plus"></span>
+                <span class="icon-plus-sign js-delete-brand fa fa-close"></span>
+                <span class="icon-plus-sign js-add-brand fa fa-edit"></span>
+            </div>
             <div class=" js-brand-div overflow">
             </div>
 
         </div>
-        <div class="category-body-list left">
-            <div class=""><i class="icon-plus-sign js-add-series">&nbsp;添加</i><i
-                    class="icon-plus-sign  js-delete-series">&nbsp;删除</i><i
-                    class="icon-plus-sign js-edit-series">&nbsp;修改</i><i
-                    class="icon-plus-sign">&nbsp;编辑</i></div>
+        <div class="category-main-list">
+            <div class="edit">
+                <span class="icon-plus-sign js-add-series fa fa-plus"></span>
+                <span class="icon-plus-sign js-delete-series fa fa-close"></span>
+                <span class="icon-plus-sign js-add-series fa fa-edit"></span>
+            </div>
             <div class=" js-series-div overflow">
             </div>
-
         </div>
     </div>
 </div>
