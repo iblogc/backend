@@ -13,7 +13,7 @@ var newTabs = function () {
     };
 
     var resizeIframe = function(){
-        var tmp = $(this).contents().find('div.main-body').height() - 20;
+        var tmp = $(this).contents().find('div.main-body').height();
         $(this).height(tmp);
     };
 
@@ -60,7 +60,6 @@ var newTabs = function () {
                     if(tabsIdArr[x] == id) flag = true;
                 }
                 if (url != undefined) {
-                    //if ($('.content-body>.tabs-title>div[data-name]').tabs('exists', name)) {
                     if(flag) {
                         $('.content-body>.tabs-title>div[data-name=' + id + ']').addClass('selected').siblings().removeClass('selected');
                         $('.content-body>.tabs-main>div>iframe[data-for=' + id + ']').addClass('show').siblings().removeClass('show');
@@ -74,11 +73,6 @@ var newTabs = function () {
                         $('.content-body>.tabs-main>div').append(content);
                         resizeFun();
                         $('iframe[data-for=' + id + ']').load(resizeIframe);
-                        //$(window.parent.document).find('iframe[data-for=' + id + ']').load(function(){
-                        //    var main = $(window.parent.document).find('iframe[data-for=' + id + ']');
-                        //    var mainheight = $(document).height() - 120;
-                        //    main.height(mainheight);
-                        //});
                     }
                 }
             });
