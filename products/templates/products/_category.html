@@ -101,9 +101,10 @@
         </div>
         <div class="category-main-list">
             <div class="edit">
-                <span class="icon-plus-sign js-add-series fa fa-plus"></span>
-                <span class="icon-plus-sign js-delete-series fa fa-close"></span>
-                <span class="icon-plus-sign js-add-series fa fa-edit"></span>
+                <span class="icon-plus-sign js-add-series fa fa-plus last"></span>
+                <span class="icon-plus-sign js-delete-series fa fa-close last"></span>
+                <span class="icon-plus-sign js-add-series fa fa-edit last"></span>
+                <span class="icon-plus-sign js-add-series fa fa-cogs last"></span>
             </div>
             <div class=" js-series-div overflow">
             </div>
@@ -167,12 +168,12 @@
                         aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title" id="myModalLabel">批量上传:</h4>
+                <h4 class="modal-title" id="myModalLabel">批量上传</h4>
             </div>
             <div class="modal-body-3">
-                <div class="modal-text left">选择文件:</div>
-                <div class="input-group"><input name="file" type="file" id="file">
-                </div>
+                <div class="modal-text">选择文件:</div>
+                <input type="text" class="form-control" placeholder="选择上传文件" readonly>
+                <input name="file" type="file" id="file">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary js-upload-button">上传</button>
