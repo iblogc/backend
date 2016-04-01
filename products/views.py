@@ -440,5 +440,6 @@ class ImportView(LoginRequiredMixin, TemplateView):
                     continue
                 datas_array.append((first_category,second_category,third_category,company_name,brand_name,series_name))
         print datas_array
-        
+        for data_dict in datas_array:
+            first_category,flag = ProductCategory.objects.get_or_create(name=data_dict[1])
         return HttpResponse(json.dumps({'success': 1}))
