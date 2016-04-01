@@ -273,173 +273,176 @@ class CategoryView(LoginRequiredMixin, TemplateView):
         return context
 
 
-class SubCategoryView(LoginRequiredMixin, TemplateView):
-    def get(self, request, *args, **kwargs):
-        categories = get_sub_categories(kwargs['pk'])
-        return HttpResponse(json.dumps(categories))
+def sub_categories(request, category_id):
+    categories = get_sub_categories(category_id)
+    return HttpResponse(json.dumps(categories))
 
 
-class SubCategoryCreateView(LoginRequiredMixin, TemplateView):
-    def post(selfself, request, *args, **kwargs):
-        name = request.POST.get('name').strip()
-        step = request.POST.get('step').strip()
-        parent_category = ProductCategory.objects.get(pk=kwargs['pk'])
-        category_dict = {'id': 0, 'name': name}
-        category = ProductCategory()
-        category.parent_category = parent_category
-        category.name = name
-        category.step = step
-        category.status = 1
-        category.save()
-        category_dict['id'] = category.id
-        return HttpResponse(json.dumps(category_dict))
+def category_create(request, category_id):
+    name = request.POST.get('name').strip()
+    step = request.POST.get('step').strip()
+    parent_category = ProductCategory.objects.get(pk=category_id)
+    category_dict = {'id': 0, 'name': name}
+    category = ProductCategory()
+    category.parent_category = parent_category
+    category.name = name
+    category.step = step
+    category.status = 1
+    category.save()
+    category_dict['id'] = category.id
+    return HttpResponse(json.dumps(category_dict))
 
-class SubCategoryUpdateView(LoginRequiredMixin, TemplateView):
-    def post(selfself, request, *args, **kwargs):
-        name = request.POST.get('name').strip()
-        ProductCategory.objects.filter(pk=kwargs['pk']).update(name=name)
-        return HttpResponse(json.dumps({'success':1}))
+def category_update(request, category_id):
+    name = request.POST.get('name').strip()
+    ProductCategory.objects.filter(pk=category_id).update(name=name)
+    return HttpResponse(json.dumps({'success':1}))
 
-class SubCategoryDeleteView(LoginRequiredMixin, TemplateView):
-    def post(selfself, request, *args, **kwargs):
-        parent_category = ProductCategory.objects.get(pk=kwargs['pk'])
-        if parent_category.sub_categories.exists():
-            parent_category.sub_categories.all().delete()
-        parent_category.delete()
-        return HttpResponse(json.dumps({'success': 1}))
+def category_delete(request, category_id):
+    parent_category = ProductCategory.objects.get(pk=category_id)
+    if parent_category.sub_categories.exists():
+        parent_category.sub_categories.all().delete()
+    parent_category.delete()
+    return HttpResponse(json.dumps({'success': 1}))
 
 
-class SubCategoryCompaniesView(LoginRequiredMixin, TemplateView):
-    def get(self, request, *args, **kwargs):
-        companies = get_category_companies(kwargs['pk'])
-        return HttpResponse(json.dumps(companies))
+def companies(request, category_id):
+    companies = get_category_companies(category_id)
+    return HttpResponse(json.dumps(companies))
 
 
-class SubCategoryCompanyCreateView(LoginRequiredMixin, TemplateView):
-    def post(selfself, request, *args, **kwargs):
-        name = request.POST.get('name').strip()
-        category = ProductCategory.objects.get(pk=kwargs['pk'])
-        company_dict = {'id': 0, 'name': name}
-        company, flag = Company.objects.get_or_create(name=name)
-        CategoryCompany.objects.get_or_create(category=category, company=company)
-        company_dict['id'] = company.id
-        return HttpResponse(json.dumps(company_dict))
+def company_create(request, category_id):
+    name = request.POST.get('name').strip()
+    category = ProductCategory.objects.get(pk=category_id)
+    company_dict = {'id': 0, 'name': name}
+    company, flag = Company.objects.get_or_create(name=name)
+    CategoryCompany.objects.get_or_create(category=category, company=company)
+    company_dict['id'] = company.id
+    return HttpResponse(json.dumps(company_dict))
 
 
-class SubCategoryCompanyDeleteView(LoginRequiredMixin, TemplateView):
-    def post(selfself, request, *args, **kwargs):
-        category = ProductCategory.objects.get(pk=kwargs['category_id'])
-        company = Company.objects.get(pk=kwargs['company_id'])
-        CategoryCompany.objects.filter(company=company, category=category).delete()
-        return HttpResponse(json.dumps({'success': 1}))
+def company_delete(request, category_id, company_id):
+    category = ProductCategory.objects.get(pk=category_id)
+    company = Company.objects.get(pk=company_id)
+    CategoryCompany.objects.filter(company=company, category=category).delete()
+    return HttpResponse(json.dumps({'success': 1}))
 
 
-class CompanyUpdateView(LoginRequiredMixin, TemplateView):
-    def post(selfself, request, *args, **kwargs):
-        name = request.POST.get('name').strip()
-        Company.objects.filter(pk=kwargs['pk']).update(name=name)
-        return HttpResponse(json.dumps({'success': 1}))
+def company_update(request, company_id):
+    name = request.POST.get('name').strip()
+    Company.objects.filter(pk=company_id).update(name=name)
+    return HttpResponse(json.dumps({'success': 1}))
 
-class CompanyBrandView(LoginRequiredMixin, TemplateView):
-    def get(self, request, *args, **kwargs):
-        brands = get_company_brands(kwargs['category_id'], kwargs['company_id'])
-        return HttpResponse(json.dumps(brands))
+def brands(request, category_id, company_id):
+    brands = get_company_brands(category_id, company_id)
+    return HttpResponse(json.dumps(brands))
 
 
-class CompanyBrandCreateView(LoginRequiredMixin, TemplateView):
-    def post(selfself, request, *args, **kwargs):
-        name = request.POST.get('name').strip()
-        category = ProductCategory.objects.get(pk=kwargs['category_id'])
-        company = Company.objects.get(pk=kwargs['company_id'])
-        brand_dict = {'id': 0, 'name': name}
-        brand, flag = ProductBrand.objects.get_or_create(name=name)
-        CategoryBrand.objects.get_or_create(category=category, brand=brand)
-        CompanyBrand.objects.get_or_create(company=company, brand=brand)
-        brand_dict['id'] = brand.id
-        return HttpResponse(json.dumps(brand_dict))
+def brand_create(request, category_id, company_id):
+    name = request.POST.get('name').strip()
+    category = ProductCategory.objects.get(pk=category_id)
+    company = Company.objects.get(pk=company_id)
+    brand_dict = {'id': 0, 'name': name}
+    brand, flag = ProductBrand.objects.get_or_create(name=name)
+    CategoryBrand.objects.get_or_create(category=category, brand=brand)
+    CompanyBrand.objects.get_or_create(company=company, brand=brand)
+    brand_dict['id'] = brand.id
+    return HttpResponse(json.dumps(brand_dict))
 
 
-class CompanyBrandDeleteView(LoginRequiredMixin, TemplateView):
-    def post(selfself, request, *args, **kwargs):
-        category = ProductCategory.objects.get(pk=kwargs['category_id'])
-        company = Company.objects.get(pk=kwargs['company_id'])
-        brand = ProductBrand.objects.get(pk=kwargs['brand_id'])
-        CompanyBrand.objects.filter(company=company, brand=brand).delete()
-        if not brand.companies.exists():
-            CategoryBrand.objects.filter(category=category,brand=brand).delete()
-        return HttpResponse(json.dumps({'success': 1}))
+def brand_delete(request, category_id, company_id, brand_id):
+    category = ProductCategory.objects.get(pk=category_id)
+    company = Company.objects.get(pk=company_id)
+    brand = ProductBrand.objects.get(pk=brand_id)
+    CompanyBrand.objects.filter(company=company, brand=brand).delete()
+    if not brand.companies.exists():
+        CategoryBrand.objects.filter(category=category,brand=brand).delete()
+    return HttpResponse(json.dumps({'success': 1}))
 
 
-class CompanyBrandUpdateView(LoginRequiredMixin, TemplateView):
-    def post(selfself, request, *args, **kwargs):
-        name = request.POST.get('name').strip()
-        ProductBrand.objects.filter(pk=kwargs['pk']).update(name=name)
-        return HttpResponse(json.dumps({'success': 1}))
+def brand_update(request, brand_id):
+    name = request.POST.get('name').strip()
+    ProductBrand.objects.filter(pk=brand_id).update(name=name)
+    return HttpResponse(json.dumps({'success': 1}))
 
-class BrandSeriesView(LoginRequiredMixin, TemplateView):
-    def get(self, request, *args, **kwargs):
-        series = get_brand_series(kwargs['pk'])
-        return HttpResponse(json.dumps(series))
+def brand_series(request, brand_id):
+    series = get_brand_series(brand_id)
+    return HttpResponse(json.dumps(series))
 
 
-class BrandSeriesCreateView(LoginRequiredMixin, TemplateView):
-    def post(selfself, request, *args, **kwargs):
-        name = request.POST.get('name').strip()
-        brand = ProductBrand.objects.get(pk=kwargs['pk'])
-        series_dict = {'id': 0, 'name': name}
-        series = ProductBrandSeries()
-        series.name = name
-        series.brand = brand
-        series.save()
-        series_dict['id'] = series.id
-        return HttpResponse(json.dumps(series_dict))
+def series_create(request, brand_id):
+    name = request.POST.get('name').strip()
+    brand = ProductBrand.objects.get(pk=brand_id)
+    series_dict = {'id': 0, 'name': name}
+    series = ProductBrandSeries()
+    series.name = name
+    series.brand = brand
+    series.save()
+    series_dict['id'] = series.id
+    return HttpResponse(json.dumps(series_dict))
 
-class SeriesDeleteView(LoginRequiredMixin, TemplateView):
-    def post(selfself, request, *args, **kwargs):
-        ProductBrandSeries.objects.filter(pk=kwargs['pk']).delete()
-        return HttpResponse(json.dumps({'success':1}))
+def series_delete(request, series_id):
+    ProductBrandSeries.objects.filter(pk=series_id).delete()
+    return HttpResponse(json.dumps({'success':1}))
 
-class SeriesUpdateView(LoginRequiredMixin, TemplateView):
-    def post(selfself, request, *args, **kwargs):
-        name = request.POST.get('name').strip()
-        ProductBrandSeries.objects.filter(pk=kwargs['pk']).update(name=name)
-        return HttpResponse(json.dumps({'success': 1}))
+def series_update(request, series_id):
+    name = request.POST.get('name').strip()
+    ProductBrandSeries.objects.filter(pk=series_id).update(name=name)
+    return HttpResponse(json.dumps({'success': 1}))
 
 
-class ImportView(LoginRequiredMixin, TemplateView):
-    def post(self, request, *args, **kwargs):
-        xls_file = request.FILES.get('file')
-        data = xlrd.open_workbook(file_contents=xls_file.read())
-        table = data.sheets()[0]
-        row_count = table.nrows
-        cell_count = table.ncols
-        print row_count,cell_count
-        first_category = ''
-        second_category = ''
-        third_category = ''
-        company_name = ''
-        brand_name = ''
-        series_name = ''
-        datas_array = []
-        for row_no in range(1, row_count):
-            cells = table.row_values(row_no)
-            if cells:
-                if cells[0].strip() != '':
-                    first_category = cells[0].strip()
-                if cells[1].strip() != '':
-                    second_category = cells[1].strip()
-                if cells[2].strip() != '':
-                    third_category = cells[2].strip()
-                if cells[3].strip() != '':
-                    company_name = cells[3].strip()
-                if cells[4].strip() != '':
-                    brand_name = cells[4].strip()
-                if cells[5].strip() != '':
-                    series_name = cells[5].strip()
-                if first_category == '':
-                    continue
-                datas_array.append((first_category,second_category,third_category,company_name,brand_name,series_name))
-        print datas_array
-        for data_dict in datas_array:
-            first_category,flag = ProductCategory.objects.get_or_create(name=data_dict[1])
-        return HttpResponse(json.dumps({'success': 1}))
+def import_xls(request):
+    xls_file = request.FILES.get('file')
+    data = xlrd.open_workbook(file_contents=xls_file.read())
+    table = data.sheets()[0]
+    row_count = table.nrows
+    cell_count = table.ncols
+    print row_count,cell_count
+    first_category = ''
+    second_category = ''
+    third_category = ''
+    company_name = ''
+    brand_name = ''
+    series_name = ''
+    datas_array = []
+    for row_no in range(1, row_count):
+        cells = table.row_values(row_no)
+        if cells:
+            if cells[0].strip() != '':
+                first_category = cells[0].strip()
+            if cells[1].strip() != '':
+                second_category = cells[1].strip()
+            if cells[2].strip() != '':
+                third_category = cells[2].strip()
+            if cells[3].strip() != '':
+                company_name = cells[3].strip()
+            if cells[4].strip() != '':
+                brand_name = cells[4].strip()
+            if cells[5].strip() != '':
+                series_name = cells[5].strip()
+            if first_category == '':
+                continue
+            datas_array.append((first_category,second_category,third_category,company_name,brand_name,series_name))
+    print datas_array
+    for data_dict in datas_array:
+        try:
+            first_category,flag = ProductCategory.objects.get_or_create(name=data_dict[0],step=1)
+            second_category,flag = ProductCategory.objects.get_or_create(name=data_dict[1],step=2,parent_category=first_category)
+            third_category,flag = ProductCategory.objects.get_or_create(name=data_dict[2],step=3,parent_category=second_category)
+            if data_dict[3] == '':
+                continue
+            company,flag = Company.objects.get_or_create(name=data_dict[3])
+            if data_dict[4] == '':
+                continue
+            CategoryCompany.objects.get_or_create(category=third_category,company=company)
+            brand,flag = ProductBrand.objects.get_or_create(name=data_dict[4])
+            CategoryBrand.objects.get_or_create(category=third_category,brand=brand)
+            CompanyBrand.objects.get_or_create(company=company,brand=brand)
+            if data_dict[5] == '':
+                continue
+            series,flag = ProductBrandSeries.objects.get_or_create(name=data_dict[5],brand=brand)
+        except Exception as e:
+            print e.message
+    return HttpResponse(json.dumps({'success': 1}))
+
+def export_xls(request):
+    pass
