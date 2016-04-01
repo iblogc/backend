@@ -19,6 +19,7 @@ from product_utils import *
 from gezbackend.utils import *
 
 import xlrd
+import xlwt
 
 # Create your views here.
 
@@ -445,4 +446,9 @@ def import_xls(request):
     return HttpResponse(json.dumps({'success': 1}))
 
 def export_xls(request):
-    pass
+    book = xlwt.Workbook(encoding='utf8')
+    sheet = book.add_sheet('分类')
+    response = HttpResponse(content_type='application/vnd.ms-excel')
+    response['Content-Disposition'] = u'attachment; filename=分类.xls'
+    book.save(response)
+    return response

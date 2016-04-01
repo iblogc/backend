@@ -659,6 +659,10 @@ var categoryApp = function () {
                 location.reload();
             }
         });
+    };
+
+    var export_xls = function() {
+        window.open('/products/export/');
     }
 
     return {
@@ -693,7 +697,8 @@ var categoryApp = function () {
 
             $('input[name=file]').on('change', function(){
                 $('.modal-body-3 input[type=text]').val(this.files[0].name);
-            })
+            });
+            $('.js-export-button').on('click', export_xls);
         }
     }
 }();
