@@ -73,7 +73,7 @@
 }
 
 .category-main>.category-main-list {
-    height: 360px;
+    height: 230px;
     border-bottom: 1px #d3d3d3 solid;
     -webkit-border-radius: 0 0 3px 3px;
     -moz-border-radius: 0 0 3px 3px;
@@ -104,7 +104,7 @@
     height: 30px;
     line-height: 30px;
     position: absolute;
-    top: 330px;
+    top: 200px;
     border-top: 1px solid #d3d3d3;
     padding-top: 2px;
 }
@@ -139,7 +139,7 @@
 
 .category-main>.category-main-list>.overflow {
     width: 198px;
-    height: 330px;
+    height: 200px;
     overflow-x: hidden;
     overflow-y: auto;
 }
@@ -169,7 +169,7 @@
 }
 
 
-.modal-body-1, .modal-body-2, .modal-body-3 {
+.modal-body-1, .modal-body-2, .modal-body-3, .modal-body-4, .modal-body-5, .modal-body-6 {
     width: 100%;
     position: relative;
 }
@@ -261,6 +261,87 @@
     display: none;
 }
 
+/* setting */
+
+.modal-body-4 {
+    padding-top: 10px;
+}
+
+.modal-body-4 > .modal-row {
+    font-size: 0px;
+    margin: 0 auto;
+    width: 480px;
+}
+
+.modal-body-4 > .modal-row > div {
+    display: inline-block;
+    width: 120px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 12px;
+    text-align: center;
+    vertical-align: top;
+}
+
+.modal-body-4 > .modal-row > div > select {
+    width: 100px;
+    height: 26px;
+    padding: 3px 5px;
+    font-size: 12px;
+    margin: 2px auto;
+}
+
+.modal-body-4 > .modal-row > .modal-span {
+    font-size: 20px;
+}
+
+.modal-body-4 .modal-span>span:hover {
+    color: #333;
+    cursor: pointer;
+}
+
+.modal-body-4 .modal-btn {
+    height: 24px;
+    margin-top: 3px;
+    line-height: 24px;
+    width: 80px;
+    padding: 0 5px;
+    font-size: 12px;
+}
+
+.modal-body-5 > .modal-row {
+    width: 80%;
+    margin: 0 auto;
+    position: relative;
+}
+
+.modal-body-5 > .modal-row >div {
+    font-size: 14px;
+}
+
+.modal-body-5 > .modal-row .form-control{
+    -webkit-border-radius: 0px!important;
+    -moz-border-radius: 0px!important;
+    border-radius: 0px!important;
+    font-size: 12px;
+    padding: 3px 6px;
+    width: 430px;
+    display: inline-block!important;
+    background: #fff!important;
+}
+
+.modal-body-5 > .modal-row .form-control + span{
+    cursor: pointer;
+    background: #fff;
+    width: 40px;
+    margin-left: -1px;
+    height: 34px;
+    border: #d3d3d3 1px solid;
+    display: inline-block;
+    vertical-align: top;
+    padding-top: 10px;
+    text-align: center;
+}
 
 /* list hover & selected */
 .category-main .selected {
