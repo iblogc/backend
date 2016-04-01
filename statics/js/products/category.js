@@ -666,7 +666,7 @@ var categoryApp = function () {
             $('.js-first-category').on('click', first_category_onclick);
             $('.js-add-second-category').on('click', add_second_category);
             $('.js-add-third-category').on('click', add_third_category);
-            $('.js-add-comnapy').on('click', add_company);
+            $('.js-add-company').on('click', add_company);
             $('.js-add-brand').on('click', add_brand);
             $('.js-add-series').on('click', add_series);
             $('.js-delete-second-category').on('click', delete_second_category);

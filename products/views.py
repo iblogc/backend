@@ -409,7 +409,37 @@ class SeriesUpdateView(LoginRequiredMixin, TemplateView):
 class ImportView(LoginRequiredMixin, TemplateView):
     def post(self, request, *args, **kwargs):
         xls_file = request.FILES.get('file')
-        import ipdb;ipdb.set_trace()
-        data = xlrd.open_workbook(xls_file)
+        data = xlrd.open_workbook(file_contents=xls_file.read())
         table = data.sheets()[0]
+        row_count = table.nrows
+        cell_count = table.ncols
+        print row_count,cell_count
+        first_category = ''
+        second_category = ''
+        third_category = ''
+        company_name = ''
+        brand_name = ''
+        series_name = ''
+        datas_array = []
+        for row_no in range(1, row_count):
+            cells = table.row_values(row_no)
+            if cells:
+                if cells[0].strip() != '':
+                    first_category = cells[0].strip()
+                if cells[1].strip() != '':
+                    second_category = cells[1].strip()
+                if cells[2].strip() != '':
+                    third_category = cells[2].strip()
+                if cells[3].strip() != '':
+                    company_name = cells[3].strip()
+                if cells[4].strip() != '':
+                    brand_name = cells[4].strip()
+                if cells[5].strip() != '':
+                    series_name = cells[5].strip()
+                if first_category == '':
+                    continue
+                datas_array.append((first_category,second_category,third_category,company_name,brand_name,series_name))
+        print datas_array
+        for data_dict in datas_array:
+            first_category,flag = ProductCategory.objects.get_or_create(name=data_dict[1])
         return HttpResponse(json.dumps({'success': 1}))
