@@ -168,8 +168,10 @@
 }
 
 
+/*  */
 
 
+/* upload file */
 .modal-body-3 {
     width: 100%;
     position: relative;
@@ -200,6 +202,8 @@
     display: none;
 }
 
+
+/* list hover & selected */
 .category-main .selected {
     background: #d3d3d3;
 }
