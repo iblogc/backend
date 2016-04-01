@@ -19,6 +19,10 @@ from product_utils import *
 from gezbackend.utils import *
 
 import xlrd
+import xlwt
+from xlsxwriter.workbook import Workbook
+import StringIO
+
 
 # Create your views here.
 
@@ -292,10 +296,12 @@ def category_create(request, category_id):
     category_dict['id'] = category.id
     return HttpResponse(json.dumps(category_dict))
 
+
 def category_update(request, category_id):
     name = request.POST.get('name').strip()
     ProductCategory.objects.filter(pk=category_id).update(name=name)
-    return HttpResponse(json.dumps({'success':1}))
+    return HttpResponse(json.dumps({'success': 1}))
+
 
 def category_delete(request, category_id):
     parent_category = ProductCategory.objects.get(pk=category_id)
@@ -332,6 +338,7 @@ def company_update(request, company_id):
     Company.objects.filter(pk=company_id).update(name=name)
     return HttpResponse(json.dumps({'success': 1}))
 
+
 def brands(request, category_id, company_id):
     brands = get_company_brands(category_id, company_id)
     return HttpResponse(json.dumps(brands))
@@ -355,7 +362,7 @@ def brand_delete(request, category_id, company_id, brand_id):
     brand = ProductBrand.objects.get(pk=brand_id)
     CompanyBrand.objects.filter(company=company, brand=brand).delete()
     if not brand.companies.exists():
-        CategoryBrand.objects.filter(category=category,brand=brand).delete()
+        CategoryBrand.objects.filter(category=category, brand=brand).delete()
     return HttpResponse(json.dumps({'success': 1}))
 
 
@@ -363,6 +370,7 @@ def brand_update(request, brand_id):
     name = request.POST.get('name').strip()
     ProductBrand.objects.filter(pk=brand_id).update(name=name)
     return HttpResponse(json.dumps({'success': 1}))
+
 
 def brand_series(request, brand_id):
     series = get_brand_series(brand_id)
@@ -380,9 +388,11 @@ def series_create(request, brand_id):
     series_dict['id'] = series.id
     return HttpResponse(json.dumps(series_dict))
 
+
 def series_delete(request, series_id):
     ProductBrandSeries.objects.filter(pk=series_id).delete()
-    return HttpResponse(json.dumps({'success':1}))
+    return HttpResponse(json.dumps({'success': 1}))
+
 
 def series_update(request, series_id):
     name = request.POST.get('name').strip()
@@ -396,7 +406,7 @@ def import_xls(request):
     table = data.sheets()[0]
     row_count = table.nrows
     cell_count = table.ncols
-    print row_count,cell_count
+    print row_count, cell_count
     first_category = ''
     second_category = ''
     third_category = ''
@@ -421,28 +431,78 @@ def import_xls(request):
                 series_name = cells[5].strip()
             if first_category == '':
                 continue
-            datas_array.append((first_category,second_category,third_category,company_name,brand_name,series_name))
+            datas_array.append((first_category, second_category, third_category, company_name, brand_name, series_name))
     print datas_array
     for data_dict in datas_array:
         try:
-            first_category,flag = ProductCategory.objects.get_or_create(name=data_dict[0],step=1)
-            second_category,flag = ProductCategory.objects.get_or_create(name=data_dict[1],step=2,parent_category=first_category)
-            third_category,flag = ProductCategory.objects.get_or_create(name=data_dict[2],step=3,parent_category=second_category)
+            first_category, flag = ProductCategory.objects.get_or_create(name=data_dict[0], step=1)
+            second_category, flag = ProductCategory.objects.get_or_create(name=data_dict[1], step=2,
+                                                                          parent_category=first_category)
+            third_category, flag = ProductCategory.objects.get_or_create(name=data_dict[2], step=3,
+                                                                         parent_category=second_category)
             if data_dict[3] == '':
                 continue
-            company,flag = Company.objects.get_or_create(name=data_dict[3])
+            company, flag = Company.objects.get_or_create(name=data_dict[3])
             if data_dict[4] == '':
                 continue
-            CategoryCompany.objects.get_or_create(category=third_category,company=company)
-            brand,flag = ProductBrand.objects.get_or_create(name=data_dict[4])
-            CategoryBrand.objects.get_or_create(category=third_category,brand=brand)
-            CompanyBrand.objects.get_or_create(company=company,brand=brand)
+            CategoryCompany.objects.get_or_create(category=third_category, company=company)
+            brand, flag = ProductBrand.objects.get_or_create(name=data_dict[4])
+            CategoryBrand.objects.get_or_create(category=third_category, brand=brand)
+            CompanyBrand.objects.get_or_create(company=company, brand=brand)
             if data_dict[5] == '':
                 continue
-            series,flag = ProductBrandSeries.objects.get_or_create(name=data_dict[5],brand=brand)
+            series, flag = ProductBrandSeries.objects.get_or_create(name=data_dict[5], brand=brand)
         except Exception as e:
             print e.message
     return HttpResponse(json.dumps({'success': 1}))
 
+
 def export_xls(request):
-    pass
+    output = StringIO.StringIO()
+
+    with Workbook(output) as book:
+        format = book.add_format()
+        format.set_border(1)
+        format.set_align('center')
+        format.set_valign('vcenter')
+        sheet = book.add_worksheet('test')
+        sheet.write(0, 0, u'一级分类', format)
+        sheet.write(0, 1, u'二级分类', format)
+        sheet.write(0, 2, u'三级分类', format)
+        sheet.write(0, 3, u'厂家', format)
+        sheet.write(0, 4, u'品牌', format)
+        sheet.write(0, 5, u'系列', format)
+
+        sheet.set_column(0, 0, 10)
+        sheet.set_column(1, 1, 15)
+        sheet.set_column(2, 2, 30)
+        sheet.set_column(3, 3, 10)
+        sheet.set_column(4, 4, 10)
+        sheet.set_column(5, 5, 10)
+
+        categories = ProductCategory.objects.filter(step=1)
+        row_no = 1
+        for category in categories:
+            first_row = row_no
+            for c2 in category.sub_categories.all():
+                second_row = row_no
+                for c3 in c2.sub_categories.all():
+                    for company in c3.companies.all():
+                        for brand in company.brands.filter(companies=company):
+                            for series in brand.series.all():
+                                sheet.write(row_no, 2, c3.name, format)
+                                sheet.write(row_no, 3, company.name, format)
+                                sheet.write(row_no, 4, brand.name, format)
+                                sheet.write(row_no, 5, series.name, format)
+                                row_no += 1
+                sheet.merge_range(second_row, 1, row_no-1, 1, c2.name, format)
+            sheet.merge_range(first_row, 0, row_no-1, 0, category.name, format)
+
+            # construct response
+
+    output.seek(0)
+    response = HttpResponse(output.read(),
+                            content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+    response['Content-Disposition'] = u"attachment; filename='s%s.xlsx'" % datetime.datetime.now().microsecond
+
+    return response

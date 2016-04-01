@@ -96,6 +96,7 @@ class ProductCategory(models.Model):
         else:
             return 'c%s' ^ self.no
 
+
 class CategoryCompany(models.Model):
     category = models.ForeignKey('ProductCategory')
     company = models.ForeignKey('customers.Company')

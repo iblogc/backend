@@ -688,6 +688,7 @@ var categoryApp = function () {
         });
     };
 
+
     var setting = function(){
         $('#settingForm').modal('show');
         //$('#settingForm .modal-body-5').hide();
@@ -712,6 +713,11 @@ var categoryApp = function () {
         }
         $(this).attr('data-status', !eval($(this).attr('data-status')));
     };
+
+    var export_xls = function() {
+        window.open('/products/export/');
+    };
+
 
     return {
 
@@ -749,7 +755,7 @@ var categoryApp = function () {
             $('input[name=file]').on('change', function(){
                 $('.modal-body-3 input[type=text]').val(this.files[0].name);
             });
-
+            $('.js-export-button').on('click', export_xls);
             $('button[data-for=batch-delete]').on('click', batchDelete);
 
             $('button[data-for=batch-delete]').hide();
