@@ -84,6 +84,9 @@ class ProductCategory(models.Model):
     companies = models.ManyToManyField("customers.Company", through='CategoryCompany',related_name='categories')
     brands = models.ManyToManyField('ProductBrand', through='CategoryBrand',related_name='categories')
 
+    def __unicode__(self):
+        return '%s, %s' % (self.name,self.id)
+
     @property
     def category_no(self):
         if self.step == 1:

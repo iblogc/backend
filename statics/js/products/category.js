@@ -57,7 +57,7 @@ var categoryApp = function () {
                 $('.js-series-div').empty();
                 for (var index in data) {
                     var category = data[index];
-                    $('.js-second-category-div').append('<div class="header js-second-category" data-id="' + category.id + '"><input type="checkbox" name="second-category-id" value="' + category.id + '"><div class="center-line">' + category.name + '</div></div>');
+                    $('.js-second-category-div').append('<div class="header js-second-category" data-id="' + category.id + '"><input type="checkbox" name="second-category-id" value="' + category.id + '"><div class="center-line js-second-category-name">' + category.name + '</div></div>');
                 }
                 $('.js-second-category').bind('click', second_category_onclick);
                 checkboxHide();
@@ -93,7 +93,7 @@ var categoryApp = function () {
                 $('.js-series-div').empty();
                 for (var index in data) {
                     var category = data[index];
-                    $('.js-third-category-div').append('<div class="header js-third-category" data-id="' + category.id + '"><input type="checkbox" name="third-category-id" value="' + category.id + '"><div class="center-line">' + category.name + '</div></div>');
+                    $('.js-third-category-div').append('<div class="header js-third-category" data-id="' + category.id + '"><input type="checkbox" name="third-category-id" value="' + category.id + '"><div class="center-line js-third-category-name">' + category.name + '</div></div>');
                 }
                 $('.js-third-category').bind('click', third_category_onclick);
                 checkboxHide();
@@ -127,7 +127,7 @@ var categoryApp = function () {
                 $('.js-series-div').empty();
                 for (var index in data) {
                     var category = data[index];
-                    $('.js-company-div').append('<div class="header js-company" data-id="' + category.id + '"><input type="checkbox" name="company-id" value="' + category.id + '"><div class="center-line">' + category.name + '</div></div>');
+                    $('.js-company-div').append('<div class="header js-company" data-id="' + category.id + '"><input type="checkbox" name="company-id" value="' + category.id + '"><div class="center-line js-company-name">' + category.name + '</div></div>');
                 }
                 $('.js-company').bind('click', company_onclick);
                 checkboxHide();
@@ -159,7 +159,7 @@ var categoryApp = function () {
                 $('.js-series-div').empty();
                 for (var index in data) {
                     var category = data[index];
-                    $('.js-brand-div').append('<div class="header js-brand" data-id="' + category.id + '"><input type="checkbox" name="brand-id" value="' + category.id + '"><div class="center-line">' + category.name + '</div></div>');
+                    $('.js-brand-div').append('<div class="header js-brand" data-id="' + category.id + '"><input type="checkbox" name="brand-id" value="' + category.id + '"><div class="center-line js-brand-name">' + category.name + '</div></div>');
                 }
                 $('.js-brand').bind('click', brand_onclick);
                 checkboxHide();
@@ -188,7 +188,7 @@ var categoryApp = function () {
                 $('.js-series-div').empty();
                 for (var index in data) {
                     var category = data[index];
-                    $('.js-series-div').append('<div class="header js-series" data-id="' + category.id + '"><input type="checkbox"  name="series-id" value="' + category.id + '"><div class="center-line">' + category.name + '</div></div>');
+                    $('.js-series-div').append('<div class="header js-series" data-id="' + category.id + '"><input type="checkbox"  name="series-id" value="' + category.id + '"><div class="center-line js-series-name">' + category.name + '</div></div>');
                 }
                 $('.js-series').bind('click', series_onclick);
                 checkboxHide();
@@ -267,7 +267,7 @@ var categoryApp = function () {
 
     var save_second_category = function () {
         var category_name = $('.js-modal-category-name').val();
-        if (second_category == 0 && first_category != 0) {
+        if (first_category != 0) {
             $.post(
                 "/products/sub_category/" + first_category + "/create/",
                 {
@@ -276,7 +276,7 @@ var categoryApp = function () {
                     'step': step
                 },
                 function (data) {
-                    $('.js-second-category-div').append('<div class="header js-second-category" data-id="' + data.id + '"><input type="checkbox" name="second-category-id" value="' + data.id + '"><div class="center-line">' + data.name + '</div></div>');
+                    $('.js-second-category-div').append('<div class="header js-second-category" data-id="' + data.id + '"><input type="checkbox" name="second-category-id" value="' + data.id + '"><div class="center-line js-second-category-name">' + data.name + '</div></div>');
                     $('div.js-second-category[data-id="' + data.id + '"]').on('click', second_category_onclick);
                 },
                 "json"
@@ -297,7 +297,7 @@ var categoryApp = function () {
                     'step': step
                 },
                 function (data) {
-                    $('.js-third-category-div').append('<div class="header js-third-category" data-id="' + data.id + '"><input type="checkbox" name="third-category-id" value="' + data.id + '"><div class="center-line">' + data.name + '</div></div>');
+                    $('.js-third-category-div').append('<div class="header js-third-category" data-id="' + data.id + '"><input type="checkbox" name="third-category-id" value="' + data.id + '"><div class="center-line js-third-category-name">' + data.name + '</div></div>');
                     $('div.js-third-category[data-id="' + data.id + '"]').on('click', third_category_onclick);
                 },
                 "json"
@@ -317,7 +317,7 @@ var categoryApp = function () {
                     'name': company_name,
                 },
                 function (data) {
-                    $('.js-company-div').append('<div class="header js-company" data-id="' + data.id + '"><input type="checkbox" name="company-id" value="' + data.id + '"><div class="center-line">' + data.name + '</div></div>');
+                    $('.js-company-div').append('<div class="header js-company" data-id="' + data.id + '"><input type="checkbox" name="company-id" value="' + data.id + '"><div class="center-line js-company-name">' + data.name + '</div></div>');
                     $('div.js-company[data-id="' + data.id + '"]').on('click', company_onclick);
                 },
                 "json"
@@ -337,7 +337,7 @@ var categoryApp = function () {
                     'name': brand_name,
                 },
                 function (data) {
-                    $('.js-brand-div').append('<div class="header js-brand" data-id="' + data.id + '"><input type="checkbox" name="brand-id" value="' + data.id + '"><div class="center-line">' + data.name + '</div></div>');
+                    $('.js-brand-div').append('<div class="header js-brand" data-id="' + data.id + '"><input type="checkbox" name="brand-id" value="' + data.id + '"><div class="center-line js-brand-name">' + data.name + '</div></div>');
                     $('div.js-brand[data-id="' + data.id + '"]').on('click', brand_onclick);
                 },
                 "json"
@@ -357,7 +357,7 @@ var categoryApp = function () {
                     'name': series_name,
                 },
                 function (data) {
-                    $('.js-series-div').append('<div class="header js-series" data-id="' + data.id + '"><input type="checkbox" name="series-id" value="' + data.id + '"><div class="center-line">' + data.name + '</div></div>');
+                    $('.js-series-div').append('<div class="header js-series" data-id="' + data.id + '"><input type="checkbox" name="series-id" value="' + data.id + '"><div class="center-line js-series-name">' + data.name + '</div></div>');
                     $('div.js-series[data-id="' + data.id + '"]').on('click', series_onclick);
                 },
                 "json"
@@ -682,7 +682,8 @@ var categoryApp = function () {
             processData: false, // Don't process the files
             contentType: false, // Set content type to false as jQuery will tell the server its a query string request
             success: function () {
-                alert("Data Uploaded: ");
+                $('#importForm').modal('hide');
+                location.reload();
             }
         });
     }

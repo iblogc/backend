@@ -1,7 +1,7 @@
 from django.conf.urls import include, url, patterns
 from products.views import *
 
-urlpatterns = patterns('',
+urlpatterns = patterns('products.views',
     #products manage
     url(r'pdt/$', ProductView.as_view(), name='product'),
     url(r'active/(?P<pk>\d+)/$', ProductActiveView.as_view(), name='product-active'),
@@ -10,28 +10,30 @@ urlpatterns = patterns('',
 
     #category manage
     url(r'category/$', CategoryView.as_view(), name='category'),
-    url(r'sub_category/(?P<pk>\d+)/$', SubCategoryView.as_view(), name='sub-category'),
-    url(r'sub_category/(?P<pk>\d+)/delete/$', SubCategoryDeleteView.as_view(), name='sub-category-delete'),
-    url(r'sub_category/(?P<pk>\d+)/create/$', SubCategoryCreateView.as_view(), name='sub-category-create'),
-    url(r'sub_category/(?P<pk>\d+)/update/$', SubCategoryUpdateView.as_view(), name='sub-category-update'),
-    url(r'sub_category/(?P<pk>\d+)/companies/$', SubCategoryCompaniesView.as_view(), name='sub-category-companies'),
-    url(r'sub_category/(?P<pk>\d+)/company/create/$', SubCategoryCompanyCreateView.as_view(), name='sub-category-company-create'),
+    url(r'sub_category/(?P<category_id>\d+)/$', 'sub_categories', name='sub-category'),
+    url(r'sub_category/(?P<category_id>\d+)/delete/$', 'category_delete', name='sub-category-delete'),
+    url(r'sub_category/(?P<category_id>\d+)/create/$', 'category_create', name='sub-category-create'),
+    url(r'sub_category/(?P<category_id>\d+)/update/$', 'category_update', name='sub-category-update'),
+    url(r'sub_category/(?P<category_id>\d+)/companies/$', 'companies', name='sub-category-companies'),
+    url(r'sub_category/(?P<category_id>\d+)/company/create/$', 'company_create', name='sub-category-company-create'),
 
     #company brand series
-    url(r'company/(?P<category_id>\d+)/(?P<company_id>\d+)/delete/$', SubCategoryCompanyDeleteView.as_view(), name='company-delete'),
-    url(r'company/(?P<pk>\d+)/update/$', CompanyUpdateView.as_view(),
+    url(r'company/(?P<category_id>\d+)/(?P<company_id>\d+)/delete/$', 'company_delete', name='company-delete'),
+    url(r'company/(?P<company_id>\d+)/update/$', 'company_update',
         name='company-update'),
-    url(r'company/(?P<category_id>\d+)/(?P<company_id>\d+)/brands/$', CompanyBrandView.as_view(), name='company-brand'),
-    url(r'company/(?P<category_id>\d+)/(?P<company_id>\d+)/brand/create/$', CompanyBrandCreateView.as_view(), name='company-brand-create'),
+    url(r'company/(?P<category_id>\d+)/(?P<company_id>\d+)/brands/$', 'brands', name='company-brand'),
+    url(r'company/(?P<category_id>\d+)/(?P<company_id>\d+)/brand/create/$', 'brand_create', name='company-brand-create'),
     #brand series
-    url(r'brand/(?P<pk>\d+)/series/$', BrandSeriesView.as_view(), name='brand-series'),
-    url(r'brand/(?P<pk>\d+)/update/$', CompanyBrandUpdateView.as_view(), name='brand-update'),
-    url(r'brand/(?P<category_id>\d+)/(?P<company_id>\d+)/(?P<brand_id>\d+)/delete/$', CompanyBrandDeleteView.as_view(),
+    url(r'brand/(?P<brand_id>\d+)/series/$', 'brand_series', name='brand-series'),
+    url(r'brand/(?P<brand_id>\d+)/update/$', 'brand_update', name='brand-update'),
+    url(r'brand/(?P<category_id>\d+)/(?P<company_id>\d+)/(?P<brand_id>\d+)/delete/$', 'brand_delete',
         name='brand-delete'),
-    url(r'brand/(?P<pk>\d+)/series/create/$', BrandSeriesCreateView.as_view(), name='brand-series-create'),
+    url(r'brand/(?P<brand_id>\d+)/series/create/$', 'series_create', name='brand-series-create'),
 
-    url(r'series/(?P<pk>\d+)/delete/$', SeriesDeleteView.as_view(), name='series-delete'),
-    url(r'series/(?P<pk>\d+)/update/$', SeriesUpdateView.as_view(), name='series-update'),
+    url(r'series/(?P<series_id>\d+)/delete/$', 'series_delete', name='series-delete'),
+    url(r'series/(?P<series_id>\d+)/update/$', 'series_update', name='series-update'),
     # import
-    url(r'import/$', ImportView.as_view(), name='import'),
+    url(r'import/$', 'import_xls', name='import'),
+
+    url(r'export/$', 'export_xls', name='import'),
 )
