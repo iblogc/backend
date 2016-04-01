@@ -12,3 +12,4 @@ django-filter==0.13.0
 django-braces==1.8.1
 xlrd==0.9.4
 xlwt==1.0.0
+xlsxwriter==0.8.4
