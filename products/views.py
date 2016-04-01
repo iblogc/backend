@@ -495,7 +495,6 @@ def export_xls(request):
                                 sheet.write(row_no, 4, brand.name, format)
                                 sheet.write(row_no, 5, series.name, format)
                                 row_no += 1
-                print first_row, second_row, row_no
                 sheet.merge_range(second_row, 1, row_no-1, 1, c2.name, format)
             sheet.merge_range(first_row, 0, row_no-1, 0, category.name, format)
 
