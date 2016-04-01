@@ -11,8 +11,13 @@ var categoryApp = function () {
     var company = 0;
     var brand = 0;
 
+    var changeClass = function(obj){
+        $(obj).addClass('selected').siblings().removeClass('selected');
+    };
+
     var first_category_onclick = function () {
         first_category = $(this).attr('data-id');
+        changeClass(this);
         $('.js-first-category').each(function () {
             if ($(this).attr('data-id') == first_category) {
                 if (!$(this).hasClass('active'))
@@ -47,6 +52,7 @@ var categoryApp = function () {
 
     var second_category_onclick = function () {
         second_category = $(this).attr('data-id');
+        changeClass(this);
         $('.js-second-category').each(function () {
             if ($(this).attr('data-id') == second_category) {
                 if (!$(this).hasClass('active'))
@@ -79,6 +85,7 @@ var categoryApp = function () {
 
     var third_category_onclick = function () {
         third_category = $(this).attr('data-id');
+        changeClass(this);
         $('.js-third-category').each(function () {
             if ($(this).attr('data-id') == third_category) {
                 if (!$(this).hasClass('active'))
@@ -109,6 +116,7 @@ var categoryApp = function () {
 
     var company_onclick = function () {
         company = $(this).attr('data-id');
+        changeClass(this);
         $('.js-company').each(function () {
             if ($(this).attr('data-id') == company) {
                 if (!$(this).hasClass('active'))
@@ -137,6 +145,7 @@ var categoryApp = function () {
 
     var brand_onclick = function () {
         brand = $(this).attr('data-id');
+        changeClass(this);
         $('.js-brand').each(function () {
             if ($(this).attr('data-id') == brand) {
                 if (!$(this).hasClass('active'))
@@ -163,6 +172,7 @@ var categoryApp = function () {
 
     var series_onclick = function () {
         series = $(this).attr('data-id');
+        changeClass(this);
         $('.js-series').each(function () {
             if ($(this).attr('data-id') == series) {
                 if (!$(this).hasClass('active'))
@@ -644,7 +654,6 @@ var categoryApp = function () {
             dataType: 'json',
             processData: false, // Don't process the files
             contentType: false, // Set content type to false as jQuery will tell the server its a query string request
-
             success: function () {
                 alert("Data Uploaded: ");
             }
@@ -677,7 +686,13 @@ var categoryApp = function () {
                 $('#deleteCategoryForm').modal('hide');
             });
             $('.js-upload-button').on('click', upload_file);
+            $('.modal-body-3 input[type=text]').on('click', function(){
+                $('input[name=file]').click();
+            })
 
+            $('input[name=file]').on('change', function(){
+                $('.modal-body-3 input[type=text]').val(this.files[0].name);
+            })
         }
     }
 }();
