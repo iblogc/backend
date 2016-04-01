@@ -1,7 +1,7 @@
-from django.conf.urls import include, url
+from django.conf.urls import include, url, patterns
 from products.views import *
 
-urlpatterns = [
+urlpatterns = patterns('',
     #products manage
     url(r'pdt/$', ProductView.as_view(), name='product'),
     url(r'active/(?P<pk>\d+)/$', ProductActiveView.as_view(), name='product-active'),
@@ -32,4 +32,6 @@ urlpatterns = [
 
     url(r'series/(?P<pk>\d+)/delete/$', SeriesDeleteView.as_view(), name='series-delete'),
     url(r'series/(?P<pk>\d+)/update/$', SeriesUpdateView.as_view(), name='series-update'),
-]
+    # import
+    url(r'import/$', ImportView.as_view(), name='import'),
+)

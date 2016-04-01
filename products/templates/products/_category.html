@@ -26,7 +26,8 @@
                 </button>
                 <button id="select-Search"
                         class="btn btn-primary select1 select2 js-search-button"
-                        type="button">批量上传
+                        type="button" data-toggle="modal"
+                        data-target="#importForm" data-menuId="0">批量上传
                 </button>
                 <button id="select-Search"
                         class="btn btn-primary select1 select2 js-batch-delete-button"
@@ -96,7 +97,10 @@
                 {% for category in categories %}
                     <div class="row">
                         <div class="header js-first-category" data-id="{{ category.id }}"><a href="javascript:void(0);">
-                            <h5><div class="center-line">{{ category.name }}</div></h5></a></div>
+                            <h5>
+                                <div class="center-line">{{ category.name }}</div>
+                            </h5>
+                        </a></div>
                     </div>
                 {% endfor %}
 
@@ -121,21 +125,24 @@
         </div>
 
         <div class="category-body-list left">
-            <div class=""><i class="icon-plus-sign js-add-comnapy">&nbsp;添加</i><i class="icon-plus-sign js-delete-company">&nbsp;删除</i><i
+            <div class=""><i class="icon-plus-sign js-add-comnapy">&nbsp;添加</i><i
+                    class="icon-plus-sign js-delete-company">&nbsp;删除</i><i
                     class="icon-plus-sign js-edit-company">&nbsp;修改</i></div>
             <div class=" js-company-div overflow">
             </div>
 
         </div>
         <div class="category-body-list left">
-            <div class=""><i class="icon-plus-sign js-add-brand">&nbsp;添加</i><i class="icon-plus-sign js-delete-brand">&nbsp;删除</i><i
+            <div class=""><i class="icon-plus-sign js-add-brand">&nbsp;添加</i><i class="icon-plus-sign js-delete-brand">
+                &nbsp;删除</i><i
                     class="icon-plus-sign js-edit-brand">&nbsp;修改</i></div>
             <div class=" js-brand-div overflow">
             </div>
 
         </div>
         <div class="category-body-list left">
-            <div class=""><i class="icon-plus-sign js-add-series">&nbsp;添加</i><i class="icon-plus-sign  js-delete-series">&nbsp;删除</i><i
+            <div class=""><i class="icon-plus-sign js-add-series">&nbsp;添加</i><i
+                    class="icon-plus-sign  js-delete-series">&nbsp;删除</i><i
                     class="icon-plus-sign js-edit-series">&nbsp;修改</i><i
                     class="icon-plus-sign">&nbsp;编辑</i></div>
             <div class=" js-series-div overflow">
@@ -187,6 +194,29 @@
             </div>
             <div class="modal-footer">
 
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="importForm" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">批量上传:</h4>
+            </div>
+            <div class="modal-body-3">
+                <div class="modal-text left">选择文件:</div>
+                <div class="input-group"><input name="file" type="file" id="file">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary js-upload-button">上传</button>
             </div>
         </div>
     </div>

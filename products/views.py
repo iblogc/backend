@@ -18,6 +18,7 @@ from django.db.models import Q
 from product_utils import *
 from gezbackend.utils import *
 
+import xlrd
 
 # Create your views here.
 
@@ -402,4 +403,13 @@ class SeriesUpdateView(LoginRequiredMixin, TemplateView):
     def post(selfself, request, *args, **kwargs):
         name = request.POST.get('name').strip()
         ProductBrandSeries.objects.filter(pk=kwargs['pk']).update(name=name)
+        return HttpResponse(json.dumps({'success': 1}))
+
+
+class ImportView(LoginRequiredMixin, TemplateView):
+    def post(self, request, *args, **kwargs):
+        xls_file = request.FILES.get('file')
+        import ipdb;ipdb.set_trace()
+        data = xlrd.open_workbook(xls_file)
+        table = data.sheets()[0]
         return HttpResponse(json.dumps({'success': 1}))
