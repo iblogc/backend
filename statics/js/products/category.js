@@ -10,12 +10,31 @@ var categoryApp = function () {
     var step = 1;
     var company = 0;
     var brand = 0;
+    var checkboxFlag = false;
 
     var changeClass = function(obj){
         $(obj).addClass('selected').siblings().removeClass('selected');
     };
 
+    var checkboxHide = function(){
+        $('input[type=checkbox]').hide();
+        checkboxFlag = false;
+    };
+
+    var batchDelete = function(){
+        checkboxHide();
+        $('button[data-type=normal]').show();
+        $('button[data-for=batch-delete]').hide();
+        if($(this).attr('data-type') == 1){
+            console.log('confirm');
+        } else if($(this).attr('data-type') == 0){
+            console.log('cancel');
+        }
+        $('input[type=checkbox]').removeAttr("checked");
+    };
+
     var first_category_onclick = function () {
+        if(checkboxFlag) return;
         first_category = $(this).attr('data-id');
         changeClass(this);
         $('.js-first-category').each(function () {
@@ -41,6 +60,7 @@ var categoryApp = function () {
                     $('.js-second-category-div').append('<div class="header js-second-category" data-id="' + category.id + '"><input type="checkbox" name="second-category-id" value="' + category.id + '"><div class="center-line">' + category.name + '</div></div>');
                 }
                 $('.js-second-category').bind('click', second_category_onclick);
+                checkboxHide();
             },
             "json"
         );
@@ -51,6 +71,7 @@ var categoryApp = function () {
     };
 
     var second_category_onclick = function () {
+        if(checkboxFlag) return;
         second_category = $(this).attr('data-id');
         changeClass(this);
         $('.js-second-category').each(function () {
@@ -75,6 +96,7 @@ var categoryApp = function () {
                     $('.js-third-category-div').append('<div class="header js-third-category" data-id="' + category.id + '"><input type="checkbox" name="third-category-id" value="' + category.id + '"><div class="center-line">' + category.name + '</div></div>');
                 }
                 $('.js-third-category').bind('click', third_category_onclick);
+                checkboxHide();
             },
             "json"
         );
@@ -84,6 +106,7 @@ var categoryApp = function () {
     };
 
     var third_category_onclick = function () {
+        if(checkboxFlag) return;
         third_category = $(this).attr('data-id');
         changeClass(this);
         $('.js-third-category').each(function () {
@@ -107,6 +130,7 @@ var categoryApp = function () {
                     $('.js-company-div').append('<div class="header js-company" data-id="' + category.id + '"><input type="checkbox" name="company-id" value="' + category.id + '"><div class="center-line">' + category.name + '</div></div>');
                 }
                 $('.js-company').bind('click', company_onclick);
+                checkboxHide();
             },
             "json"
         );
@@ -115,6 +139,7 @@ var categoryApp = function () {
     };
 
     var company_onclick = function () {
+        if(checkboxFlag) return;
         company = $(this).attr('data-id');
         changeClass(this);
         $('.js-company').each(function () {
@@ -137,6 +162,7 @@ var categoryApp = function () {
                     $('.js-brand-div').append('<div class="header js-brand" data-id="' + category.id + '"><input type="checkbox" name="brand-id" value="' + category.id + '"><div class="center-line">' + category.name + '</div></div>');
                 }
                 $('.js-brand').bind('click', brand_onclick);
+                checkboxHide();
             },
             "json"
         );
@@ -165,6 +191,7 @@ var categoryApp = function () {
                     $('.js-series-div').append('<div class="header js-series" data-id="' + category.id + '"><input type="checkbox"  name="series-id" value="' + category.id + '"><div class="center-line">' + category.name + '</div></div>');
                 }
                 $('.js-series').bind('click', series_onclick);
+                checkboxHide();
             },
             "json"
         );
@@ -182,7 +209,7 @@ var categoryApp = function () {
                     $(this).removeClass('active');
             }
         });
-    }
+    };
 
     var add_second_category = function () {
         console.log(first_category);
@@ -236,7 +263,7 @@ var categoryApp = function () {
             $('.js-modal-category-label').html('系列名称');
             $('.js-modal-category-name').val('');
         }
-    }
+    };
 
     var save_second_category = function () {
         var category_name = $('.js-modal-category-name').val();
@@ -681,6 +708,9 @@ var categoryApp = function () {
             $('.js-edit-series').on('click', edit_series);
             $('.js-batch-delete-button').on('click', function () {
                 $('input[type="checkbox"]').show();
+                $('button[data-for=batch-delete]').show();
+                $('button[data-type=normal]').hide();
+                checkboxFlag = true;
             });
             $('.js-modal-cancel-button').on('click', function () {
                 $('#deleteCategoryForm').modal('hide');
@@ -688,11 +718,15 @@ var categoryApp = function () {
             $('.js-upload-button').on('click', upload_file);
             $('.modal-body-3 input[type=text]').on('click', function(){
                 $('input[name=file]').click();
-            })
+            });
 
             $('input[name=file]').on('change', function(){
                 $('.modal-body-3 input[type=text]').val(this.files[0].name);
-            })
+            });
+
+            $('button[data-for=batch-delete]').on('click', batchDelete);
+
+            $('button[data-for=batch-delete]').hide();
         }
     }
 }();
