@@ -11,7 +11,7 @@
 
 .category-top>:nth-child(1) {
     width: 420px;
-    padding-left: 35px;
+    padding-left: 25px;
 }
 
 .category-top>:nth-child(1)>input {
@@ -29,6 +29,7 @@
 
 .category-top {
     margin-bottom: 20px;
+    margin-top: 20px;
 }
 
 .category-main {
@@ -159,23 +160,21 @@
 
 .category-main>.category-main-list>.overflow>div>input {
     vertical-align: top;
-    width: 48px;
-    text-align: center;
+    margin-left: 17px;
 }
 
 .category-main>.category-main-list>.overflow>div>div {
-    width: 140px;
+    width: 158px;
+    padding-left: 18px;
 }
 
 
-
-
-.modal-body-3 {
+.modal-body-1, .modal-body-2, .modal-body-3 {
     width: 100%;
     position: relative;
 }
 
-.modal-body-3>* {
+.modal-body-1, .modal-body-2>*, .modal-body-3>* {
     display: inline-block;
     font-size: 14px;
     vertical-align: top;
@@ -184,12 +183,74 @@
     margin-top: 30px;
 }
 
-.modal-body-3>.modal-text {
+.modal-body-2>.modal-text, .modal-body-3>.modal-text {
     width: 200px;
     text-align: right;
     padding-right: 20px;
 }
 
+/* search-detail */
+.search-detail {
+    margin-top: 50px;
+}
+
+.search-detail>:last-child {
+    width: 50px;
+}
+
+.search-detail-row {
+    cursor: default;
+    height: 30px;
+    margin-left: 20px;
+    font-size: 0px;
+    margin-top: -1px;
+    background: #fff;
+}
+
+.search-detail-row>div {
+    height: 30px;
+    border: 1px #d3d3d3 solid;
+    cursor: default;
+    line-height: 30px;
+    display: inline-block;
+    width: 200px;
+    margin-left: -1px;
+    padding-left: 18px;
+    font-size: 14px;
+}
+
+.search-detail-row>div:last-child {
+    width: 50px;
+    padding-left: 0px;
+    text-align: center;
+    vertical-align: top;
+    padding-top: 8px;
+    cursor: pointer;
+}
+
+.search-detail-row>div:last-child:hover {
+    color: #333;
+}
+
+
+/* delete category*/
+.modal-body-1>div {
+    height: 30px;
+    line-height: 30px;
+    font-size: 20px;
+    text-align: center;
+    padding-right: 40px;
+    width: 100%;
+}
+
+
+/* add category */
+.modal-body-2>.form-control {
+    width: 200px;
+    background: #fff;
+}
+
+/* upload file */
 .modal-body-3>.form-control {
     width: 200px;
     cursor: pointer;
@@ -200,6 +261,8 @@
     display: none;
 }
 
+
+/* list hover & selected */
 .category-main .selected {
     background: #d3d3d3;
 }

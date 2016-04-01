@@ -12,7 +12,6 @@
     {#  <div class="utils-area col-md-2 right">#}
     {#    <a href="/product/category" role="button" class="btn btn-important" > 返回到分类设置 </a>#}
     {#  </div>#}
-    <h1>产品分类</h1>
     <div class="category-top">
          <div>
              关键字：
@@ -21,22 +20,30 @@
                     placeholder="搜索...">
          </div>
          <div>
-             <button id="select-Search"
+             <button id="select-Search" data-type="normal"
                      class="btn btn-primary select1 select2 js-search-button"
                      type="button">查询
              </button>
-             <button id="select-Search"
+             <button id="select-Search" data-type="normal"
                      class="btn btn-primary select1 select2 js-upload-button"
                      type="button" data-toggle="modal"
                         data-target="#importForm" data-menuId="0">批量上传
              </button>
-             <button id="select-Search"
+             <button id="select-Search" data-type="normal"
                      class="btn btn-primary select1 select2 js-batch-delete-button"
                      type="button">批量删除
              </button>
-             <button id="select-Search"
+             <button id="select-Search" data-type="normal"
                      class="btn btn-primary select1 select2 js-export-button"
                      type="button">导出
+             </button>
+             <button id="select-Search" data-for="batch-delete"
+                     class="btn btn-primary" data-type="1"
+                     type="button">确定
+             </button>
+             <button id="select-Search" data-for="batch-delete" data-type="0"
+                     class="btn btn-default"
+                     type="button">取消
              </button>
          </div>
     </div>
@@ -103,12 +110,40 @@
             <div class="edit">
                 <span class="icon-plus-sign js-add-series fa fa-plus last"></span>
                 <span class="icon-plus-sign js-delete-series fa fa-close last"></span>
-                <span class="icon-plus-sign js-edit-series fa fa-edit last"></span>
-                <span class="icon-plus-sign js-add-series fa fa-cogs last"></span>
+                <span class="icon-plus-sign js-add-series fa fa-edit last"></span>
+                <span class="icon-plus-sign js-add-series fa fa-cog last"></span>
             </div>
             <div class=" js-series-div overflow">
             </div>
         </div>
+    </div>
+
+    <div class="category-main search-detail">
+        <div class="category-main-title">一级分类</div>
+        <div class="category-main-title">二级分类</div>
+        <div class="category-main-title">三级分类</div>
+        <div class="category-main-title">厂家</div>
+        <div class="category-main-title">品牌</div>
+        <div class="category-main-title">系列</div>
+        <div class="category-main-title">设置</div>
+    </div>
+    <div class="search-detail-row">
+        <div>一级分类</div>
+        <div>二级分类</div>
+        <div>三级分类</div>
+        <div>厂家</div>
+        <div>品牌</div>
+        <div>系列</div>
+        <div><span class="fa fa-cog"></span></div>
+    </div>
+    <div class="search-detail-row">
+        <div>一级分类</div>
+        <div>二级分类</div>
+        <div>三级分类</div>
+        <div>厂家</div>
+        <div>品牌</div>
+        <div>系列</div>
+        <div><span class="fa fa-cog"></span></div>
     </div>
 </div>
 <div class="modal fade" id="addCategoryForm" tabindex="-1" role="dialog"
@@ -124,8 +159,7 @@
             </div>
             <div class="modal-body-2">
                 <div class="modal-text left js-modal-category-label">分类名称:</div>
-                <div class="input-group"><input name="name" class="js-modal-category-name select-text form-control">
-                </div>
+                <input name="name" class="js-modal-category-name select-text form-control">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary js-modal-save-button">保存</button>
@@ -144,16 +178,12 @@
                 </button>
                 <h4 class="modal-title" id="myModalLabel">删除分类:</h4>
             </div>
-            <div class="modal-body-3">
-                <div class="input-group"><h1>是否删除该分类？</h1>
-                </div>
-                <div class="input-group">
-                    <button type="button" class="btn btn-primary js-modal-confirm-button">保存</button>
-                    <button type="button" class="btn btn-warning js-modal-cancel-button">取消</button>
-                </div>
+            <div class="modal-body-1">
+                <div>是否删除该分类？</div>
             </div>
             <div class="modal-footer">
-
+                <button type="button" class="btn btn-primary js-modal-confirm-button">保存</button>
+                    <button type="button" class="btn btn-default js-modal-cancel-button">取消</button>
             </div>
         </div>
     </div>
