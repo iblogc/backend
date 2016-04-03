@@ -10,6 +10,7 @@ urlpatterns = [
 
     #category manage
     url(r'category/$', CategoryView.as_view(), name='category'),
+    url(r'category/search/$', category_search, name='category-search'),
     url(r'sub_category/(?P<category_id>\d+)/$', sub_categories, name='sub-category'),
     url(r'sub_category/(?P<category_id>\d+)/delete/$', category_delete, name='sub-category-delete'),
     url(r'sub_category/(?P<category_id>\d+)/create/$', category_create, name='sub-category-create'),

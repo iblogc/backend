@@ -286,12 +286,16 @@ def category_create(request, category_id):
     name = request.POST.get('name').strip()
     step = request.POST.get('step').strip()
     parent_category = ProductCategory.objects.get(pk=category_id)
+    max_no = 1
+    if ProductCategory.objects.filter(step=step).exists():
+        max_no = ProductCategory.objects.filter(step=step).order_by('-no')[0].no + 1
     category_dict = {'id': 0, 'name': name}
     category = ProductCategory()
     category.parent_category = parent_category
     category.name = name
     category.step = step
     category.status = 1
+    category.no = max_no
     category.save()
     category_dict['id'] = category.id
     return HttpResponse(json.dumps(category_dict))
@@ -319,8 +323,14 @@ def companies(request, category_id):
 def company_create(request, category_id):
     name = request.POST.get('name').strip()
     category = ProductCategory.objects.get(pk=category_id)
+    max_no = 1
+    if Company.objects.exists():
+        max_no = Company.objects.all().order_by('-no')[0].no + 1
     company_dict = {'id': 0, 'name': name}
     company, flag = Company.objects.get_or_create(name=name)
+    if company.no == 0:
+        company.no = max_no
+        company.save()
     CategoryCompany.objects.get_or_create(category=category, company=company)
     company_dict['id'] = company.id
     return HttpResponse(json.dumps(company_dict))
@@ -348,8 +358,14 @@ def brand_create(request, category_id, company_id):
     name = request.POST.get('name').strip()
     category = ProductCategory.objects.get(pk=category_id)
     company = Company.objects.get(pk=company_id)
+    max_no = 1
+    if ProductBrand.objects.exists():
+        max_no = ProductBrand.objects.all().order_by('-no')[0].no + 1
     brand_dict = {'id': 0, 'name': name}
     brand, flag = ProductBrand.objects.get_or_create(name=name)
+    if brand == 0:
+        brand.no = max_no
+        brand.save()
     CategoryBrand.objects.get_or_create(category=category, brand=brand)
     CompanyBrand.objects.get_or_create(company=company, brand=brand)
     brand_dict['id'] = brand.id
@@ -380,10 +396,14 @@ def brand_series(request, brand_id):
 def series_create(request, brand_id):
     name = request.POST.get('name').strip()
     brand = ProductBrand.objects.get(pk=brand_id)
+    max_no = 1
+    if ProductBrandSeries.objects.exists():
+        max_no = ProductBrandSeries.objects.all().order_by('-no')[0].no + 1
     series_dict = {'id': 0, 'name': name}
     series = ProductBrandSeries()
     series.name = name
     series.brand = brand
+    series.no = max_no
     series.save()
     series_dict['id'] = series.id
     return HttpResponse(json.dumps(series_dict))
@@ -435,23 +455,59 @@ def import_xls(request):
     print datas_array
     for data_dict in datas_array:
         try:
+            max_first_category_no = 1
+            max_second_category_no = 1
+            max_third_category_no = 1
+            max_company_no = 1
+            max_brand_no = 1
+            max_series_no = 1
+            if ProductCategory.objects.filter(step=1).exists():
+                max_first_category_no = ProductCategory.objects.filter(step=1).order_by('-no')[0].no + 1
             first_category, flag = ProductCategory.objects.get_or_create(name=data_dict[0], step=1)
+            if first_category.no == 0:
+                first_category.no = max_first_category_no
+                first_category.save()
+            if ProductCategory.objects.filter(step=2).exists():
+                max_second_category_no = ProductCategory.objects.filter(step=2).order_by('-no')[0].no + 1
             second_category, flag = ProductCategory.objects.get_or_create(name=data_dict[1], step=2,
                                                                           parent_category=first_category)
+            if second_category.no == 0:
+                second_category.no = max_second_category_no
+                second_category.save()
+            if ProductCategory.objects.filter(step=3).exists():
+                max_third_category_no = ProductCategory.objects.filter(step=3).order_by('-no')[0].no + 1
             third_category, flag = ProductCategory.objects.get_or_create(name=data_dict[2], step=3,
                                                                          parent_category=second_category)
+            if third_category.no == 0:
+                third_category.no = max_third_category_no
+                third_category.save()
             if data_dict[3] == '':
                 continue
+            if Company.objects.exists():
+                max_company_no = Company.objects.all().order_by('-no')[0].no + 1
             company, flag = Company.objects.get_or_create(name=data_dict[3])
+            if company.no == 0:
+                company.no = max_company_no
+                company.save()
             if data_dict[4] == '':
                 continue
             CategoryCompany.objects.get_or_create(category=third_category, company=company)
+            if ProductBrand.objects.exists():
+                max_brand_no = ProductBrand.objects.all().order_by('-no')[0].no + 1
             brand, flag = ProductBrand.objects.get_or_create(name=data_dict[4])
+            if brand.no == 0:
+                brand.no = max_brand_no
+                brand.save()
             CategoryBrand.objects.get_or_create(category=third_category, brand=brand)
             CompanyBrand.objects.get_or_create(company=company, brand=brand)
             if data_dict[5] == '':
                 continue
+            if ProductBrandSeries.objects.exists():
+                max_series_no = ProductBrandSeries.objects.all().order_by('-no')[0].no + 1
             series, flag = ProductBrandSeries.objects.get_or_create(name=data_dict[5], brand=brand)
+            if series.no == 0:
+                series.no = max_series_no
+                series.save()
         except Exception as e:
             print e.message
     return HttpResponse(json.dumps({'success': 1}))
@@ -488,15 +544,15 @@ def export_xls(request):
                 second_row = row_no
                 for c3 in c2.sub_categories.all():
                     for company in c3.companies.all():
-                        for brand in company.brands.filter(companies=company):
+                        for brand in c3.brands.filter(companies=company):
                             for series in brand.series.all():
                                 sheet.write(row_no, 2, c3.name, format)
                                 sheet.write(row_no, 3, company.name, format)
                                 sheet.write(row_no, 4, brand.name, format)
                                 sheet.write(row_no, 5, series.name, format)
                                 row_no += 1
-                sheet.merge_range(second_row, 1, row_no-1, 1, c2.name, format)
-            sheet.merge_range(first_row, 0, row_no-1, 0, category.name, format)
+                sheet.merge_range(second_row, 1, row_no - 1, 1, c2.name, format)
+            sheet.merge_range(first_row, 0, row_no - 1, 0, category.name, format)
 
             # construct response
 
@@ -506,3 +562,24 @@ def export_xls(request):
     response['Content-Disposition'] = u"attachment; filename='s%s.xlsx'" % datetime.datetime.now().microsecond
 
     return response
+
+
+def category_search(request):
+    kw = request.GET.get('kw').strip()
+    per_page = int(request.GET.get('per_page', 50))
+    page = int(request.GET.get('page', 1))
+    series = ProductBrandSeries.objects.filter(
+        Q(name__icontains=kw) | Q(brand__name__icontains=kw) | Q(brand__companies__name__icontains=kw) | Q(
+            brand__categories__name__icontains=kw) | Q(brand__categories__parent_category__name__icontains=kw) | Q(
+            brand__categories__parent_category__parent_category__name__icontains=kw))
+    result = []
+    for se in series:
+        for c3 in se.brand.categories.all():
+            for company in se.brand.companies.all():
+                result.append({'first_category': c3.parent_category.parent_category.name,
+                               'second_category': c3.parent_category.name, 'third_category': c3.name,
+                               'company': company.name, 'brand': se.brand.name, 'series': se.name,})
+    p = Paginator(result, per_page)
+    current_page = p.page(page)
+    total_pages = p.num_pages
+    return HttpResponse(json.dumps({'data':current_page.object_list,'total_pages':total_pages,'current_page':page,'id':se.id}))

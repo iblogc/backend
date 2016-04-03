@@ -12,29 +12,29 @@ var categoryApp = function () {
     var brand = 0;
     var checkboxFlag = false;
 
-    var changeClass = function(obj){
+    var changeClass = function (obj) {
         $(obj).addClass('selected').siblings().removeClass('selected');
     };
 
-    var checkboxHide = function(){
+    var checkboxHide = function () {
         $('input[type=checkbox]').hide();
         checkboxFlag = false;
     };
 
-    var batchDelete = function(){
+    var batchDelete = function () {
         checkboxHide();
         $('button[data-type=normal]').show();
         $('button[data-for=batch-delete]').hide();
-        if($(this).attr('data-type') == 1){
+        if ($(this).attr('data-type') == 1) {
             console.log('confirm');
-        } else if($(this).attr('data-type') == 0){
+        } else if ($(this).attr('data-type') == 0) {
             console.log('cancel');
         }
         $('input[type=checkbox]').removeAttr("checked");
     };
 
     var first_category_onclick = function () {
-        if(checkboxFlag) return;
+        if (checkboxFlag) return;
         first_category = $(this).attr('data-id');
         changeClass(this);
         $('.js-first-category').each(function () {
@@ -71,7 +71,7 @@ var categoryApp = function () {
     };
 
     var second_category_onclick = function () {
-        if(checkboxFlag) return;
+        if (checkboxFlag) return;
         second_category = $(this).attr('data-id');
         changeClass(this);
         $('.js-second-category').each(function () {
@@ -106,7 +106,7 @@ var categoryApp = function () {
     };
 
     var third_category_onclick = function () {
-        if(checkboxFlag) return;
+        if (checkboxFlag) return;
         third_category = $(this).attr('data-id');
         changeClass(this);
         $('.js-third-category').each(function () {
@@ -139,7 +139,7 @@ var categoryApp = function () {
     };
 
     var company_onclick = function () {
-        if(checkboxFlag) return;
+        if (checkboxFlag) return;
         company = $(this).attr('data-id');
         changeClass(this);
         $('.js-company').each(function () {
@@ -689,34 +689,62 @@ var categoryApp = function () {
     };
 
 
-    var setting = function(){
+    var setting = function () {
         $('#settingForm').modal('show');
         //$('#settingForm .modal-body-5').hide();
         //$('#settingForm .modal-body-6').hide();
         $('#settingForm button[data-for]').hide();
     };
 
-    var settingAction = function(){
-        if($(this).attr('data-action') == 'save'){
+    var settingAction = function () {
+        if ($(this).attr('data-action') == 'save') {
             console.log('save');
         }
         $('#settingForm').modal('hide');
     };
 
-    var modalEdit = function(){
-        if(!eval($(this).attr('data-status'))){
+    var modalEdit = function () {
+        if (!eval($(this).attr('data-status'))) {
             $(this).prev().removeAttr('readonly');
             $(this).html('save');
         } else {
-            $(this).prev().attr('readonly','readonly');
+            $(this).prev().attr('readonly', 'readonly');
             $(this).html('edit');
         }
         $(this).attr('data-status', !eval($(this).attr('data-status')));
     };
 
-    var export_xls = function() {
+    var export_xls = function () {
         window.open('/products/export/');
     };
+
+    var search_kw = function () {
+        var kw = $('.js-kw').val();
+        $.get(
+            "/products/category/search/",
+            {
+                'kw': kw,
+            },
+            function (data) {
+                $('.js-search-result').find('.js-search-detail').remove();
+                for (var result in data.data) {
+                    $('.js-search-result').append(
+                        '<div class="search-detail-row js-search-detail">' +
+                        '<div>' + data.data[result].first_category + '</div>' +
+                        '<div>' + data.data[result].second_category + '</div>' +
+                        '<div>' + data.data[result].third_category + '</div>' +
+                        '<div>' + data.data[result].company + '</div>' +
+                        '<div>' + data.data[result].brand + '</div>' +
+                        '<div>' + data.data[result].series + '</div>' +
+                        '<div><span class="fa fa-cog" data-id="' + data.data[result].id + '"></span></div>' +
+                        '</div>'
+                    );
+                }
+                $('.js-search-result').find('.fa-cog').on('click', setting);
+            },
+            "json"
+        );
+    }
 
 
     return {
@@ -748,11 +776,11 @@ var categoryApp = function () {
                 $('#deleteCategoryForm').modal('hide');
             });
             $('.js-upload-button').on('click', upload_file);
-            $('.modal-body-3 input[type=text]').on('click', function(){
+            $('.modal-body-3 input[type=text]').on('click', function () {
                 $('input[name=file]').click();
             });
 
-            $('input[name=file]').on('change', function(){
+            $('input[name=file]').on('change', function () {
                 $('.modal-body-3 input[type=text]').val(this.files[0].name);
             });
             $('.js-export-button').on('click', export_xls);
@@ -764,6 +792,8 @@ var categoryApp = function () {
             $('button[data-action]').on('click', settingAction);
 
             $('.modal-body-5 span[data-status]').on('click', modalEdit);
+
+            $('.js-search-button').on('click', search_kw);
         }
     }
 }();
