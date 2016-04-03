@@ -25,8 +25,99 @@ var categoryApp = function () {
         checkboxHide();
         $('button[data-type=normal]').show();
         $('button[data-for=batch-delete]').hide();
+        var selected_ids = new Array();
+        $('input[type="checkbox"]:checked').each(function () {
+            selected_ids.push($(this).val());
+        });
+        var ids = selected_ids.join(',');
         if ($(this).attr('data-type') == 1) {
             console.log('confirm');
+            if (brand != 0) {
+                $.post(
+                    encodeURI("/products/series/batch_delete/"),
+                    {
+                        'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+                        'ids': ids,
+                    },
+                    function (data) {
+                        if (data.success == 1) {
+                            for (var index in selected_ids) {
+                                $('div.js-series[data-id="' + selected_ids[index] + '"]').remove();
+                            }
+
+                        }
+                    },
+                    "json"
+                );
+            } else if (company != 0) {
+                $.post(
+                    encodeURI('/products/brand/' + third_category + '/' + company + '/batch_delete/'),
+                    {
+                        'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+                        'ids': ids,
+                    },
+                    function (data) {
+                        if (data.success == 1) {
+                            for (var index in selected_ids) {
+                                $('div.js-brand[data-id="' + selected_ids[index] + '"]').remove();
+                            }
+
+                        }
+                    },
+                    "json"
+                );
+            } else if (third_category != 0) {
+                $.post(
+                    encodeURI('/products/company/' + third_category + '/batch_delete/'),
+                    {
+                        'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+                        'ids': ids,
+                    },
+                    function (data) {
+                        if (data.success == 1) {
+                            for (var index in selected_ids) {
+                                $('div.js-company[data-id="' + selected_ids[index] + '"]').remove();
+                            }
+
+                        }
+                    },
+                    "json"
+                );
+            } else if (second_category != 0) {
+                $.post(
+                    encodeURI('/products/sub_category/batch_delete/'),
+                    {
+                        'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+                        'ids': ids,
+                    },
+                    function (data) {
+                        if (data.success == 1) {
+                            for (var index in selected_ids) {
+                                $('div.js-third-category[data-id="' + selected_ids[index] + '"]').remove();
+                            }
+
+                        }
+                    },
+                    "json"
+                );
+            } else if (first_category != 0) {
+                $.post(
+                    encodeURI('/products/sub_category/batch_delete/'),
+                    {
+                        'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+                        'ids': ids,
+                    },
+                    function (data) {
+                        if (data.success == 1) {
+                            for (var index in selected_ids) {
+                                $('div.js-second-category[data-id="' + selected_ids[index] + '"]').remove();
+                            }
+
+                        }
+                    },
+                    "json"
+                );
+            }
         } else if ($(this).attr('data-type') == 0) {
             console.log('cancel');
         }
@@ -34,6 +125,12 @@ var categoryApp = function () {
     };
 
     var first_category_onclick = function () {
+        $('.js-second-category-div').empty();
+        $('.js-third-category-div').empty();
+        $('.js-company-div').empty();
+        $('.js-brand-div').empty();
+        $('.js-series-div').empty();
+        first_category = 0;
         if (checkboxFlag) return;
         first_category = $(this).attr('data-id');
         changeClass(this);
@@ -50,11 +147,6 @@ var categoryApp = function () {
             "/products/sub_category/" + first_category + "/",
             {},
             function (data) {
-                $('.js-second-category-div').empty();
-                $('.js-third-category-div').empty();
-                $('.js-company-div').empty();
-                $('.js-brand-div').empty();
-                $('.js-series-div').empty();
                 for (var index in data) {
                     var category = data[index];
                     $('.js-second-category-div').append('<div class="header js-second-category" data-id="' + category.id + '"><input type="checkbox" name="second-category-id" value="' + category.id + '"><div class="center-line js-second-category-name">' + category.name + '</div></div>');
@@ -71,6 +163,11 @@ var categoryApp = function () {
     };
 
     var second_category_onclick = function () {
+        $('.js-third-category-div').empty();
+        $('.js-company-div').empty();
+        $('.js-brand-div').empty();
+        $('.js-series-div').empty();
+        second_category = 0;
         if (checkboxFlag) return;
         second_category = $(this).attr('data-id');
         changeClass(this);
@@ -87,10 +184,6 @@ var categoryApp = function () {
             "/products/sub_category/" + second_category + "/",
             {},
             function (data) {
-                $('.js-third-category-div').empty();
-                $('.js-company-div').empty();
-                $('.js-brand-div').empty();
-                $('.js-series-div').empty();
                 for (var index in data) {
                     var category = data[index];
                     $('.js-third-category-div').append('<div class="header js-third-category" data-id="' + category.id + '"><input type="checkbox" name="third-category-id" value="' + category.id + '"><div class="center-line js-third-category-name">' + category.name + '</div></div>');
@@ -106,6 +199,10 @@ var categoryApp = function () {
     };
 
     var third_category_onclick = function () {
+        $('.js-company-div').empty();
+        $('.js-brand-div').empty();
+        $('.js-series-div').empty();
+        third_category = 0;
         if (checkboxFlag) return;
         third_category = $(this).attr('data-id');
         changeClass(this);
@@ -122,9 +219,6 @@ var categoryApp = function () {
             "/products/sub_category/" + third_category + "/companies/",
             {},
             function (data) {
-                $('.js-company-div').empty();
-                $('.js-brand-div').empty();
-                $('.js-series-div').empty();
                 for (var index in data) {
                     var category = data[index];
                     $('.js-company-div').append('<div class="header js-company" data-id="' + category.id + '"><input type="checkbox" name="company-id" value="' + category.id + '"><div class="center-line js-company-name">' + category.name + '</div></div>');
@@ -139,6 +233,9 @@ var categoryApp = function () {
     };
 
     var company_onclick = function () {
+        $('.js-brand-div').empty();
+        $('.js-series-div').empty();
+        company = 0;
         if (checkboxFlag) return;
         company = $(this).attr('data-id');
         changeClass(this);
@@ -155,8 +252,7 @@ var categoryApp = function () {
             "/products/company/" + third_category + "/" + company + "/brands/",
             {},
             function (data) {
-                $('.js-brand-div').empty();
-                $('.js-series-div').empty();
+
                 for (var index in data) {
                     var category = data[index];
                     $('.js-brand-div').append('<div class="header js-brand" data-id="' + category.id + '"><input type="checkbox" name="brand-id" value="' + category.id + '"><div class="center-line js-brand-name">' + category.name + '</div></div>');
@@ -170,6 +266,9 @@ var categoryApp = function () {
     };
 
     var brand_onclick = function () {
+        $('.js-series-div').empty();
+        brand = 0;
+        if (checkboxFlag)  return;
         brand = $(this).attr('data-id');
         changeClass(this);
         $('.js-brand').each(function () {
@@ -185,7 +284,6 @@ var categoryApp = function () {
             "/products/brand/" + brand + "/series/",
             {},
             function (data) {
-                $('.js-series-div').empty();
                 for (var index in data) {
                     var category = data[index];
                     $('.js-series-div').append('<div class="header js-series" data-id="' + category.id + '"><input type="checkbox"  name="series-id" value="' + category.id + '"><div class="center-line js-series-name">' + category.name + '</div></div>');
@@ -278,6 +376,7 @@ var categoryApp = function () {
                 function (data) {
                     $('.js-second-category-div').append('<div class="header js-second-category" data-id="' + data.id + '"><input type="checkbox" name="second-category-id" value="' + data.id + '"><div class="center-line js-second-category-name">' + data.name + '</div></div>');
                     $('div.js-second-category[data-id="' + data.id + '"]').on('click', second_category_onclick);
+                    checkboxHide();
                 },
                 "json"
             );
@@ -299,6 +398,7 @@ var categoryApp = function () {
                 function (data) {
                     $('.js-third-category-div').append('<div class="header js-third-category" data-id="' + data.id + '"><input type="checkbox" name="third-category-id" value="' + data.id + '"><div class="center-line js-third-category-name">' + data.name + '</div></div>');
                     $('div.js-third-category[data-id="' + data.id + '"]').on('click', third_category_onclick);
+                    checkboxHide();
                 },
                 "json"
             );
@@ -319,6 +419,7 @@ var categoryApp = function () {
                 function (data) {
                     $('.js-company-div').append('<div class="header js-company" data-id="' + data.id + '"><input type="checkbox" name="company-id" value="' + data.id + '"><div class="center-line js-company-name">' + data.name + '</div></div>');
                     $('div.js-company[data-id="' + data.id + '"]').on('click', company_onclick);
+                    checkboxHide();
                 },
                 "json"
             );
@@ -339,6 +440,7 @@ var categoryApp = function () {
                 function (data) {
                     $('.js-brand-div').append('<div class="header js-brand" data-id="' + data.id + '"><input type="checkbox" name="brand-id" value="' + data.id + '"><div class="center-line js-brand-name">' + data.name + '</div></div>');
                     $('div.js-brand[data-id="' + data.id + '"]').on('click', brand_onclick);
+                    checkboxHide();
                 },
                 "json"
             );
@@ -359,6 +461,7 @@ var categoryApp = function () {
                 function (data) {
                     $('.js-series-div').append('<div class="header js-series" data-id="' + data.id + '"><input type="checkbox" name="series-id" value="' + data.id + '"><div class="center-line js-series-name">' + data.name + '</div></div>');
                     $('div.js-series[data-id="' + data.id + '"]').on('click', series_onclick);
+                    checkboxHide();
                 },
                 "json"
             );
@@ -503,8 +606,6 @@ var categoryApp = function () {
                 function (data) {
                     if (data.success == 1) {
                         $('div.js-series[data-id="' + series + '"]').remove();
-                        brand = 0;
-                        $('.js-series-div').empty();
                     }
                 },
                 "json"

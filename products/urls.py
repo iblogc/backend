@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'category/search/$', category_search, name='category-search'),
     url(r'sub_category/(?P<category_id>\d+)/$', sub_categories, name='sub-category'),
     url(r'sub_category/(?P<category_id>\d+)/delete/$', category_delete, name='sub-category-delete'),
+    url(r'sub_category/batch_delete/$', category_batch_delete, name='sub-category-batch-delete'),
     url(r'sub_category/(?P<category_id>\d+)/create/$', category_create, name='sub-category-create'),
     url(r'sub_category/(?P<category_id>\d+)/update/$', category_update, name='sub-category-update'),
     url(r'sub_category/(?P<category_id>\d+)/companies/$', companies, name='sub-category-companies'),
@@ -20,6 +21,7 @@ urlpatterns = [
 
     #company brand series
     url(r'company/(?P<category_id>\d+)/(?P<company_id>\d+)/delete/$', company_delete, name='company-delete'),
+    url(r'company/(?P<category_id>\d+)/batch_delete/$', company_batch_delete, name='company-batch-delete'),
     url(r'company/(?P<company_id>\d+)/update/$', company_update,
         name='company-update'),
     url(r'company/(?P<category_id>\d+)/(?P<company_id>\d+)/brands/$', brands, name='company-brand'),
@@ -29,9 +31,12 @@ urlpatterns = [
     url(r'brand/(?P<brand_id>\d+)/update/$', brand_update, name='brand-update'),
     url(r'brand/(?P<category_id>\d+)/(?P<company_id>\d+)/(?P<brand_id>\d+)/delete/$', brand_delete,
         name='brand-delete'),
+    url(r'brand/(?P<category_id>\d+)/(?P<company_id>\d+)/batch_delete/$', brand_batch_delete,
+        name='brand-batch-delete'),
     url(r'brand/(?P<brand_id>\d+)/series/create/$', series_create, name='brand-series-create'),
 
     url(r'series/(?P<series_id>\d+)/delete/$', series_delete, name='series-delete'),
+    url(r'series/batch_delete/$', series_batch_delete, name='series-batch-delete'),
     url(r'series/(?P<series_id>\d+)/update/$', series_update, name='series-update'),
     # import
     url(r'import/$', import_xls, name='import'),
