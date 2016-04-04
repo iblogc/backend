@@ -113,39 +113,14 @@ class CompanyBrand(models.Model):
 class ProductCategoryAttribute(models.Model):
     category = models.ForeignKey("ProductCategory", related_name='attributes', default=None, null=True, blank=True, on_delete=models.SET_NULL)
     name = models.CharField(max_length=100, default='', null=False)
-    type = models.CharField(max_length=10, default='', null=False)
     value = models.TextField()
-    is_search = models.IntegerField(default=0, null=False)
-    status = models.IntegerField(default=0, null=False)
-    create_time = models.IntegerField(default=0, null=False)
-    update_time = models.IntegerField(default=0, null=False)
+    searchable = models.BooleanField(default=True)
 
 # 产品分类属性数值信息表
 class ProductCategoryAttributeValue(models.Model):
     attribute = models.ForeignKey("ProductCategoryAttribute", related_name='values', default=None, null=True, blank=True, on_delete=models.SET_NULL)
-    parent_id = models.IntegerField(default=0, null=False)
-    name = models.CharField(max_length=100, default='', null=False)
-    status = models.IntegerField(default=0, null=False)
-    create_time = models.IntegerField(default=0, null=False)
-    update_time = models.IntegerField(default=0, null=False)
-
-
-class ProductCategorySearch(models.Model):
-    category = models.ForeignKey("ProductCategory", related_name='search', default=None, null=True, blank=True, on_delete=models.SET_NULL)
-    name = models.CharField(max_length=100, default='', null=False)
-    status = models.IntegerField(default=0, null=False)
-    create_time = models.IntegerField(default=0, null=False)
-    update_time = models.IntegerField(default=0, null=False)
-
-
-class ProductCategorySearchValue(models.Model):
-    id = models.AutoField(primary_key=True, unique=True)
-    search = models.ForeignKey("ProductCategorySearch", related_name='values', default=None, null=True, blank=True, on_delete=models.SET_NULL)
-    name = models.CharField(max_length=100, default='', null=False)
-    status = models.IntegerField(default=0, null=False)
-    create_time = models.IntegerField(default=0, null=False)
-    update_time = models.IntegerField(default=0, null=False)
-
+    series = models.ForeignKey("ProductBrandSeries", related_name='attribute_values', default=None, null=True, blank=True, on_delete=models.SET_NULL)
+    value = models.CharField(max_length=100, default='', null=False)
 
 # 产品品牌关系数据
 class ProductBrand(models.Model):

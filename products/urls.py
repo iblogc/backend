@@ -42,4 +42,15 @@ urlpatterns = [
     url(r'import/$', import_xls, name='import'),
 
     url(r'export/$', export_xls, name='export'),
+
+    url(r'category/attributes/(?P<category_id>\d+)/$', category_attributes, name='category-attributes'),
+    url(r'category/attribute/create/(?P<category_id>\d+)/$', category_attribute_create, name='category-attribute-create'),
+    url(r'category/attribute/delete/(?P<attribute_id>\d+)/$', category_attribute_delete,
+        name='category-attribute-delete'),
+
+    url(r'category/attribute/values/(?P<category_id>\d+)/(?P<series_id>\d+)/$', category_attribute_values, name='category-attribute-values'),
+    url(r'category/attribute/value/create/(?P<series_id>\d+)/(?P<attribute_id>\d+)/$', category_attribute_value_create,
+        name='category-attribute-value-create'),
+    url(r'category/attribute/value/create/(?P<value_id>\d+)/$', category_attribute_value_delete,
+        name='category-attribute-value-delete')
 ]

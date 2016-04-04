@@ -314,6 +314,7 @@ def category_delete(request, category_id):
     parent_category.delete()
     return HttpResponse(json.dumps({'success': 1}))
 
+
 def category_batch_delete(request):
     parent_categories = ProductCategory.objects.filter(pk__in=request.POST.get('ids').split(','))
     for parent_category in parent_categories:
@@ -350,12 +351,14 @@ def company_delete(request, category_id, company_id):
     CategoryCompany.objects.filter(company=company, category=category).delete()
     return HttpResponse(json.dumps({'success': 1}))
 
+
 def company_batch_delete(request, category_id):
     category = ProductCategory.objects.get(pk=category_id)
     companies = Company.objects.filter(pk__in=request.POST.get('ids').split(','))
     for company in companies:
         CategoryCompany.objects.filter(company=company, category=category).delete()
     return HttpResponse(json.dumps({'success': 1}))
+
 
 def company_update(request, company_id):
     name = request.POST.get('name').strip()
@@ -439,6 +442,7 @@ def series_create(request, brand_id):
 def series_delete(request, series_id):
     ProductBrandSeries.objects.filter(pk=series_id).delete()
     return HttpResponse(json.dumps({'success': 1}))
+
 
 def series_batch_delete(request):
     ids = request.POST.get('ids').split(',')
@@ -614,4 +618,54 @@ def category_search(request):
     p = Paginator(result, per_page)
     current_page = p.page(page)
     total_pages = p.num_pages
-    return HttpResponse(json.dumps({'data':current_page.object_list,'total_pages':total_pages,'current_page':page,'id':se.id}))
+    return HttpResponse(
+        json.dumps({'data': current_page.object_list, 'total_pages': total_pages, 'current_page': page, 'id': se.id}))
+
+
+def category_attributes(request, category_id):
+    attributes = get_category_attributes(category_id)
+    return HttpResponse(
+        json.dumps(attributes))
+
+
+def category_attribute_create(request, category_id):
+    name = request.POST.get('name')
+    value = request.POST.get('value').split()
+    searchable = int(request.POST.get('searchable', 1)) == 1
+    attribute = ProductCategoryAttribute()
+    attribute.name = name
+    attribute.category = ProductCategory.objects.get(pk=category_id)
+    attribute.value = json.dumps(value)
+    attribute.searchable = searchable
+    attribute.save()
+    return HttpResponse(
+        json.dumps({'success': 1}))
+
+
+def category_attribute_delete(request, attribute_id):
+    ProductCategoryAttribute.objects.filter(pk=attribute_id).delete()
+    return HttpResponse(
+        json.dumps({'success': 1}))
+
+
+def category_attribute_values(request, category_id, series_id):
+    attributes = get_category_attribute_values(category_id, series_id)
+    return HttpResponse(
+        json.dumps(attributes))
+
+
+def category_attribute_value_create(request, series_id, attribute_id):
+    value = request.POST.get('value')
+    attribute_value = ProductCategoryAttributeValue()
+    attribute_value.series = ProductBrandSeries.objects.get(pk=series_id)
+    attribute_value.attribute = ProductCategoryAttribute.objects.get(pk=attribute_id)
+    attribute_value.value = value
+    attribute_value.save()
+    return HttpResponse(
+        json.dumps({'success': 1}))
+
+
+def category_attribute_value_delete(request, value_id):
+    ProductCategoryAttributeValue.objects.filter(pk=value_id).delete()
+    return HttpResponse(
+        json.dumps({'success': 1}))

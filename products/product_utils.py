@@ -1,7 +1,7 @@
 #coding:utf-8
 import json
 import time
-from models import ProductCategory, ProductBrand, ProductBrandSeries
+from models import ProductCategory, ProductBrand, ProductBrandSeries, ProductCategoryAttribute, ProductCategoryAttributeValue
 from django.core.cache import cache
 
 class Node(object):
@@ -171,3 +171,17 @@ def get_brand_series(brand_id):
     for se in series:
         res.append({'id': se.id, 'name': se.name})
     return res
+
+def get_category_attributes(category_id):
+    attributes = ProductCategoryAttribute.objects.filter(category=category_id)
+    result = []
+    for attr in attributes:
+        result.append({'id':attr.id,'name':attr.name,'values':json.loads(attr.value)})
+    return result
+
+def get_category_attribute_values(category_id, series_id):
+    values = ProductCategoryAttributeValue.objects.filter(attribute__category=category_id,series=series_id)
+    result = []
+    for value in values:
+        result.append({'id': value.id, 'name': value.attribute.name, 'value':value.value})
+    return result
