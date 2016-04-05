@@ -755,14 +755,14 @@ var categoryApp = function () {
         $('#settingForm .modal-body-5').hide();
         $('#settingForm .modal-body-6').hide();
         $('#settingForm button[data-for]').hide();
-        $('.modal-body-4 button[data-name=add]').on('click', function () {
+        $(document).on('click', '.modal-body-4 button[data-name=add]', function () {
             $('.modal-body-6').show();
             $('.modal-body-4').hide();
             $('#settingForm .modal-title').html('新增属性');
             $('#settingForm button[data-action]').hide();
             $('#settingForm button[data-for=modal-body-6]').show();
         });
-        $('.modal-body-4 .modal-span .fa-cog').on('click', function () {
+        $(document).on('click', '.modal-body-4 .modal-span .fa-cog', function () {
             $('.modal-body-5').show();
             $('.modal-body-4').hide();
             $('#settingForm .modal-title').html('修改属性值');
