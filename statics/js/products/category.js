@@ -10,6 +10,8 @@ var categoryApp = function () {
     var step = 1;
     var company = 0;
     var brand = 0;
+    var series = 0;
+    var settings_series = 0;
     var checkboxFlag = false;
 
     var changeClass = function (obj) {
@@ -744,6 +746,7 @@ var categoryApp = function () {
         $('#settingForm').modal('show');
         var category_id = $(this).attr('category-id');
         var series_id = $(this).attr('series-id');
+        settings_series = series_id;
         $.get(
             "category/attribute/values/" + category_id + "/" + series_id + "/",
             {},
@@ -751,20 +754,18 @@ var categoryApp = function () {
                 $('.js-modal-attribute-row').remove();
                 for (var index in data) {
                     var attribute = data[index];
-                    var row_html = '<div class="modal-row js-modal-attribute-row">' +
+                    var row_html = '<div class="modal-row js-modal-attribute-row" data-id="' + attribute.id + '">' +
                         '<div>' + attribute.name + '</div>' +
                         '<div>' +
-                        '<select class="form-control">';
+                        '<select name="value" class="form-control">';
                     for (value_index in attribute.values) {
-                        row_html += '<option value="' + attribute.values[value_index] + '"';
-                        if(attribute.values[value_index]==attribute.value){row_html += 'selected';}
-                        row_html += '>' + attribute.values[value_index] + '</option>';
+                        row_html += '<option value="' + attribute.values[value_index] + '">' + attribute.values[value_index] + '</option>';
                     }
                     row_html +=
                         '</select>' +
                         '</div>' +
                         '<div>' +
-                        '<select class="form-control">' +
+                        '<select name="searchable" class="form-control">' +
                         '<option value="1">yes</option>' +
                         '<option value="0">no</option>' +
                         '</select>' +
@@ -773,6 +774,8 @@ var categoryApp = function () {
                         'class="fa fa-close"></span></div>' +
                         '</div>'
                     $('.modal-body-4').append(row_html);
+                    $('.modal-body-4').find('div[data-id="' + attribute.id + '"]').find('select[name="value"]').val(attribute.value);
+                    $('.modal-body-4').find('div[data-id="' + attribute.id + '"]').find('select[name="searchable"]').val(attribute.searchable);
                 }
             },
             "json"
@@ -784,6 +787,31 @@ var categoryApp = function () {
 
     var settingAction = function () {
         if ($(this).attr('data-action') == 'save') {
+            var attr_ids = new Array();
+            var attr_values = new Array();
+            var attr_searchables = new Array();
+            $('.js-modal-attribute-row').each(function(){
+                attr_ids.push($(this).attr('data-id'));
+                attr_values.push($(this).find('select[name="value"]').val());
+                attr_searchables.push($(this).find('select[name="searchable"]').val());
+            });
+            console.log(attr_ids);
+            console.log(attr_values);
+            console.log(attr_searchables);
+            $.post(
+                "/products/category/attribute/value/update/" + settings_series + "/",
+                {
+                    'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+                    'ids': attr_ids,
+                    'values': attr_values,
+                    'searchables': attr_searchables
+                },
+                function (data) {
+                    if (data.success == 1) {
+                    }
+                },
+                "json"
+            );
             console.log('save');
         }
         $('#settingForm').modal('hide');

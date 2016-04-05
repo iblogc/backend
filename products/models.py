@@ -121,6 +121,7 @@ class ProductCategoryAttributeValue(models.Model):
     attribute = models.ForeignKey("ProductCategoryAttribute", related_name='values', default=None, null=True, blank=True, on_delete=models.SET_NULL)
     series = models.ForeignKey("ProductBrandSeries", related_name='attribute_values', default=None, null=True, blank=True, on_delete=models.SET_NULL)
     value = models.CharField(max_length=100, default='', null=False)
+    searchable = models.BooleanField(default=True)
 
 # 产品品牌关系数据
 class ProductBrand(models.Model):

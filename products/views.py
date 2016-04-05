@@ -656,13 +656,21 @@ def category_attribute_values(request, category_id, series_id):
         json.dumps(attributes))
 
 
-def category_attribute_value_create(request, series_id, attribute_id):
-    value = request.POST.get('value')
-    attribute_value = ProductCategoryAttributeValue()
-    attribute_value.series = ProductBrandSeries.objects.get(pk=series_id)
-    attribute_value.attribute = ProductCategoryAttribute.objects.get(pk=attribute_id)
-    attribute_value.value = value
-    attribute_value.save()
+def category_attribute_value_update(request, series_id):
+    attribute_ids = request.POST.getlist('ids[]')
+    attribute_values = request.POST.getlist('values[]')
+    attribute_searchable = request.POST.getlist('searchables[]')
+    if not len(attribute_ids) == len(attribute_values) == len(attribute_searchable):
+        return HttpResponse(
+            json.dumps({'success': 0}))
+    for index in range(len(attribute_ids)):
+        id = attribute_ids[index]
+        value = attribute_values[index]
+        searchable = int(attribute_searchable[index])
+        attribute_value, flag = ProductCategoryAttributeValue.objects.get_or_create(attribute=id,series=series_id)
+        attribute_value.value = value
+        attribute_value.searchable = searchable == 1
+        attribute_value.save()
     return HttpResponse(
         json.dumps({'success': 1}))
 
