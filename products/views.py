@@ -614,6 +614,7 @@ def category_search(request):
             for company in se.brand.companies.all():
                 result.append({'first_category': c3.parent_category.parent_category.name,
                                'second_category': c3.parent_category.name, 'third_category': c3.name,
+                               'category_id': c3.id, 'series_id': se.id,
                                'company': company.name, 'brand': se.brand.name, 'series': se.name,})
     p = Paginator(result, per_page)
     current_page = p.page(page)

@@ -134,15 +134,6 @@ var categoryApp = function () {
         if (checkboxFlag) return;
         first_category = $(this).attr('data-id');
         changeClass(this);
-        $('.js-first-category').each(function () {
-            if ($(this).attr('data-id') == first_category) {
-                if (!$(this).hasClass('active'))
-                    $(this).addClass('active');
-            } else {
-                if ($(this).hasClass('active'))
-                    $(this).removeClass('active');
-            }
-        });
         $.get(
             "/products/sub_category/" + first_category + "/",
             {},
@@ -171,15 +162,6 @@ var categoryApp = function () {
         if (checkboxFlag) return;
         second_category = $(this).attr('data-id');
         changeClass(this);
-        $('.js-second-category').each(function () {
-            if ($(this).attr('data-id') == second_category) {
-                if (!$(this).hasClass('active'))
-                    $(this).addClass('active');
-            } else {
-                if ($(this).hasClass('active'))
-                    $(this).removeClass('active');
-            }
-        });
         $.get(
             "/products/sub_category/" + second_category + "/",
             {},
@@ -206,15 +188,6 @@ var categoryApp = function () {
         if (checkboxFlag) return;
         third_category = $(this).attr('data-id');
         changeClass(this);
-        $('.js-third-category').each(function () {
-            if ($(this).attr('data-id') == third_category) {
-                if (!$(this).hasClass('active'))
-                    $(this).addClass('active');
-            } else {
-                if ($(this).hasClass('active'))
-                    $(this).removeClass('active');
-            }
-        });
         $.get(
             "/products/sub_category/" + third_category + "/companies/",
             {},
@@ -239,15 +212,6 @@ var categoryApp = function () {
         if (checkboxFlag) return;
         company = $(this).attr('data-id');
         changeClass(this);
-        $('.js-company').each(function () {
-            if ($(this).attr('data-id') == company) {
-                if (!$(this).hasClass('active'))
-                    $(this).addClass('active');
-            } else {
-                if ($(this).hasClass('active'))
-                    $(this).removeClass('active');
-            }
-        });
         $.get(
             "/products/company/" + third_category + "/" + company + "/brands/",
             {},
@@ -271,15 +235,6 @@ var categoryApp = function () {
         if (checkboxFlag)  return;
         brand = $(this).attr('data-id');
         changeClass(this);
-        $('.js-brand').each(function () {
-            if ($(this).attr('data-id') == brand) {
-                if (!$(this).hasClass('active'))
-                    $(this).addClass('active');
-            } else {
-                if ($(this).hasClass('active'))
-                    $(this).removeClass('active');
-            }
-        });
         $.get(
             "/products/brand/" + brand + "/series/",
             {},
@@ -296,17 +251,12 @@ var categoryApp = function () {
     };
 
     var series_onclick = function () {
+        brand = 0;
+        if (checkboxFlag)  return;
         series = $(this).attr('data-id');
         changeClass(this);
-        $('.js-series').each(function () {
-            if ($(this).attr('data-id') == series) {
-                if (!$(this).hasClass('active'))
-                    $(this).addClass('active');
-            } else {
-                if ($(this).hasClass('active'))
-                    $(this).removeClass('active');
-            }
-        });
+        $('.fa-cog').attr('category-id', third_category);
+        $('.fa-cog').attr('series-id', series);
     };
 
     var add_second_category = function () {
@@ -792,6 +742,39 @@ var categoryApp = function () {
 
     var setting = function () {
         $('#settingForm').modal('show');
+        var category_id = $(this).attr('category-id');
+        var series_id = $(this).attr('series-id');
+        $.get(
+            "category/attributes/" + category_id + "/",
+            {},
+            function (data) {
+                $('.js-modal-attribute-row').remove();
+                for (var index in data) {
+                    var attribute = data[index];
+                    var row_html = '<div class="modal-row js-modal-attribute-row">' +
+                        '<div>' + attribute.name + '</div>' +
+                        '<div>' +
+                        '<select class="form-control">';
+                    for (value_index in attribute.values) {
+                        row_html += '<option value="' + attribute.values[value_index] + '">' + attribute.values[value_index] + '</option>'
+                    }
+                    row_html +=
+                        '</select>' +
+                        '</div>' +
+                        '<div>' +
+                        '<select class="form-control">' +
+                        '<option value="1">yes</option>' +
+                        '<option value="0">no</option>' +
+                        '</select>' +
+                        '</div>' +
+                        '<div class="modal-span"><span class="fa fa-cog"></span>&nbsp;&nbsp;&nbsp;&nbsp;<span' +
+                        'class="fa fa-close"></span></div>' +
+                        '</div>'
+                    $('.modal-body-4').append(row_html);
+                }
+            },
+            "json"
+        );
         //$('#settingForm .modal-body-5').hide();
         //$('#settingForm .modal-body-6').hide();
         $('#settingForm button[data-for]').hide();
@@ -837,7 +820,7 @@ var categoryApp = function () {
                         '<div>' + data.data[result].company + '</div>' +
                         '<div>' + data.data[result].brand + '</div>' +
                         '<div>' + data.data[result].series + '</div>' +
-                        '<div><span class="fa fa-cog" data-id="' + data.data[result].id + '"></span></div>' +
+                        '<div><span class="fa fa-cog" category-id="' + data.data[result].category_id + '" series-id="' + data.data[result].series_id + '"></span></div>' +
                         '</div>'
                     );
                 }
