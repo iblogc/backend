@@ -117,16 +117,16 @@
                         <div name="b">{{ product.brand }}</div>
                         <div name="s">{{ product.series }}</div>
                         <div name="d">{{ product.create_time }}</div>
-                        <div name="status" class="js-status-text-{{ product.id }}">{{ product.status }}</div>
+                        <div name="status" class="js-status-text-{{ product.id }}">{{ product.status_string }}</div>
                         <div name="edit">
                             <a href="javascript:void(0);"
                                class="js-product-detail" data-toggle="modal"
                                data-target="#menuFromDialog" data-menuId="0" data-id="{{ product.id }}">详细信息</a>
                             <br><a
-                                href="javascript:void(0);" class="js-active"
+                                href="javascript:void(0);" class="js-active  {% if product.status %}hide{% endif %}"
                                 data-id="{{ product.id }}">启用</a>
                             <br><a
-                                href="javascript:void(0);" class="js-void"
+                                href="javascript:void(0);" class="js-void {% if product.status %}{% else %}hide{% endif %}"
                                 data-id="{{ product.id }}">禁用</a>
                         </div>
                     </div>
