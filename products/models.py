@@ -40,7 +40,7 @@ class Product(models.Model):
     def chartlet_path(self):
         path = ''
         if self.previews.exists():
-            path = self.previews.all()[0].file.url
+            path = self.previews.all().order_by('-id')[0].file.url
         return path
 
 

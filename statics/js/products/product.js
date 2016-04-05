@@ -206,6 +206,7 @@ var upload_model_preview = function() {
         contentType: false, // Set content type to false as jQuery will tell the server its a query string request
         success: function (data) {
             $('.js-preview-list').append('<div data-id="'+data.id+'"><a href="'+data.url+'" target="_blank"><img class="inline-table product-info-box-img" src="'+data.url+'"/></a></div>');
+            $('img[data-id="'+product_id+'"]').attr('src',data.url);
         }
     });
 }

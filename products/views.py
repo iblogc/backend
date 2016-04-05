@@ -295,13 +295,13 @@ class ProductDetailView(LoginRequiredMixin, TemplateView):
             'files': [],
             'previews': []
         }
-        for file in p.files.all():
+        for file in p.files.all().order_by('-id'):
             self.product['files'].append({
                 'id': file.id,
                 'name': file.name,
                 'url': file.file.url
             })
-        for preview in p.previews.all():
+        for preview in p.previews.all().order_by('-id'):
             self.product['previews'].append({
                 'id': preview.id,
                 'name': preview.name,
