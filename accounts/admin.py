@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import Account
+from accounts import models
 
 # Register your models here.
 
@@ -12,3 +13,4 @@ class AccountAdmin(admin.ModelAdmin):
         obj.save()
 
 admin.site.register(Account, AccountAdmin)
+admin.site.register(models.AccountAdmin)

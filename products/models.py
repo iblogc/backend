@@ -27,40 +27,34 @@ class Product(models.Model):
     args = models.TextField(default='')
     remark = models.TextField(default='')
     type = models.IntegerField(default=TYPE_PRODUCT,choices=TYPE_CHOICES)
-
-
-# 产品模型关系数据表
-class ProductModel(models.Model):
-    product = models.ForeignKey("Product", related_name='models', default=None, null=True, blank=True,
-                                on_delete=models.SET_NULL)
     version_no = models.CharField(max_length=200, default='')
     norms_no = models.CharField(max_length=200, default='', null=False)
-    name = models.CharField(max_length=200, default='', null=False)
     material = models.CharField(max_length=100, default='', null=False)
-    norms = models.CharField(max_length=100, default='', null=False)
+    length = models.DecimalField(decimal_places=2,max_digits=10)
+    width = models.DecimalField(decimal_places=2, max_digits=10)
+    height = models.DecimalField(decimal_places=2, max_digits=10)
     technics = models.CharField(max_length=100, default='', null=False)
     color = models.CharField(max_length=10, default='', null=False)
-    status = models.IntegerField(default=0, null=False)
-    create_time = models.IntegerField(default=0, null=False)
-    update_time = models.IntegerField(default=0, null=False)
 
     @property
     def chartlet_path(self):
         path = ''
         if self.previews.exists():
             path = self.previews.all()[0].file.url
+        return path
 
 
 class ProductModelFiles(models.Model):
     name = models.CharField(max_length=200, default='', null=False)
-    model = models.ForeignKey("ProductModel", related_name='files', default=None,
+    product = models.ForeignKey("Product", related_name='files', default=None,
                               null=True, blank=True,
                               on_delete=models.SET_NULL)
     file = models.FileField(upload_to = 'file/')
 
+
 class ProductModelPreviews(models.Model):
     name = models.CharField(max_length=200, default='', null=False)
-    model = models.ForeignKey("ProductModel", related_name='previews',
+    product = models.ForeignKey("Product", related_name='previews',
                               default=None,
                               null=True, blank=True,
                               on_delete=models.SET_NULL)

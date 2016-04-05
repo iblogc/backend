@@ -113,7 +113,7 @@
                 {% autoescape off %}
                     <br>
                     <div class="row" data-name="main">
-                        <div name="img"><img src="/{{ product.charlet }}"
+                        <div name="img"><img src="{{ product.charlet }}"
                                              class="inline-table product-info-box-img">
                         </div>
                         <div name="n">{{ product.name }}</div>
@@ -262,13 +262,12 @@
                                             class="btn btn-primary js-modal-upload-file">
                                         添加模型文件
                                     </button>
+                                    <input type="file" class="hide" name="model-file" id="model-file">
                                     <button type="button"
                                             class="btn btn-default js-modal-delete-file">
                                         删除模型文件
                                     </button>
                                     <div class="js-file-list">
-                                        <img class="js-modal-product-img"
-                                         src="../../statics/imgs/icon/title-icon.png">
 
                                     </div>
 
@@ -278,13 +277,13 @@
                                             class="btn btn-primary js-modal-upload-preview">
                                         添加贴图文件
                                     </button>
+                                    <input type="file" class="hide" name="model-preview" id="model-preview">
                                     <button type="button"
                                             class="btn btn-default js-modal-delete-preview">
                                         删除贴图文件
                                     </button>
                                     <div  class="js-preview-list">
-                                        <img class="js-modal-product-img"
-                                         src="../../statics/imgs/icon/title-icon.png">
+
                                     </div>
 
                                 </div>

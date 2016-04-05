@@ -52,5 +52,9 @@ urlpatterns = [
     url(r'category/attribute/value/update/(?P<series_id>\d+)/$', category_attribute_value_update,
         name='category-attribute-value-update'),
     url(r'category/attribute/value/delete/(?P<value_id>\d+)/$', category_attribute_value_delete,
-        name='category-attribute-value-delete')
+        name='category-attribute-value-delete'),
+
+    url(r'product/file/upload/$', upload_product_file, name='product-file-upload'),
+    url(r'product/preview/upload/$', upload_product_preview,
+        name='product-preview-upload'),
 ]
