@@ -114,9 +114,8 @@ var newTabs = function () {
             }
         },
 
-        changeSize:function(){
-            resizeIframe();
-            console.log(123);
+        changeSize:function(height, obj){
+            obj.height(height);
         }
     }
 }();

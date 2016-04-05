@@ -127,24 +127,15 @@
             <div class="category-main-title">系列</div>
             <div class="category-main-title">设置</div>
         </div>
-        <div class="search-detail-row js-search-detail">
-            <div>一级分类</div>
-            <div>二级分类</div>
-            <div>三级分类</div>
-            <div>厂家</div>
-            <div>品牌</div>
-            <div>系列</div>
-            <div><span class="fa fa-cog"></span></div>
-        </div>
-        <div class="search-detail-row js-search-detail">
-            <div>一级分类</div>
-            <div>二级分类</div>
-            <div>三级分类</div>
-            <div>厂家</div>
-            <div>品牌</div>
-            <div>系列</div>
-            <div><span class="fa fa-cog"></span></div>
-        </div>
+{#        <div class="search-detail-row js-search-detail">#}
+{#            <div>一级分类</div>#}
+{#            <div>二级分类</div>#}
+{#            <div>三级分类</div>#}
+{#            <div>厂家</div>#}
+{#            <div>品牌</div>#}
+{#            <div>系列</div>#}
+{#            <div><span class="fa fa-cog"></span></div>#}
+{#        </div>#}
     </div>
 </div>
 <div class="modal fade" id="addCategoryForm" tabindex="-1" role="dialog"
@@ -230,7 +221,7 @@
                     <div>属性值</div>
                     <div>允许搜索</div>
                     <div>
-                        <button class="btn btn-default modal-btn">新增属性</button>
+                        <button class="btn btn-default modal-btn" data-name="add">新增属性</button>
                     </div>
                 </div>
                 <div class="modal-row js-modal-attribute-row">
@@ -270,20 +261,30 @@
             </div>
             <div class="modal-body-5">
                 <div class="modal-row">
-                    <div>属性值:</div>
-                    <input type="text" class="form-control" readonly><span data-status=false>edit</span>
-                    <input type="text" class="form-control" readonly><span data-status=false>edit</span>
-                    <input type="text" class="form-control" readonly><span data-status=false>edit</span>
+                    <div>{ { 放属性名 } }的值:</div>
+                    <div data-name="action-box"><span name="edit" class="fa fa-edit"></span><span name="add" class="fa fa-plus"></span><span name="remove" class="fa fa-remove"></span></div>
+                    <input type="text" class="form-control" readonly><span>确定</span>
+                    <input type="text" class="form-control" readonly><span>确定</span>
+                    <input type="text" class="form-control" readonly><span>确定</span>
                 </div>
             </div>
             <div class="modal-body-6">
-
+                <div class="modal-row">
+                    <div>属性名:</div><input data-type type="text" class="form-control">
+                </div>
+                <div class="modal-row">
+                    <div>属性值:</div><input data-type type="text" class="form-control">
+                </div>
+                <div class="modal-row">
+                    <div>允许搜索:</div><select data-type type="text" class="form-control">
+                        <option value="true">yes</option><option value="false">no</option>
+                    </select>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-action="save">保存</button>
                 <button type="button" class="btn btn-default" data-action="cancel">取消</button>
-                <button type="button" class="btn btn-primary" data-for="modal-body-5">保存</button>
-                <button type="button" class="btn btn-default" data-for="modal-body-5">取消</button>
+                <button type="button" class="btn btn-default" data-for="modal-body-5">back</button>
                 <button type="button" class="btn btn-primary" data-for="modal-body-6">保存</button>
                 <button type="button" class="btn btn-default" data-for="modal-body-6">取消</button>
             </div>
