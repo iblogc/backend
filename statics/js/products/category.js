@@ -825,6 +825,7 @@ var categoryApp = function () {
                     );
                 }
                 $('.js-search-result').find('.fa-cog').on('click', setting);
+                newTabs.changeSize();
             },
             "json"
         );
