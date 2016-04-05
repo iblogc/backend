@@ -196,20 +196,15 @@ def get_category_attributes(category_id):
 
 
 def get_category_attribute_values(category_id, series_id):
-    values = ProductCategoryAttributeValue.objects.filter(
-        attribute__category=category_id, series=series_id)
     result = []
-    if values.exists():
-        for value in values:
-            result.append(
-                {'id': value.attribute.id, 'name': value.attribute.name,
-                 'values': json.loads(value.attribute.value),
-                 'value': value.value, 'searchable': value.searchable and 1 or 0})
-    else:
-        attributes = ProductCategoryAttribute.objects.filter(
-            category=category_id)
-        for attr in attributes:
-            result.append({'id': attr.id, 'name': attr.name,
-                           'values': json.loads(attr.value), 'value': '',
-                           'searchable': attr.searchable and 1 or 0})
+    attributes = ProductCategoryAttribute.objects.filter(
+        category=category_id)
+    for attr in attributes:
+        values = attr.values.filter(series=series_id)
+        value = ''
+        if values.exists():
+            value = values[0].value
+        result.append({'id': attr.id, 'name': attr.name,
+                       'values': json.loads(attr.value), 'value': value,
+                       'searchable': attr.searchable and 1 or 0})
     return result

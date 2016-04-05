@@ -374,6 +374,10 @@
     color: #333;
 }
 
+.modal-body-6 .modal-row {
+    margin-top: 20px;
+}
+
 .modal-body-6 .modal-row>div {
     width: 150px!important;
     text-align: right;

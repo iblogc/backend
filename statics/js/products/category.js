@@ -12,6 +12,7 @@ var categoryApp = function () {
     var brand = 0;
     var series = 0;
     var settings_series = 0;
+    var settings_category = 0;
     var checkboxFlag = false;
 
     var changeClass = function (obj) {
@@ -743,13 +744,52 @@ var categoryApp = function () {
 
 
     var setting = function () {
-        //if($(this).hasClass('last') && series == 0) return;
+        if ($(this).attr('series-id') == undefined && settings_series==0) return;
         $('#settingForm').modal('show');
         var category_id = $(this).attr('category-id');
         var series_id = $(this).attr('series-id');
         settings_series = series_id;
+        settings_category = category_id;
+        init_setting_form1();
+
+        $('#settingForm .modal-body-5').hide();
+        $('#settingForm .modal-body-6').hide();
+        $('#settingForm button[data-for]').hide();
+        $('.modal-body-4 button[data-name=add]').on('click', function () {
+            $('.modal-body-6').show();
+            $('.modal-body-4').hide();
+            $('#settingForm .modal-title').html('新增属性');
+            $('#settingForm button[data-action]').hide();
+            $('#settingForm button[data-for=modal-body-6]').show();
+        });
+        $('.modal-body-4 .modal-span .fa-cog').on('click', function () {
+            $('.modal-body-5').show();
+            $('.modal-body-4').hide();
+            $('#settingForm .modal-title').html('修改属性值');
+            $('#settingForm button[data-action]').hide();
+            $('#settingForm button[data-for=modal-body-5]').show();
+        });
+        $('#settingForm button[data-for=modal-body-5]').on('click', function () {
+            $('.modal-body-5').hide();
+            $('.modal-body-4').show();
+            $('#settingForm button[data-action]').show();
+            $('#settingForm button[data-for=modal-body-5]').hide();
+            $('#settingForm .modal-title').html('{ { 放属性名 } }的值:');
+        });
+        $('#settingForm button[data-for=modal-body-6]').on('click', function () {
+            $('.modal-body-6').hide();
+            $('.modal-body-4').show();
+            $('#settingForm button[data-action]').show();
+            $('#settingForm button[data-for=modal-body-6]').hide();
+            $('#settingForm .modal-title').html('属性设置');
+            if ($(this).hasClass('btn-default')) return;
+            //ajax
+        });
+    };
+
+    var init_setting_form1 = function(){
         $.get(
-            "category/attribute/values/" + category_id + "/" + series_id + "/",
+            "category/attribute/values/" + settings_category + "/" + settings_series + "/",
             {},
             function (data) {
                 $('.js-modal-attribute-row').remove();
@@ -771,7 +811,7 @@ var categoryApp = function () {
                         '<option value="0">不允许</option>' +
                         '</select>' +
                         '</div>' +
-                        '<div class="modal-span"><span class="fa fa-cog"></span>&nbsp;&nbsp;&nbsp;&nbsp;<span' +
+                        '<div class="modal-span"><span class="fa fa-cog"></span>&nbsp;&nbsp;&nbsp;&nbsp;<span ' +
                         'class="fa fa-close"></span></div>' +
                         '</div>';
                     $('.modal-body-4').append(row_html);
@@ -781,47 +821,14 @@ var categoryApp = function () {
             },
             "json"
         );
-        $('#settingForm .modal-body-5').hide();
-        $('#settingForm .modal-body-6').hide();
-        $('#settingForm button[data-for]').hide();
-        $('.modal-body-4 button[data-name=add]').on('click',function(){
-            $('.modal-body-6').show();
-            $('.modal-body-4').hide();
-            $('#settingForm .modal-title').html('新增属性');
-            $('#settingForm button[data-action]').hide();
-            $('#settingForm button[data-for=modal-body-6]').show();
-        });
-        $('.modal-body-4 .modal-span .fa-cog').on('click',function(){
-            $('.modal-body-5').show();
-            $('.modal-body-4').hide();
-            $('#settingForm .modal-title').html('修改属性值');
-            $('#settingForm button[data-action]').hide();
-            $('#settingForm button[data-for=modal-body-5]').show();
-        });
-        $('#settingForm button[data-for=modal-body-5]').on('click',function(){
-            $('.modal-body-5').hide();
-            $('.modal-body-4').show();
-            $('#settingForm button[data-action]').show();
-            $('#settingForm button[data-for=modal-body-5]').hide();
-            $('#settingForm .modal-title').html('{ { 放属性名 } }的值:');
-        });
-        $('#settingForm button[data-for=modal-body-6]').on('click',function(){
-            $('.modal-body-6').hide();
-            $('.modal-body-4').show();
-            $('#settingForm button[data-action]').show();
-            $('#settingForm button[data-for=modal-body-6]').hide();
-            $('#settingForm .modal-title').html('{ { 放属性名 } }的值:');
-            if($(this).hasClass('btn-default')) return;
-            //ajax
-        });
-    };
+    }
 
     var settingAction = function () {
         if ($(this).attr('data-action') == 'save') {
             var attr_ids = new Array();
             var attr_values = new Array();
             var attr_searchables = new Array();
-            $('.js-modal-attribute-row').each(function(){
+            $('.js-modal-attribute-row').each(function () {
                 attr_ids.push($(this).attr('data-id'));
                 attr_values.push($(this).find('select[name="value"]').val());
                 attr_searchables.push($(this).find('select[name="searchable"]').val());
@@ -853,35 +860,35 @@ var categoryApp = function () {
     };
 
     var modal5Action = function () {
-        if($(this).attr('name') == 'edit'){
-            if($('.modal-body-5 input.selected').length == 0) return;
+        if ($(this).attr('name') == 'edit') {
+            if ($('.modal-body-5 input.selected').length == 0) return;
             $('.modal-body-5 input.selected').removeAttr('readonly').next().show();
             modal5UnbindAction();
-        } else if($(this).attr('name') == 'add') {
+        } else if ($(this).attr('name') == 'add') {
             $('.modal-body-5 .modal-row').append('<input type="text" class="form-control" readonly><span>确定</span>')
             modal5bindAction();
-        } else if($(this).attr('name') == 'remove') {
+        } else if ($(this).attr('name') == 'remove') {
             $('.modal-body-5 input.selected').next().remove();
             $('.modal-body-5 input.selected').remove();
             //ajax
         }
     };
 
-    var changeModal5Val = function(){
+    var changeModal5Val = function () {
         console.log(123);
         modal5bindAction();
-        $(this).prev().attr('readonly','readonly');
+        $(this).prev().attr('readonly', 'readonly');
         //ajax
     };
 
-    var modal5bindAction = function(){
+    var modal5bindAction = function () {
         $(document).on('click', '.modal-body-5 input', inputSelected);
         $('.modal-body-5 div[data-name=action-box] span').on('click', modal5Action);
         $(document).off('click', '.modal-body-5 input+span');
         $('.modal-body-5 input+span').hide();
     };
 
-    var modal5UnbindAction = function(){
+    var modal5UnbindAction = function () {
         $(document).off('click', '.modal-body-5 input');
         $('.modal-body-5 div[data-name=action-box] span').off('click');
         $(document).on('click', '.modal-body-5 input+span', changeModal5Val);
@@ -922,6 +929,42 @@ var categoryApp = function () {
         );
         $('.js-search-result').css('visibility', 'visible');
     };
+
+    var attribute_delete = function () {
+        var attribute_id = $(this).parent().parent().attr('data-id');
+        $.post(
+            "/products/category/attribute/value/delete/" + attribute_id + "/",
+            {
+                'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+            },
+            function (data) {
+                if (data.success == 1) {
+
+                }
+            },
+            "json"
+        );
+        $(this.parentNode.parentNode).remove();
+    };
+
+    var save_new_attribute = function () {
+        $.post(
+
+            "/products/category/attribute/create/" + settings_category + "/",
+            {
+                'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+                'name': $('input[name="new-attribute-name"]').val(),
+                'value': $('textarea[name="new-attribute-value"]').val(),
+                'searchable': $('select[name="new-attribute-searchable"]').val()
+            },
+            function (data) {
+                if (data.success == 1) {
+                    init_setting_form1();
+                }
+            },
+            "json"
+        );
+    }
 
 
     return {
@@ -973,14 +1016,17 @@ var categoryApp = function () {
             $('.js-search-button').on('click', search_kw);
             $('.js-search-result').css('visibility', 'hidden');
 
-            $(document).on('hidden.bs.modal', '#settingForm',function(){
+            $(document).on('hidden.bs.modal', '#settingForm', function () {
                 $('#settingForm .modal-body-5 input').removeClass('selected');
-            })
-
-            $('.modal-body-4 .modal-span .fa-close').on('click',function(){
-                //ajax
-                $(this.parentNode.parentNode).remove();
+                $('#settingForm .modal-body-4').show();
+                $('#settingForm .modal-body-5').hide();
+                $('#settingForm .modal-body-6').hide();
+                $('#settingForm button[data-action]').show();
+                $('#settingForm button[data-for]').hide();
             });
+
+            $(document).on('click', '.modal-body-4 .modal-span .fa-close', attribute_delete);
+            $(document).on('click', 'button.btn-primary[data-for="modal-body-6"]', save_new_attribute);
         }
     }
 }();

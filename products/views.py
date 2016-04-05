@@ -707,7 +707,9 @@ def category_attributes(request, category_id):
 
 def category_attribute_create(request, category_id):
     name = request.POST.get('name')
-    value = request.POST.get('value').split()
+    value = [v.strip() for v in request.POST.get('value').split('\n')]
+    if '' in value:
+        value.remove('')
     searchable = int(request.POST.get('searchable', 1)) == 1
     attribute = ProductCategoryAttribute()
     attribute.name = name
@@ -744,7 +746,7 @@ def category_attribute_value_update(request, series_id):
         value = attribute_values[index]
         searchable = int(attribute_searchable[index])
         attribute_value, flag = ProductCategoryAttributeValue.objects.get_or_create(
-            attribute=id, series=series_id)
+            attribute_id=id, series_id=series_id)
         attribute_value.value = value
         attribute_value.searchable = searchable == 1
         attribute_value.save()
@@ -752,7 +754,8 @@ def category_attribute_value_update(request, series_id):
         json.dumps({'success': 1}))
 
 
-def category_attribute_value_delete(request, value_id):
-    ProductCategoryAttributeValue.objects.filter(pk=value_id).delete()
+def category_attribute_value_delete(request, attribute_id):
+    ProductCategoryAttributeValue.objects.filter(attribute=attribute_id).delete()
+    ProductCategoryAttribute.objects.filter(pk=attribute_id).delete()
     return HttpResponse(
         json.dumps({'success': 1}))

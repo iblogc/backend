@@ -51,7 +51,7 @@ urlpatterns = [
     url(r'category/attribute/values/(?P<category_id>\d+)/(?P<series_id>\d+)/$', category_attribute_values, name='category-attribute-values'),
     url(r'category/attribute/value/update/(?P<series_id>\d+)/$', category_attribute_value_update,
         name='category-attribute-value-update'),
-    url(r'category/attribute/value/delete/(?P<value_id>\d+)/$', category_attribute_value_delete,
+    url(r'category/attribute/value/delete/(?P<attribute_id>\d+)/$', category_attribute_value_delete,
         name='category-attribute-value-delete'),
 
     url(r'product/file/upload/$', upload_product_file, name='product-file-upload'),
