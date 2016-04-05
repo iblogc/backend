@@ -148,7 +148,7 @@ class ProductView(LoginRequiredMixin, TemplateView):
 
         self.products = []
 
-        per_page = 5
+        per_page = 50
 
         try:
             p = Paginator(products, per_page)
