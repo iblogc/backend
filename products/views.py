@@ -9,7 +9,8 @@ from django.views.generic import TemplateView, ListView
 from django.shortcuts import render
 from braces.views import LoginRequiredMixin
 from .models import Product, ProductCategory, ProductBrand, ProductBrandSeries, \
-    ProductModel, CategoryCompany, CategoryBrand, CompanyBrand
+    CategoryCompany, CategoryBrand, CompanyBrand, ProductModelFiles, \
+    ProductModelPreviews
 from customers.models import Company
 from accounts.authorize import AccountLoginMixin
 from django.core.paginator import Paginator
@@ -41,6 +42,11 @@ class ProductView(LoginRequiredMixin, TemplateView):
         return context
 
     def get(self, request, *args, **kwargs):
+        self.type = int(request.GET.get('type', 0))
+        if self.type == 0:
+            self.template_name = "products/_product.html"
+        else:
+            self.template_name = "products/_model.html"
         self.page_id = int(request.GET.get('page_id', 1))
 
         self.kw = request.GET.get('kw', '')
@@ -59,7 +65,8 @@ class ProductView(LoginRequiredMixin, TemplateView):
         ct2 = get_time_stamp_max(dt) if dt else 0
         self.df = min(ct1, ct2)
         self.dt = max(ct1, ct2)
-        self.url = 'kw=%s&pn=%s&c1=%s&c2=%s&c3=%s&c=%s&b=%s&s=%s&df=%s&dt=%s&order=%s&desc=%s' % (
+        self.url = 'type=%s&kw=%s&pn=%s&c1=%s&c2=%s&c3=%s&c=%s&b=%s&s=%s&df=%s&dt=%s&order=%s&desc=%s' % (
+            self.type,
             self.kw, self.pn, self.c1, self.c2, self.c3, self.com, self.b,
             self.s,
             df, dt, self.order, self.desc)
@@ -72,9 +79,7 @@ class ProductView(LoginRequiredMixin, TemplateView):
                 category__parent_category__name__icontains=self.kw) | Q(
                 category__name__icontains=self.kw) | Q(
                 company__name__icontains=self.kw) | Q(
-                company__alias_name__icontains=self.kw) | Q(
                 brand__name__icontains=self.kw) | Q(
-                brand__name_en__icontains=self.kw) | Q(
                 series__name__icontains=self.kw)
 
         pn_q = Q()
@@ -99,15 +104,15 @@ class ProductView(LoginRequiredMixin, TemplateView):
         ct_q = Q()
         if ct1 or ct2:
             ct_q = Q(create_time__gt=self.df, create_time__lt=self.dt)
-        select_q = Q()
+        select_q = Q(type=self.type)
 
         products = Product.objects.select_related('brand', 'series',
                                                   'company',
                                                   'category',
                                                   'category__parent_category',
-                                                  'category__parent_category__parent_category').prefetch_related(
-            'models').filter(kw_q, com_q, b_q, pn_q, categroy_q, s_q,
-                             ct_q).order_by(
+                                                  'category__parent_category__parent_category').filter(
+            kw_q, com_q, b_q, pn_q, categroy_q, s_q,
+            ct_q, select_q).order_by(
             '-id')
         if self.order == 'n':
             products = products.extra(select={
@@ -119,14 +124,16 @@ class ProductView(LoginRequiredMixin, TemplateView):
                 '%sgbk_title' % (self.desc == 0 and '-' or ''))
         elif self.order == 'c1':
             products = products.order_by(
-                '%scategory__parent_category__parent_category__name' % (self.desc == 0 and '-' or ''))
+                '%scategory__parent_category__parent_category__name' % (
+                    self.desc == 0 and '-' or ''))
         elif self.order == 'c2':
             products = products.extra(select={
                 'gbk_title': 'convert(`products_productcategory`.`name` using gbk)'}).order_by(
                 '%sgbk_title' % (self.desc == 0 and '-' or ''))
         elif self.order == 'c3':
             products = products.order_by(
-                '%scategory__parent_category__name' % (self.desc == 0 and '-' or ''))
+                '%scategory__parent_category__name' % (
+                    self.desc == 0 and '-' or ''))
         elif self.order == 'c':
             products = products.extra(select={
                 'gbk_title': 'convert(`customers_company`.`name` using gbk)'}).order_by(
@@ -140,12 +147,13 @@ class ProductView(LoginRequiredMixin, TemplateView):
                 'gbk_title': 'convert(`products_productbrandseries`.`name` using gbk)'}).order_by(
                 '%sgbk_title' % (self.desc == 0 and '-' or ''))
         elif self.order == 'd':
-            products = products.order_by('%screate_time' % (self.desc == 0 and '-' or ''))
+            products = products.order_by(
+                '%screate_time' % (self.desc == 0 and '-' or ''))
         # print order_key
 
         self.products = []
 
-        per_page = 5
+        per_page = 50
 
         try:
             p = Paginator(products, per_page)
@@ -157,12 +165,12 @@ class ProductView(LoginRequiredMixin, TemplateView):
             except:
                 self.next_page = False
             for product in self.page.object_list:
-                brand_name = product.brand and product.brand.name or ''
-                series_name = product.series and product.series.name or ''
-                company_name = product.company and product.company.name or ''
-                c1 = ''
-                c2 = ''
-                c3 = ''
+                brand_name = product.brand and product.brand.name or 'N/A'
+                series_name = product.series and product.series.name or 'N/A'
+                company_name = product.company and product.company.name or 'N/A'
+                c1 = 'N/A'
+                c2 = 'N/A'
+                c3 = 'N/A'
                 if product.category:
                     c3 = product.category.name
                     if product.category.parent_category:
@@ -170,13 +178,11 @@ class ProductView(LoginRequiredMixin, TemplateView):
                         if product.category.parent_category.parent_category:
                             c1 = product.category.parent_category.parent_category.name
                 # cate_obj = ProductCategory.objects.get(id=product.category)
-                style = ''  # ProductCategoryAttribute.objects.get(status=1, category_id=cate_obj, name=u'所属风格').value
+                style = 'N/A'  # ProductCategoryAttribute.objects.get(status=1, category_id=cate_obj, name=u'所属风格').value
                 ctime = get_time(product.create_time)
                 utime = get_time(product.update_time)
-                m = product.models.all()
                 charlet = ""
-                if m:
-                    charlet = m[0].chartlet_path
+                charlet = product.chartlet_path
                 self.products.append({
                     "id": product.id if not self.kw else change_style(
                         str(product.id), self.kw.strip()),
@@ -232,6 +238,36 @@ class ProductVoidView(LoginRequiredMixin, TemplateView):
         return resp(0, "action success", "")
 
 
+def upload_product_file(request):
+    product_id = request.POST.get('product_id')
+    files = request.FILES.getlist('file')
+    if len(files) > 0:
+        file_name = files[0].name
+        model_file = ProductModelFiles()
+        model_file.name = file_name
+        model_file.file.save(file_name, files[0])
+        model_file.product_id = product_id
+        model_file.save()
+    return HttpResponse(json.dumps(
+        {"success": 1, "id": model_file.id, "name": model_file.name,
+         "url": model_file.file.url}))
+
+
+def upload_product_preview(request):
+    product_id = request.POST.get('product_id')
+    files = request.FILES.getlist('file')
+    if len(files) > 0:
+        file_name = files[0].name
+        model_preview = ProductModelPreviews()
+        model_preview.name = file_name
+        model_preview.file.save(file_name, files[0])
+        model_preview.product_id = product_id
+        model_preview.save()
+    return HttpResponse(json.dumps(
+        {"success": 1, "id": model_preview.id, "name": model_preview.name,
+         "url": model_preview.file.url}))
+
+
 class ProductDetailView(LoginRequiredMixin, TemplateView):
     template_name = "products/_product.html"
 
@@ -240,27 +276,37 @@ class ProductDetailView(LoginRequiredMixin, TemplateView):
         self.product = {
             "id": p.id,
             "product_no": p.product_no,
-            "product_name": p.name,
-            "company_name": p.company.name,
-            "category_name": get_category(p.category.id),
-            "brand": p.brand.name,
-            "series": p.series.name,
-            "model": {},
+            "product_name": p.name or 'N/A',
+            "company_name": p.company.name or 'N/A',
+            "category_name": get_category(p.category_id) or 'N/A',
+            "brand": p.brand.name or 'N/A',
+            "series": p.series.name or 'N/A',
             "args": {},
-            "remarks": p.remark,
+            "remarks": p.remark or 'N/A',
+            "norm_no": p.norms_no or 'N/A',
+            "version": p.version_no or 'N/A',
+            # "model_name": model.name,
+            "length": str(p.length),
+            "width": str(p.width),
+            "height": str(p.height),
+            "material": p.material or 'N/A',
+            "color": p.color or 'N/A',
+            'chartlet': p.chartlet_path,
+            'files': [],
+            'previews': []
         }
-        if p.models.exists():
-            model = p.models.all()[0]
-            self.product['model'] = {
-                "model_id": model.id,
-                "norm_no": model.norms_no,
-                "version": model.version_no,
-                # "model_name": model.name,
-                "norms": json.loads(model.norms),
-                "material": model.material,
-                "color": model.color,
-                'chartlet': model.chartlet_path
-            }
+        for file in p.files.all():
+            self.product['files'].append({
+                'id': file.id,
+                'name': file.name,
+                'url': file.file.url
+            })
+        for preview in p.previews.all():
+            self.product['previews'].append({
+                'id': preview.id,
+                'name': preview.name,
+                'url': preview.file.url
+            })
         self.product['args'] = json.loads(p.args.decode('utf-8'))
         return HttpResponse(json.dumps(self.product))
 
@@ -289,7 +335,8 @@ def category_create(request, category_id):
     parent_category = ProductCategory.objects.get(pk=category_id)
     max_no = 1
     if ProductCategory.objects.filter(step=step).exists():
-        max_no = ProductCategory.objects.filter(step=step).order_by('-no')[0].no + 1
+        max_no = ProductCategory.objects.filter(step=step).order_by('-no')[
+                     0].no + 1
     category_dict = {'id': 0, 'name': name}
     category = ProductCategory()
     category.parent_category = parent_category
@@ -317,7 +364,8 @@ def category_delete(request, category_id):
 
 
 def category_batch_delete(request):
-    parent_categories = ProductCategory.objects.filter(pk__in=request.POST.get('ids').split(','))
+    parent_categories = ProductCategory.objects.filter(
+        pk__in=request.POST.get('ids').split(','))
     for parent_category in parent_categories:
         if parent_category.sub_categories.exists():
             parent_category.sub_categories.all().delete()
@@ -355,9 +403,11 @@ def company_delete(request, category_id, company_id):
 
 def company_batch_delete(request, category_id):
     category = ProductCategory.objects.get(pk=category_id)
-    companies = Company.objects.filter(pk__in=request.POST.get('ids').split(','))
+    companies = Company.objects.filter(
+        pk__in=request.POST.get('ids').split(','))
     for company in companies:
-        CategoryCompany.objects.filter(company=company, category=category).delete()
+        CategoryCompany.objects.filter(company=company,
+                                       category=category).delete()
     return HttpResponse(json.dumps({'success': 1}))
 
 
@@ -404,7 +454,8 @@ def brand_delete(request, category_id, company_id, brand_id):
 def brand_batch_delete(request, category_id, company_id):
     category = ProductCategory.objects.get(pk=category_id)
     company = Company.objects.get(pk=company_id)
-    brands = ProductBrand.objects.filter(pk__in=request.POST.get('ids').split(','))
+    brands = ProductBrand.objects.filter(
+        pk__in=request.POST.get('ids').split(','))
     for brand in brands:
         CompanyBrand.objects.filter(company=company, brand=brand).delete()
         CategoryBrand.objects.filter(category=category, brand=brand).delete()
@@ -488,7 +539,8 @@ def import_xls(request):
                 series_name = cells[5].strip()
             if first_category == '':
                 continue
-            datas_array.append((first_category, second_category, third_category, company_name, brand_name, series_name))
+            datas_array.append((first_category, second_category, third_category,
+                                company_name, brand_name, series_name))
     print datas_array
     for data_dict in datas_array:
         try:
@@ -499,22 +551,31 @@ def import_xls(request):
             max_brand_no = 1
             max_series_no = 1
             if ProductCategory.objects.filter(step=1).exists():
-                max_first_category_no = ProductCategory.objects.filter(step=1).order_by('-no')[0].no + 1
-            first_category, flag = ProductCategory.objects.get_or_create(name=data_dict[0], step=1)
+                max_first_category_no = \
+                    ProductCategory.objects.filter(step=1).order_by('-no')[
+                        0].no + 1
+            first_category, flag = ProductCategory.objects.get_or_create(
+                name=data_dict[0], step=1)
             if first_category.no == 0:
                 first_category.no = max_first_category_no
                 first_category.save()
             if ProductCategory.objects.filter(step=2).exists():
-                max_second_category_no = ProductCategory.objects.filter(step=2).order_by('-no')[0].no + 1
-            second_category, flag = ProductCategory.objects.get_or_create(name=data_dict[1], step=2,
-                                                                          parent_category=first_category)
+                max_second_category_no = \
+                    ProductCategory.objects.filter(step=2).order_by('-no')[
+                        0].no + 1
+            second_category, flag = ProductCategory.objects.get_or_create(
+                name=data_dict[1], step=2,
+                parent_category=first_category)
             if second_category.no == 0:
                 second_category.no = max_second_category_no
                 second_category.save()
             if ProductCategory.objects.filter(step=3).exists():
-                max_third_category_no = ProductCategory.objects.filter(step=3).order_by('-no')[0].no + 1
-            third_category, flag = ProductCategory.objects.get_or_create(name=data_dict[2], step=3,
-                                                                         parent_category=second_category)
+                max_third_category_no = \
+                    ProductCategory.objects.filter(step=3).order_by('-no')[
+                        0].no + 1
+            third_category, flag = ProductCategory.objects.get_or_create(
+                name=data_dict[2], step=3,
+                parent_category=second_category)
             if third_category.no == 0:
                 third_category.no = max_third_category_no
                 third_category.save()
@@ -528,20 +589,25 @@ def import_xls(request):
                 company.save()
             if data_dict[4] == '':
                 continue
-            CategoryCompany.objects.get_or_create(category=third_category, company=company)
+            CategoryCompany.objects.get_or_create(category=third_category,
+                                                  company=company)
             if ProductBrand.objects.exists():
-                max_brand_no = ProductBrand.objects.all().order_by('-no')[0].no + 1
+                max_brand_no = ProductBrand.objects.all().order_by('-no')[
+                                   0].no + 1
             brand, flag = ProductBrand.objects.get_or_create(name=data_dict[4])
             if brand.no == 0:
                 brand.no = max_brand_no
                 brand.save()
-            CategoryBrand.objects.get_or_create(category=third_category, brand=brand)
+            CategoryBrand.objects.get_or_create(category=third_category,
+                                                brand=brand)
             CompanyBrand.objects.get_or_create(company=company, brand=brand)
             if data_dict[5] == '':
                 continue
             if ProductBrandSeries.objects.exists():
-                max_series_no = ProductBrandSeries.objects.all().order_by('-no')[0].no + 1
-            series, flag = ProductBrandSeries.objects.get_or_create(name=data_dict[5], brand=brand)
+                max_series_no = \
+                    ProductBrandSeries.objects.all().order_by('-no')[0].no + 1
+            series, flag = ProductBrandSeries.objects.get_or_create(
+                name=data_dict[5], brand=brand)
             if series.no == 0:
                 series.no = max_series_no
                 series.save()
@@ -589,14 +655,16 @@ def export_xls(request):
                                 sheet.write(row_no, 5, series.name, format)
                                 row_no += 1
                 sheet.merge_range(second_row, 1, row_no - 1, 1, c2.name, format)
-            sheet.merge_range(first_row, 0, row_no - 1, 0, category.name, format)
+            sheet.merge_range(first_row, 0, row_no - 1, 0, category.name,
+                              format)
 
             # construct response
 
     output.seek(0)
     response = HttpResponse(output.read(),
                             content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
-    response['Content-Disposition'] = u"attachment; filename='s%s.xlsx'" % datetime.datetime.now().microsecond
+    response[
+        'Content-Disposition'] = u"attachment; filename='s%s.xlsx'" % datetime.datetime.now().microsecond
 
     return response
 
@@ -606,22 +674,29 @@ def category_search(request):
     per_page = int(request.GET.get('per_page', 50))
     page = int(request.GET.get('page', 1))
     series = ProductBrandSeries.objects.filter(
-        Q(name__icontains=kw) | Q(brand__name__icontains=kw) | Q(brand__companies__name__icontains=kw) | Q(
-            brand__categories__name__icontains=kw) | Q(brand__categories__parent_category__name__icontains=kw) | Q(
+        Q(name__icontains=kw) | Q(brand__name__icontains=kw) | Q(
+            brand__companies__name__icontains=kw) | Q(
+            brand__categories__name__icontains=kw) | Q(
+            brand__categories__parent_category__name__icontains=kw) | Q(
             brand__categories__parent_category__parent_category__name__icontains=kw))
     result = []
     for se in series:
         for c3 in se.brand.categories.all():
             for company in se.brand.companies.all():
-                result.append({'first_category': c3.parent_category.parent_category.name,
-                               'second_category': c3.parent_category.name, 'third_category': c3.name,
-                               'category_id': c3.id, 'series_id': se.id,
-                               'company': company.name, 'brand': se.brand.name, 'series': se.name,})
+                result.append(
+                    {'first_category': c3.parent_category.parent_category.name,
+                     'second_category': c3.parent_category.name,
+                     'third_category': c3.name,
+                     'category_id': c3.id, 'series_id': se.id,
+                     'company': company.name, 'brand': se.brand.name,
+                     'series': se.name,})
     p = Paginator(result, per_page)
     current_page = p.page(page)
     total_pages = p.num_pages
     return HttpResponse(
-        json.dumps({'data': current_page.object_list, 'total_pages': total_pages, 'current_page': page}))
+        json.dumps(
+            {'data': current_page.object_list, 'total_pages': total_pages,
+             'current_page': page}))
 
 
 def category_attributes(request, category_id):
@@ -656,13 +731,23 @@ def category_attribute_values(request, category_id, series_id):
         json.dumps(attributes))
 
 
-def category_attribute_value_create(request, series_id, attribute_id):
-    value = request.POST.get('value')
-    attribute_value = ProductCategoryAttributeValue()
-    attribute_value.series = ProductBrandSeries.objects.get(pk=series_id)
-    attribute_value.attribute = ProductCategoryAttribute.objects.get(pk=attribute_id)
-    attribute_value.value = value
-    attribute_value.save()
+def category_attribute_value_update(request, series_id):
+    attribute_ids = request.POST.getlist('ids[]')
+    attribute_values = request.POST.getlist('values[]')
+    attribute_searchable = request.POST.getlist('searchables[]')
+    if not len(attribute_ids) == len(attribute_values) == len(
+            attribute_searchable):
+        return HttpResponse(
+            json.dumps({'success': 0}))
+    for index in range(len(attribute_ids)):
+        id = attribute_ids[index]
+        value = attribute_values[index]
+        searchable = int(attribute_searchable[index])
+        attribute_value, flag = ProductCategoryAttributeValue.objects.get_or_create(
+            attribute=id, series=series_id)
+        attribute_value.value = value
+        attribute_value.searchable = searchable == 1
+        attribute_value.save()
     return HttpResponse(
         json.dumps({'success': 1}))
 

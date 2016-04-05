@@ -49,8 +49,12 @@ urlpatterns = [
         name='category-attribute-delete'),
 
     url(r'category/attribute/values/(?P<category_id>\d+)/(?P<series_id>\d+)/$', category_attribute_values, name='category-attribute-values'),
-    url(r'category/attribute/value/create/(?P<series_id>\d+)/(?P<attribute_id>\d+)/$', category_attribute_value_create,
-        name='category-attribute-value-create'),
-    url(r'category/attribute/value/create/(?P<value_id>\d+)/$', category_attribute_value_delete,
-        name='category-attribute-value-delete')
+    url(r'category/attribute/value/update/(?P<series_id>\d+)/$', category_attribute_value_update,
+        name='category-attribute-value-update'),
+    url(r'category/attribute/value/delete/(?P<value_id>\d+)/$', category_attribute_value_delete,
+        name='category-attribute-value-delete'),
+
+    url(r'product/file/upload/$', upload_product_file, name='product-file-upload'),
+    url(r'product/preview/upload/$', upload_product_preview,
+        name='product-preview-upload'),
 ]

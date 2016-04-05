@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.conf import settings
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -24,7 +25,8 @@ urlpatterns = [
     url(r'^property/?', include("property.urls", namespace='property')),
     url(r'^product/?', include("products.urls", namespace='product')),
     url(r'^system/?', include("system.urls", namespace='system')),
-
+    url(r'^media/(?P<path>.*)$', 'django.views.static.serve',
+     {'document_root': settings.MEDIA_ROOT}),
     # sdk
     url(r'^sdk/?', include("sdk.urls", namespace='test')),
     # resource files

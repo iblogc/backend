@@ -1,8 +1,10 @@
-#coding:utf-8
+# coding:utf-8
 import json
 import time
-from models import ProductCategory, ProductBrand, ProductBrandSeries, ProductCategoryAttribute, ProductCategoryAttributeValue
+from models import ProductCategory, ProductBrand, ProductBrandSeries, \
+    ProductCategoryAttribute, ProductCategoryAttributeValue
 from django.core.cache import cache
+
 
 class Node(object):
     def __init__(self, _id, pid, obj):
@@ -36,14 +38,13 @@ class Node(object):
             if node is self.child[-1]:
                 self.idorder += node.get_id_order()
                 break
-            self.idorder += node.get_id_order()+','
+            self.idorder += node.get_id_order() + ','
         res = self.idorder
         self.idorder = ""
         return res
 
 
 class Sortnode(object):
-
     def __init__(self):
         pass
 
@@ -74,7 +75,7 @@ class listJsonEncoder(json.JSONEncoder):
 
 
 def get_time(t):
-        return time.strftime('%Y/%m/%d %H:%M:%S', time.localtime(t))
+    return time.strftime('%Y/%m/%d %H:%M:%S', time.localtime(t))
 
 
 def get_time_stamp_min(t):
@@ -92,13 +93,16 @@ def get_time_stamp_max(t):
 def change_style(content, kw):
     return content.replace(kw, '<span style="background:pink">%s</span>' % kw)
 
+
 TIME_MAX = 2000000000
 TIME_MIN = 1000000000
 
 
 def get_category(c3_id):
     try:
-        c3 = ProductCategory.objects.select_related('parent_category', 'parent_category__parent_category').get(id=c3_id)
+        c3 = ProductCategory.objects.select_related('parent_category',
+                                                    'parent_category__parent_category').get(
+            id=c3_id)
         c3_name = c3.name
         c2 = c3.parent_category
         c2_name = c2.name
@@ -115,7 +119,9 @@ def get_categories():
     if cache.get('category'):
         res = cache.get('category')
     else:
-        for c1 in ProductCategory.objects.prefetch_related('sub_categories', 'sub_categories__sub_categories').filter(step=1).all():
+        for c1 in ProductCategory.objects.prefetch_related('sub_categories',
+                                                           'sub_categories__sub_categories').filter(
+                step=1).all():
             c1_dict = {
                 "id": c1.id,
                 "name": c1.name,
@@ -139,8 +145,10 @@ def get_categories():
 
     return res
 
+
 def get_sub_categories(category_id):
-    category = ProductCategory.objects.prefetch_related('sub_categories').get(pk=category_id)
+    category = ProductCategory.objects.prefetch_related('sub_categories').get(
+        pk=category_id)
     res = []
     for c in category.sub_categories.all():
         c_dict = {
@@ -150,20 +158,25 @@ def get_sub_categories(category_id):
         res.append(c_dict)
     return res
 
+
 def get_category_companies(category_id):
-    category = ProductCategory.objects.prefetch_related('companies').get(pk=category_id)
+    category = ProductCategory.objects.prefetch_related('companies').get(
+        pk=category_id)
     companies = category.companies.all()
     res = []
     for comp in companies:
-        res.append({'id':comp.id,'name':comp.name})
+        res.append({'id': comp.id, 'name': comp.name})
     return res
 
-def get_company_brands(category_id,company_id):
-    brands = ProductBrand.objects.filter(categories=category_id,companies=company_id)
+
+def get_company_brands(category_id, company_id):
+    brands = ProductBrand.objects.filter(categories=category_id,
+                                         companies=company_id)
     res = []
     for brand in brands:
-        res.append({'id':brand.id,'name':brand.name})
+        res.append({'id': brand.id, 'name': brand.name})
     return res
+
 
 def get_brand_series(brand_id):
     series = ProductBrandSeries.objects.filter(brand=brand_id)
@@ -172,23 +185,31 @@ def get_brand_series(brand_id):
         res.append({'id': se.id, 'name': se.name})
     return res
 
+
 def get_category_attributes(category_id):
     attributes = ProductCategoryAttribute.objects.filter(category=category_id)
     result = []
     for attr in attributes:
-        result.append({'id':attr.id,'name':attr.name,'values':json.loads(attr.value)})
+        result.append({'id': attr.id, 'name': attr.name,
+                       'values': json.loads(attr.value)})
     return result
 
+
 def get_category_attribute_values(category_id, series_id):
-    values = ProductCategoryAttributeValue.objects.filter(attribute__category=category_id,series=series_id)
+    values = ProductCategoryAttributeValue.objects.filter(
+        attribute__category=category_id, series=series_id)
     result = []
     if values.exists():
         for value in values:
-            result.append({'id': value.id, 'name': value.attribute.name,'values':json.loads(value.attribute.value), 'value':value.value})
+            result.append(
+                {'id': value.attribute.id, 'name': value.attribute.name,
+                 'values': json.loads(value.attribute.value),
+                 'value': value.value, 'searchable': value.searchable and 1 or 0})
     else:
         attributes = ProductCategoryAttribute.objects.filter(
             category=category_id)
         for attr in attributes:
             result.append({'id': attr.id, 'name': attr.name,
-                           'values': json.loads(attr.value), 'value':''})
+                           'values': json.loads(attr.value), 'value': '',
+                           'searchable': attr.searchable and 1 or 0})
     return result
