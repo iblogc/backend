@@ -1,6 +1,7 @@
 /**
  * Created by yunxia on 2015/12/12.
  */
+var type = 0;
 var s1_val;
 var brand_id;
 var searchUrl;
@@ -76,7 +77,7 @@ $('#product-Search').bind('change', function () {
 
 $('#select-Search').bind('click', function () {
     changeSearchLink();
-    localStorage.setItem('url_temp', kw + ',' + pn + ',' + c1 + ',' + c2 + ',' + c3 + ',' + com + ',' + brand + ',' + series + ',' + date_from + ',' + date_to + ',' + order + ',' + desc);
+    localStorage.setItem('url_temp', type + ',' + kw + ',' + pn + ',' + c1 + ',' + c2 + ',' + c3 + ',' + com + ',' + brand + ',' + series + ',' + date_from + ',' + date_to + ',' + order + ',' + desc);
     location.href = searchUrl;
 });
 
@@ -91,10 +92,10 @@ var changeSearchLink = function () {
     series = $('.js-series').val();
     date_from = $('.js-df').val();
     date_to = $('.js-dt').val();
-    var url = '//' + location.host + location.pathname + '?kw=' + kw + '&pn=' + pn + '&c1=' + c1 + '&c2=' + c2 + '&c3=' + c3 + '&c=' + com + '&b=' + brand + '&s=' + series + '&df=' + date_from + '&dt=' + date_to + '&order=' + order + '&desc=' + (desc ? 1 : 0);
+    var url = '//' + location.host + location.pathname + '?type=' + type + '&kw=' + kw + '&pn=' + pn + '&c1=' + c1 + '&c2=' + c2 + '&c3=' + c3 + '&c=' + com + '&b=' + brand + '&s=' + series + '&df=' + date_from + '&dt=' + date_to + '&order=' + order + '&desc=' + (desc ? 1 : 0);
 
-    localStorage.setItem('lastUrl', 'kw=' + kw + '&pn=' + pn + '&c1=' + c1 + '&c2=' + c2 + '&c3=' + c3 + '&c=' + com + '&b=' + brand + '&s=' + series + '&df=' + date_from + '&dt=' + date_to + '&order=' + order + '&desc=' + (desc ? 1 : 0));
-    searchUrl = '/product/pdt?kw=' + kw + '&pn=' + pn + '&c1=' + c1 + '&c2=' + c2 + '&c3=' + c3 + '&c=' + com + '&b=' + brand + '&s=' + series + '&df=' + date_from + '&dt=' + date_to + '&order=' + order + '&desc=' + (desc ? 1 : 0);
+    localStorage.setItem('lastUrl', 'type=' + type + '&kw=' + kw + '&pn=' + pn + '&c1=' + c1 + '&c2=' + c2 + '&c3=' + c3 + '&c=' + com + '&b=' + brand + '&s=' + series + '&df=' + date_from + '&dt=' + date_to + '&order=' + order + '&desc=' + (desc ? 1 : 0));
+    searchUrl = '/product/pdt?type=' + type + '&kw=' + kw + '&pn=' + pn + '&c1=' + c1 + '&c2=' + c2 + '&c3=' + c3 + '&c=' + com + '&b=' + brand + '&s=' + series + '&df=' + date_from + '&dt=' + date_to + '&order=' + order + '&desc=' + (desc ? 1 : 0);
     $('#search-link').attr('href', searchUrl);
 
 };
@@ -113,7 +114,7 @@ $('.js-header').on('click', function () {
     order = $(this).attr('name');
 
     changeSearchLink();
-    localStorage.setItem('url_temp', kw + ',' + pn + ',' + c1 + ',' + c2 + ',' + c3 + ',' + com + ',' + brand + ',' + series + ',' + date_from + ',' + date_to + ',' + order + ',' + desc);
+    localStorage.setItem('url_temp', type + ',' + kw + ',' + pn + ',' + c1 + ',' + c2 + ',' + c3 + ',' + com + ',' + brand + ',' + series + ',' + date_from + ',' + date_to + ',' + order + ',' + desc);
     location.href = searchUrl;
 });
 
@@ -161,6 +162,7 @@ $('.js-void').on('click', function () {
 var productApp = function () {
     return {
         init: function () {
+            type = $('input[name="page_type"]').val();
             $('#product-Search').val('');
             for (var i = 0; i < category.length; i++) {
                 $('select[name=product1]').append('<option name="' + i + '" value="' + category[i].id + '">' + category[i].name + '</option>');
@@ -169,24 +171,25 @@ var productApp = function () {
             console.log(localStorage.getItem("url_temp"));
             if (url == localStorage.getItem("lastUrl")) {
                 var temp = localStorage.getItem("url_temp").split(',');
-                $('.js-kw').val(temp[0]);
-                $('.js-pn').val(temp[1]);
-                $('.js-c1').val(temp[2]);
-                if (temp[2] != '0') {
+                $('.js-kw').val(temp[1]);
+                $('.js-pn').val(temp[2]);
+                $('.js-c1').val(temp[3]);
+                if (temp[3] != '0') {
                     $('select[name=product1]').change();
                 }
-                $('.js-c2').val(temp[3]);
-                if (temp[3] != '0') {
+                $('.js-c2').val(temp[4]);
+                if (temp[4] != '0') {
                     $('select[name=product2]').change();
                 }
-                $('.js-c3').val(temp[4]);
-                $('.js-company').val(temp[5]);
-                $('.js-brand').val(temp[6]);
-                $('.js-series').val(temp[7]);
-                $('.js-df').val(temp[8]);
-                $('.js-dt').val(temp[9]);
-                order = temp[10];
-                desc = temp[11] == 'true';
+                $('.js-c3').val(temp[5]);
+                $('.js-company').val(temp[6]);
+                $('.js-brand').val(temp[7]);
+                $('.js-series').val(temp[8]);
+                $('.js-df').val(temp[9]);
+                $('.js-dt').val(temp[10]);
+                type = temp[0];
+                order = temp[11];
+                desc = temp[12] == 'true';
             }
             ;
 

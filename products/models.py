@@ -5,6 +5,12 @@ from django.conf import settings
 
 # 产品数据表
 class Product(models.Model):
+    TYPE_PRODUCT = 0
+    TYPE_MODEL = 1
+    TYPE_CHOICES = (
+        (TYPE_PRODUCT,'产品'),
+        (TYPE_MODEL,'模型'),
+    )
     client_product_id = models.IntegerField(default=0, null=False)
     name = models.CharField(max_length=200, default='', null=False)
     category = models.ForeignKey('ProductCategory', related_name='products', default=None, null=True, blank=True, on_delete=models.SET_NULL)
@@ -20,6 +26,7 @@ class Product(models.Model):
     update_time = models.IntegerField(default=0, null=False)
     args = models.TextField(default='')
     remark = models.TextField(default='')
+    type = models.IntegerField(default=TYPE_PRODUCT,choices=TYPE_CHOICES)
 
 
 # 产品模型关系数据表

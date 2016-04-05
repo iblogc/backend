@@ -12,7 +12,7 @@
     {#  <div class="utils-area col-md-2 right">#}
     {#    <a href="/product/category" role="button" class="btn btn-important" > 返回到分类设置 </a>#}
     {#  </div>#}
-<input type="hidden" name="page_type" value="0">
+<input type="hidden" name="page_type" value="1">
     <div>
         <div class="select">
             <div class="left select-table">
@@ -99,7 +99,6 @@
                 <div class="js-header" name="b">品牌</div>
                 <div class="js-header" name="s">系列</div>
                 <div class="js-header" name="d">上传日期</div>
-                <div name="status">状态</div>
                 <div name="edit">编辑</div>
             </div>
             {% for product in products %}
@@ -118,17 +117,10 @@
                         <div name="b">{{ product.brand }}</div>
                         <div name="s">{{ product.series }}</div>
                         <div name="d">{{ product.create_time }}</div>
-                        <div name="status" class="js-status-text-{{ product.id }}">{{ product.status_string }}</div>
                         <div name="edit">
                             <a href="javascript:void(0);"
                                class="js-product-detail" data-toggle="modal"
                                data-target="#menuFromDialog" data-menuId="0" data-id="{{ product.id }}">详细信息</a>
-                            <br><a
-                                href="javascript:void(0);" class="js-active  {% if product.status %}hide{% endif %}"
-                                data-id="{{ product.id }}">启用</a>
-                            <br><a
-                                href="javascript:void(0);" class="js-void {% if product.status %}{% else %}hide{% endif %}"
-                                data-id="{{ product.id }}">禁用</a>
                         </div>
                     </div>
                 {% endautoescape %}

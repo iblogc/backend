@@ -41,6 +41,11 @@ class ProductView(LoginRequiredMixin, TemplateView):
         return context
 
     def get(self, request, *args, **kwargs):
+        self.type = int(request.GET.get('type',0))
+        if self.type == 0:
+            self.template_name = "products/_product.html"
+        else:
+            self.template_name = "products/_model.html"
         self.page_id = int(request.GET.get('page_id', 1))
 
         self.kw = request.GET.get('kw', '')
@@ -59,7 +64,7 @@ class ProductView(LoginRequiredMixin, TemplateView):
         ct2 = get_time_stamp_max(dt) if dt else 0
         self.df = min(ct1, ct2)
         self.dt = max(ct1, ct2)
-        self.url = 'kw=%s&pn=%s&c1=%s&c2=%s&c3=%s&c=%s&b=%s&s=%s&df=%s&dt=%s&order=%s&desc=%s' % (
+        self.url = 'type=%s&kw=%s&pn=%s&c1=%s&c2=%s&c3=%s&c=%s&b=%s&s=%s&df=%s&dt=%s&order=%s&desc=%s' % (self.type,
             self.kw, self.pn, self.c1, self.c2, self.c3, self.com, self.b,
             self.s,
             df, dt, self.order, self.desc)
@@ -72,9 +77,7 @@ class ProductView(LoginRequiredMixin, TemplateView):
                 category__parent_category__name__icontains=self.kw) | Q(
                 category__name__icontains=self.kw) | Q(
                 company__name__icontains=self.kw) | Q(
-                company__alias_name__icontains=self.kw) | Q(
                 brand__name__icontains=self.kw) | Q(
-                brand__name_en__icontains=self.kw) | Q(
                 series__name__icontains=self.kw)
 
         pn_q = Q()
@@ -99,7 +102,7 @@ class ProductView(LoginRequiredMixin, TemplateView):
         ct_q = Q()
         if ct1 or ct2:
             ct_q = Q(create_time__gt=self.df, create_time__lt=self.dt)
-        select_q = Q()
+        select_q = Q(type=self.type)
 
         products = Product.objects.select_related('brand', 'series',
                                                   'company',
@@ -107,7 +110,7 @@ class ProductView(LoginRequiredMixin, TemplateView):
                                                   'category__parent_category',
                                                   'category__parent_category__parent_category').prefetch_related(
             'models').filter(kw_q, com_q, b_q, pn_q, categroy_q, s_q,
-                             ct_q).order_by(
+                             ct_q, select_q).order_by(
             '-id')
         if self.order == 'n':
             products = products.extra(select={
@@ -242,7 +245,7 @@ class ProductDetailView(LoginRequiredMixin, TemplateView):
             "product_no": p.product_no,
             "product_name": p.name,
             "company_name": p.company.name,
-            "category_name": get_category(p.category.id),
+            "category_name": get_category(p.category_id),
             "brand": p.brand.name,
             "series": p.series.name,
             "model": {},
