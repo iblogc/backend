@@ -124,10 +124,10 @@
                                class="js-product-detail" data-toggle="modal"
                                data-target="#menuFromDialog" data-menuId="0" data-id="{{ product.id }}">详细信息</a>
                             <br><a
-                                href="javascript:void(0);" class="js-active  {% if product.status %}hide{% endif %}"
+                                href="javascript:void(0);" class="js-active"  {% if product.status %}style="display: none;"{% endif %}
                                 data-id="{{ product.id }}">启用</a>
                             <br><a
-                                href="javascript:void(0);" class="js-void {% if product.status %}{% else %}hide{% endif %}"
+                                href="javascript:void(0);" class="js-void" {% if product.status %}{% else %}style="display: none;"{% endif %}
                                 data-id="{{ product.id }}">禁用</a>
                         </div>
                     </div>
@@ -268,88 +268,6 @@
                                 </div>
                             </div>
                         </div>
-{#                        <div id="tabs">#}
-{#                            <ul>#}
-{#                                <li><a href="#tabs-1">产品信息</a></li>#}
-{#                                <li><a href="#tabs-2">产品规格</a></li>#}
-{#                                <li><a href="#tabs-3">产品参数</a></li>#}
-{#                                <li><a href="#tabs-4">产品图片</a></li>#}
-{#                                <li><a href="#tabs-5">备注信息</a></li>#}
-{#                            </ul>#}
-{#                            <div id="tabs-1">#}
-{#                                <table>#}
-{#                                    <tr>#}
-{#                                        <th width="200px">名称</th>#}
-{#                                        <th width="300px">详细信息</th>#}
-{#                                    </tr>#}
-{#                                    <tr>#}
-{#                                        <th>产品编号</th>#}
-{#                                        <td class="js-modal-product-no"></td>#}
-{#                                    </tr>#}
-{#                                    <tr>#}
-{#                                        <th>产品名称</th>#}
-{#                                        <td class="js-modal-product-name"></td>#}
-{#                                    </tr>#}
-{#                                    <tr>#}
-{#                                        <th>产品分类</th>#}
-{#                                        <td class="js-modal-product-category"></td>#}
-{#                                    </tr>#}
-{#                                    <tr>#}
-{#                                        <th>厂家名称</th>#}
-{#                                        <td class="js-modal-product-company"></td>#}
-{#                                    </tr>#}
-{#                                    <tr>#}
-{#                                        <th>品牌</th>#}
-{#                                        <td class="js-modal-product-brand"></td>#}
-{#                                    </tr>#}
-{#                                    <tr>#}
-{#                                        <th>系列</th>#}
-{#                                        <td class="js-modal-product-series"></td>#}
-{#                                    </tr>#}
-{#                                </table>#}
-{#                            </div>#}
-{#                            <div id="tabs-2">#}
-{#                                <table>#}
-{#                                    <tr>#}
-{#                                        <th width="200px">名称</th>#}
-{#                                        <th width="300px">详细信息</th>#}
-{#                                    </tr>#}
-{#                                    <tr>#}
-{#                                        <th>规格编号</th>#}
-{#                                        <td class="js-modal-model-no"></td>#}
-{#                                    </tr>#}
-{#                                    <tr>#}
-{#                                        <th>产品型号</th>#}
-{#                                        <td class="js-modal-model-version"></td>#}
-{#                                    </tr>#}
-{#                                    <tr>#}
-{#                                        <th>长宽高</th>#}
-{#                                        <td class="js-modal-model-size"></td>#}
-{#                                    </tr>#}
-{#                                    <tr>#}
-{#                                        <th>材质</th>#}
-{#                                        <td class="js-modal-model-material"></td>#}
-{#                                    </tr>#}
-{#                                    <tr>#}
-{#                                        <th>颜色</th>#}
-{#                                        <td class="js-modal-model-color"></td>#}
-{#                                    </tr>#}
-{#                                </table>#}
-{#                            </div>#}
-{#                            <div id="tabs-3">#}
-{#                                <ul class="product-param list-type-none js-modal-args">#}
-{#                                    {% for k, v in arg.items %}#}
-{#                                        <li><span>{{ k }}:</span><span>{{ v }}</span></li>#}
-{#                                    {% endfor %}#}
-{#                                </ul>#}
-{#                            </div>#}
-{#                            <div id="tabs-4">#}
-{#                                <img class="js-modal-product-img" src="../../statics/imgs/icon/title-icon.png">#}
-{#                            </div>#}
-{#                            <div id="tabs-5">#}
-{#                                <p class="js-modal-product-remarks"></p>#}
-{#                            </div>#}
-{#                        </div>#}
                     </div>
                     <div class="modal-footer">
 

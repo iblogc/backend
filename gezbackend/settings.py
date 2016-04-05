@@ -157,6 +157,8 @@ STATICFILES_DIRS = (
     STATIC_FILES,
 )
 
+MEDIA_ROOT = '/media/'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',

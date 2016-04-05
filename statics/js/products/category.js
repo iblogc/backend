@@ -766,8 +766,8 @@ var categoryApp = function () {
                         '</div>' +
                         '<div>' +
                         '<select name="searchable" class="form-control">' +
-                        '<option value="1">yes</option>' +
-                        '<option value="0">no</option>' +
+                        '<option value="1">允许</option>' +
+                        '<option value="0">不允许</option>' +
                         '</select>' +
                         '</div>' +
                         '<div class="modal-span"><span class="fa fa-cog"></span>&nbsp;&nbsp;&nbsp;&nbsp;<span' +

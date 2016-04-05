@@ -39,47 +39,32 @@ class ProductModel(models.Model):
     material = models.CharField(max_length=100, default='', null=False)
     norms = models.CharField(max_length=100, default='', null=False)
     technics = models.CharField(max_length=100, default='', null=False)
-    model_path = models.CharField(max_length=300, default='', null=False)
-    chartlet_path = models.CharField(max_length=300, default='', null=False)
     color = models.CharField(max_length=10, default='', null=False)
     status = models.IntegerField(default=0, null=False)
     create_time = models.IntegerField(default=0, null=False)
     update_time = models.IntegerField(default=0, null=False)
 
+    @property
+    def chartlet_path(self):
+        path = ''
+        if self.previews.exists():
+            path = self.previews.all()[0].file.url
 
-# 产品商品关系数据表
-class ProductCommodity(models.Model):
-    product = models.ForeignKey("Product", related_name='commodities', default=None, null=True, blank=True, on_delete=models.SET_NULL)
-    model = models.CharField(max_length=500, default='', null=False)
-    name = models.CharField(max_length=200, default='', null=False)
-    category = models.CharField(max_length=500, default='', null=False)
-    brand = models.CharField(max_length=300, default='', null=False)
-    series = models.CharField(max_length=300, default='', null=False)
-    model_position = models.TextField()
-    account_limit = models.TextField()   # license,
-    company_id = models.IntegerField(default=0, null=False)
-    status = models.IntegerField(default=0, null=False)
-    create_time = models.IntegerField(default=0, null=False)
-    update_time = models.IntegerField(default=0, null=False)
 
-# 商品货品关系数据表
-class ProductCommodityGoods(models.Model):
-    commodity = models.ForeignKey("ProductCommodity", related_name='goods', default=None, null=True, blank=True, on_delete=models.SET_NULL)
+class ProductModelFiles(models.Model):
     name = models.CharField(max_length=200, default='', null=False)
-    sale_title = models.CharField(max_length=300, default='', null=False)
-    category = models.CharField(max_length=500, default='', null=False)
-    brand = models.CharField(max_length=300, default='', null=False)
-    series = models.CharField(max_length=300, default='', null=False)
-    param_search = models.TextField()
-    param_full = models.TextField()
-    description = models.TextField()
-    price = models.FloatField(default=0, null=False)
-    price_advise = models.FloatField(default=0, null=False)
-    inventory = models.IntegerField(default=0, null=False)
-    company_id = models.IntegerField(default=0, null=False)
-    status = models.IntegerField(default=0, null=False)
-    create_time = models.IntegerField(default=0, null=False)
-    update_time = models.IntegerField(default=0, null=False)
+    model = models.ForeignKey("ProductModel", related_name='files', default=None,
+                              null=True, blank=True,
+                              on_delete=models.SET_NULL)
+    file = models.FileField(upload_to = 'file/')
+
+class ProductModelPreviews(models.Model):
+    name = models.CharField(max_length=200, default='', null=False)
+    model = models.ForeignKey("ProductModel", related_name='previews',
+                              default=None,
+                              null=True, blank=True,
+                              on_delete=models.SET_NULL)
+    file = models.FileField(upload_to = 'preview/')
 
 
 # 产品分类数据表

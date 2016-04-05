@@ -160,12 +160,12 @@ class ProductView(LoginRequiredMixin, TemplateView):
             except:
                 self.next_page = False
             for product in self.page.object_list:
-                brand_name = product.brand and product.brand.name or ''
-                series_name = product.series and product.series.name or ''
-                company_name = product.company and product.company.name or ''
-                c1 = ''
-                c2 = ''
-                c3 = ''
+                brand_name = product.brand and product.brand.name or 'N/A'
+                series_name = product.series and product.series.name or 'N/A'
+                company_name = product.company and product.company.name or 'N/A'
+                c1 = 'N/A'
+                c2 = 'N/A'
+                c3 = 'N/A'
                 if product.category:
                     c3 = product.category.name
                     if product.category.parent_category:
@@ -173,7 +173,7 @@ class ProductView(LoginRequiredMixin, TemplateView):
                         if product.category.parent_category.parent_category:
                             c1 = product.category.parent_category.parent_category.name
                 # cate_obj = ProductCategory.objects.get(id=product.category)
-                style = ''  # ProductCategoryAttribute.objects.get(status=1, category_id=cate_obj, name=u'所属风格').value
+                style = 'N/A'  # ProductCategoryAttribute.objects.get(status=1, category_id=cate_obj, name=u'所属风格').value
                 ctime = get_time(product.create_time)
                 utime = get_time(product.update_time)
                 m = product.models.all()
@@ -243,14 +243,14 @@ class ProductDetailView(LoginRequiredMixin, TemplateView):
         self.product = {
             "id": p.id,
             "product_no": p.product_no,
-            "product_name": p.name,
-            "company_name": p.company.name,
-            "category_name": get_category(p.category_id),
-            "brand": p.brand.name,
-            "series": p.series.name,
+            "product_name": p.name or 'N/A',
+            "company_name": p.company.name or 'N/A',
+            "category_name": get_category(p.category_id) or 'N/A',
+            "brand": p.brand.name or 'N/A',
+            "series": p.series.name or 'N/A',
             "model": {},
             "args": {},
-            "remarks": p.remark,
+            "remarks": p.remark or 'N/A',
         }
         if p.models.exists():
             model = p.models.all()[0]

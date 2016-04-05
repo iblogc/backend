@@ -150,6 +150,8 @@ $('.js-active').on('click', function () {
     $.post('/products/active/' + id + '/', {'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()}, function (data) {
         $('.js-status-text-' + id).html('启用');
     }, 'JSON');
+    $(this).parent().find('.js-active').hide();
+    $(this).parent().find('.js-void').show();
 });
 
 $('.js-void').on('click', function () {
@@ -157,6 +159,8 @@ $('.js-void').on('click', function () {
     $.post('/products/void/' + id + '/', {'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()}, function (data) {
         $('.js-status-text-' + id).html('禁用');
     }, 'JSON');
+    $(this).parent().find('.js-active').show();
+    $(this).parent().find('.js-void').hide();
 });
 
 var productApp = function () {
