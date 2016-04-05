@@ -204,7 +204,8 @@ class ProductView(LoginRequiredMixin, TemplateView):
                     "update_time": utime if not self.kw else change_style(utime,
                                                                           self.kw.strip()),
                     "charlet": charlet,
-                    "status": product.status and '启用' or '禁用',
+                    "status": product.status,
+                    "status_string": product.status and '启用' or '禁用',
                 })
                 # self.products.reverse()
         except Exception as e:
@@ -620,7 +621,7 @@ def category_search(request):
     current_page = p.page(page)
     total_pages = p.num_pages
     return HttpResponse(
-        json.dumps({'data': current_page.object_list, 'total_pages': total_pages, 'current_page': page, 'id': se.id}))
+        json.dumps({'data': current_page.object_list, 'total_pages': total_pages, 'current_page': page}))
 
 
 def category_attributes(request, category_id):

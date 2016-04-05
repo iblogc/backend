@@ -745,7 +745,7 @@ var categoryApp = function () {
         var category_id = $(this).attr('category-id');
         var series_id = $(this).attr('series-id');
         $.get(
-            "category/attributes/" + category_id + "/",
+            "category/attribute/values/" + category_id + "/" + series_id + "/",
             {},
             function (data) {
                 $('.js-modal-attribute-row').remove();
@@ -756,7 +756,9 @@ var categoryApp = function () {
                         '<div>' +
                         '<select class="form-control">';
                     for (value_index in attribute.values) {
-                        row_html += '<option value="' + attribute.values[value_index] + '">' + attribute.values[value_index] + '</option>'
+                        row_html += '<option value="' + attribute.values[value_index] + '"';
+                        if(attribute.values[value_index]==attribute.value){row_html += 'selected';}
+                        row_html += '>' + attribute.values[value_index] + '</option>';
                     }
                     row_html +=
                         '</select>' +

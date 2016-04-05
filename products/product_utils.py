@@ -182,6 +182,13 @@ def get_category_attributes(category_id):
 def get_category_attribute_values(category_id, series_id):
     values = ProductCategoryAttributeValue.objects.filter(attribute__category=category_id,series=series_id)
     result = []
-    for value in values:
-        result.append({'id': value.id, 'name': value.attribute.name, 'value':value.value})
+    if values.exists():
+        for value in values:
+            result.append({'id': value.id, 'name': value.attribute.name,'values':json.loads(value.attribute.value), 'value':value.value})
+    else:
+        attributes = ProductCategoryAttribute.objects.filter(
+            category=category_id)
+        for attr in attributes:
+            result.append({'id': attr.id, 'name': attr.name,
+                           'values': json.loads(attr.value), 'value':''})
     return result
