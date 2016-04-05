@@ -743,6 +743,7 @@ var categoryApp = function () {
 
 
     var setting = function () {
+        //if($(this).hasClass('last') && series == 0) return;
         $('#settingForm').modal('show');
         var category_id = $(this).attr('category-id');
         var series_id = $(this).attr('series-id');
@@ -772,7 +773,7 @@ var categoryApp = function () {
                         '</div>' +
                         '<div class="modal-span"><span class="fa fa-cog"></span>&nbsp;&nbsp;&nbsp;&nbsp;<span' +
                         'class="fa fa-close"></span></div>' +
-                        '</div>'
+                        '</div>';
                     $('.modal-body-4').append(row_html);
                     $('.modal-body-4').find('div[data-id="' + attribute.id + '"]').find('select[name="value"]').val(attribute.value);
                     $('.modal-body-4').find('div[data-id="' + attribute.id + '"]').find('select[name="searchable"]').val(attribute.searchable);
@@ -780,9 +781,39 @@ var categoryApp = function () {
             },
             "json"
         );
-        //$('#settingForm .modal-body-5').hide();
-        //$('#settingForm .modal-body-6').hide();
+        $('#settingForm .modal-body-5').hide();
+        $('#settingForm .modal-body-6').hide();
         $('#settingForm button[data-for]').hide();
+        $('.modal-body-4 button[data-name=add]').on('click',function(){
+            $('.modal-body-6').show();
+            $('.modal-body-4').hide();
+            $('#settingForm .modal-title').html('新增属性');
+            $('#settingForm button[data-action]').hide();
+            $('#settingForm button[data-for=modal-body-6]').show();
+        });
+        $('.modal-body-4 .modal-span .fa-cog').on('click',function(){
+            $('.modal-body-5').show();
+            $('.modal-body-4').hide();
+            $('#settingForm .modal-title').html('修改属性值');
+            $('#settingForm button[data-action]').hide();
+            $('#settingForm button[data-for=modal-body-5]').show();
+        });
+        $('#settingForm button[data-for=modal-body-5]').on('click',function(){
+            $('.modal-body-5').hide();
+            $('.modal-body-4').show();
+            $('#settingForm button[data-action]').show();
+            $('#settingForm button[data-for=modal-body-5]').hide();
+            $('#settingForm .modal-title').html('{ { 放属性名 } }的值:');
+        });
+        $('#settingForm button[data-for=modal-body-6]').on('click',function(){
+            $('.modal-body-6').hide();
+            $('.modal-body-4').show();
+            $('#settingForm button[data-action]').show();
+            $('#settingForm button[data-for=modal-body-6]').hide();
+            $('#settingForm .modal-title').html('{ { 放属性名 } }的值:');
+            if($(this).hasClass('btn-default')) return;
+            //ajax
+        });
     };
 
     var settingAction = function () {
@@ -817,15 +848,43 @@ var categoryApp = function () {
         $('#settingForm').modal('hide');
     };
 
-    var modalEdit = function () {
-        if (!eval($(this).attr('data-status'))) {
-            $(this).prev().removeAttr('readonly');
-            $(this).html('save');
-        } else {
-            $(this).prev().attr('readonly', 'readonly');
-            $(this).html('edit');
+    var inputSelected = function () {
+        $(this).addClass('selected').siblings().removeClass('selected');
+    };
+
+    var modal5Action = function () {
+        if($(this).attr('name') == 'edit'){
+            if($('.modal-body-5 input.selected').length == 0) return;
+            $('.modal-body-5 input.selected').removeAttr('readonly').next().show();
+            modal5UnbindAction();
+        } else if($(this).attr('name') == 'add') {
+            $('.modal-body-5 .modal-row').append('<input type="text" class="form-control" readonly><span>确定</span>')
+            modal5bindAction();
+        } else if($(this).attr('name') == 'remove') {
+            $('.modal-body-5 input.selected').next().remove();
+            $('.modal-body-5 input.selected').remove();
+            //ajax
         }
-        $(this).attr('data-status', !eval($(this).attr('data-status')));
+    };
+
+    var changeModal5Val = function(){
+        console.log(123);
+        modal5bindAction();
+        $(this).prev().attr('readonly','readonly');
+        //ajax
+    };
+
+    var modal5bindAction = function(){
+        $(document).on('click', '.modal-body-5 input', inputSelected);
+        $('.modal-body-5 div[data-name=action-box] span').on('click', modal5Action);
+        $(document).off('click', '.modal-body-5 input+span');
+        $('.modal-body-5 input+span').hide();
+    };
+
+    var modal5UnbindAction = function(){
+        $(document).off('click', '.modal-body-5 input');
+        $('.modal-body-5 div[data-name=action-box] span').off('click');
+        $(document).on('click', '.modal-body-5 input+span', changeModal5Val);
     };
 
     var export_xls = function () {
@@ -841,24 +900,28 @@ var categoryApp = function () {
             },
             function (data) {
                 $('.js-search-result').find('.js-search-detail').remove();
-                for (var result in data.data) {
+                var tmp = 0;
+                for (tmp in data.data) {
                     $('.js-search-result').append(
                         '<div class="search-detail-row js-search-detail">' +
-                        '<div>' + data.data[result].first_category + '</div>' +
-                        '<div>' + data.data[result].second_category + '</div>' +
-                        '<div>' + data.data[result].third_category + '</div>' +
-                        '<div>' + data.data[result].company + '</div>' +
-                        '<div>' + data.data[result].brand + '</div>' +
-                        '<div>' + data.data[result].series + '</div>' +
-                        '<div><span class="fa fa-cog" category-id="' + data.data[result].category_id + '" series-id="' + data.data[result].series_id + '"></span></div>' +
+                        '<div>' + data.data[tmp].first_category + '</div>' +
+                        '<div>' + data.data[tmp].second_category + '</div>' +
+                        '<div>' + data.data[tmp].third_category + '</div>' +
+                        '<div>' + data.data[tmp].company + '</div>' +
+                        '<div>' + data.data[tmp].brand + '</div>' +
+                        '<div>' + data.data[tmp].series + '</div>' +
+                        '<div><span class="fa fa-cog" category-id="' + data.data[tmp].category_id + '" series-id="' + data.data[tmp].series_id + '"></span></div>' +
                         '</div>'
                     );
                 }
                 $('.js-search-result').find('.fa-cog').on('click', setting);
+                tmp++;
+                baseApp.changeSize(tmp * 30 + 416);
             },
             "json"
         );
-    }
+        $('.js-search-result').css('visibility', 'visible');
+    };
 
 
     return {
@@ -905,9 +968,19 @@ var categoryApp = function () {
             $('.fa-cog').on('click', setting);
             $('button[data-action]').on('click', settingAction);
 
-            $('.modal-body-5 span[data-status]').on('click', modalEdit);
+            modal5bindAction();
 
             $('.js-search-button').on('click', search_kw);
+            $('.js-search-result').css('visibility', 'hidden');
+
+            $(document).on('hidden.bs.modal', '#settingForm',function(){
+                $('#settingForm .modal-body-5 input').removeClass('selected');
+            })
+
+            $('.modal-body-4 .modal-span .fa-close').on('click',function(){
+                //ajax
+                $(this.parentNode.parentNode).remove();
+            });
         }
     }
 }();

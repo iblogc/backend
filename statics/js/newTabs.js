@@ -112,6 +112,10 @@ var newTabs = function () {
                 tabActive($('div[data-name=' + $(arr[i]).attr('data-name') + ']'), $(arr[i]).index());
                 tabHistory[i] = 0;
             }
+        },
+
+        changeSize:function(height, obj){
+            obj.height(height);
         }
     }
 }();

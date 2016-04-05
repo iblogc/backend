@@ -204,7 +204,6 @@
     margin-left: 20px;
     font-size: 0px;
     margin-top: -1px;
-    background: #fff;
 }
 
 .search-detail-row>div {
@@ -217,6 +216,7 @@
     margin-left: -1px;
     padding-left: 18px;
     font-size: 14px;
+    background: #fff;
 }
 
 .search-detail-row>div:last-child {
@@ -230,6 +230,10 @@
 
 .search-detail-row>div:last-child:hover {
     color: #333;
+}
+
+.js-search-result:last-child {
+    margin-bottom: 60px;
 }
 
 
@@ -315,6 +319,10 @@
     position: relative;
 }
 
+.modal-body-5 > .modal-row .selected {
+    background: #fff!important;
+}
+
 .modal-body-5 > .modal-row >div {
     font-size: 14px;
 }
@@ -327,20 +335,61 @@
     padding: 3px 6px;
     width: 430px;
     display: inline-block!important;
-    background: #fff!important;
+    background: #f3f3f3;
+    vertical-align: top;
 }
 
 .modal-body-5 > .modal-row .form-control + span{
-    cursor: pointer;
-    background: #fff;
-    width: 40px;
-    margin-left: -1px;
+    -webkit-border-radius: 0px!important;
+    -moz-border-radius: 0px!important;
+    border-radius: 0px!important;
+    border: 1px #d3d3d3 solid;
+    font-size: 12px;
     height: 34px;
-    border: #d3d3d3 1px solid;
+    line-height: 34px;
+    text-align: center;
+    margin-left: -50px;
+    width: 50px;
+    display: inline-block;
+    background: #fff;
+    vertical-align: top;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+    cursor: pointer;
+}
+
+.modal-body-5 div[data-name=action-box] {
+    margin: 10px 0;
+}
+
+.modal-body-5 div[data-name=action-box]>span {
+    display: inline-block;
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.modal-body-5 div[data-name=action-box]>span:hover {
+    color: #333;
+}
+
+.modal-body-6 .modal-row>div {
+    width: 150px!important;
+    text-align: right;
     display: inline-block;
     vertical-align: top;
-    padding-top: 10px;
-    text-align: center;
+    line-height: 34px;
+    height: 34px;
+    padding-right: 10px;
+}
+
+.modal-body-6 > .modal-row .form-control{
+    font-size: 12px;
+    padding: 3px 6px;
+    width: 380px;
+    display: inline-block!important;
+    vertical-align: top;
 }
 
 /* list hover & selected */

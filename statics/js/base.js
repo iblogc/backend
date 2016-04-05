@@ -133,6 +133,11 @@ var baseApp = function () {
             resizeFun();
             
         },
+
+        changeSize: function(height){
+            newTabs.changeSize(height, window.top.$('.tabs-main>div>iframe.show'))
+        },
+
         compareDate: function (s, e) {
             var start = $(s);
             var end = $(e);
