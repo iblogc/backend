@@ -255,7 +255,7 @@ var categoryApp = function () {
     };
 
     var series_onclick = function () {
-        brand = 0;
+        seiies = 0;
         if (checkboxFlag)  return;
         series = $(this).attr('data-id');
         changeClass(this);

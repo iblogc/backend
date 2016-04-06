@@ -201,12 +201,14 @@ def get_category_attribute_values(category_id, series_id):
         category=category_id)
     for attr in attributes:
         values = attr.values.filter(series=series_id)
+        searchable = 1
         value = ''
         if values.exists():
             value = values[0].value
+            searchable = values[0].searchable and 1 or 0
         else:
             value = json.loads(attr.value)[0]
         result.append({'id': attr.id, 'name': attr.name,
                        'values': json.loads(attr.value), 'value': value,
-                       'searchable': attr.searchable and 1 or 0})
+                       'searchable': searchable})
     return result
