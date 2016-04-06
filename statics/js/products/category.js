@@ -777,6 +777,7 @@ var categoryApp = function () {
         $('#settingForm button[data-for=modal-body-5]').on('click', function () {
             $('.modal-body-5').hide();
             $('.modal-body-4').show();
+            init_setting_form1();
             $('#settingForm button[data-action]').show();
             $('#settingForm button[data-for=modal-body-5]').hide();
             $('#settingForm .modal-body-5 input').removeClass('selected');
@@ -785,6 +786,7 @@ var categoryApp = function () {
         $('#settingForm button[data-for=modal-body-6]').on('click', function () {
             $('.modal-body-6').hide();
             $('.modal-body-4').show();
+            init_setting_form1();
             $('#settingForm button[data-action]').show();
             $('#settingForm button[data-for=modal-body-6]').hide();
             $('#settingForm .modal-title').html('属性设置');
@@ -890,12 +892,25 @@ var categoryApp = function () {
             $('.modal-body-5 input.selected').removeAttr('readonly').next().show();
             modal5UnbindAction();
         } else if ($(this).attr('name') == 'add') {
-            $('.modal-body-5 .modal-row').append('<input type="text" class="form-control js-value-text" readonly><span class="js-value-text-label">确定</span>')
+            var max_index = parseInt($('.js-value-text').last().attr('data-index')) + 1;
+            $('.modal-body-5 .modal-row').append('<input type="text" class="form-control js-value-text" data-index="'+max_index+'" readonly><span class="js-value-text-label"  data-index="'+max_index+'">确定</span>')
             modal5bindAction();
         } else if ($(this).attr('name') == 'remove') {
             $('.modal-body-5 input.selected').next().remove();
             $('.modal-body-5 input.selected').remove();
-            //ajax
+            var index = $(this).attr('data-index');
+            $.post(
+                "/products/category/attribute/default_value/delete/" + settings_attribute + "/",
+                {
+                    'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+                    'index': index,
+                },
+                function (data) {
+                    if (data.success == 1) {
+                    }
+                },
+                "json"
+            );
         }
     };
 
@@ -917,7 +932,6 @@ var categoryApp = function () {
                 },
                 "json"
             );
-        init_setting_form1();
     };
 
     var modal5bindAction = function () {

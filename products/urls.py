@@ -59,6 +59,9 @@ urlpatterns = [
     url(r'category/attribute/default_value/update/(?P<attribute_id>\d+)/$',
         category_attribute_default_value_update,
         name='category-attribute-default-value-update'),
+    url(r'category/attribute/default_value/delete/(?P<attribute_id>\d+)/$',
+        category_attribute_default_value_delete,
+        name='category-attribute-default-value-delete'),
 
     url(r'product/file/upload/$', upload_product_file, name='product-file-upload'),
     url(r'product/preview/upload/$', upload_product_preview,

@@ -761,11 +761,27 @@ def category_attribute_default_value_update(request, attribute_id):
     index = int(request.POST.get('index', 0))
     text = request.POST.get('text').strip()
     values = json.loads(attribute.value)
-    pre_text = values[index]
-    values[index] = text
+    pre_text = ''
+    if len(values) <= index:
+        values.append(text)
+    else:
+        pre_text = values[index]
+        values[index] = text
     attribute.value = json.dumps(values)
     attribute.save()
     attribute.values.filter(value=pre_text).update(value=text)
+    return HttpResponse(
+        json.dumps({'success': 1}))
+
+def category_attribute_default_value_delete(request, attribute_id):
+    attribute = ProductCategoryAttribute.objects.get(pk=attribute_id)
+    index = int(request.POST.get('index', 0))
+    values = json.loads(attribute.value)
+    pre_text = values[index]
+    values.remove(pre_text)
+    attribute.value = json.dumps(values)
+    attribute.save()
+    attribute.values.filter(value=pre_text).delete()
     return HttpResponse(
         json.dumps({'success': 1}))
 
