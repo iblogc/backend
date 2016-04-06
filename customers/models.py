@@ -10,6 +10,9 @@ class Company(models.Model):
     brands = models.ManyToManyField('products.ProductBrand',through='products.CompanyBrand',related_name='companies')
     active = models.BooleanField(default=True)
 
+    def __unicode__(self):
+        return '%s(%s)' % (self.name, self.company_no)
+
     @property
     def company_no(self):
         return 'd%s' % self.no

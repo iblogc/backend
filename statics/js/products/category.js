@@ -673,6 +673,16 @@ var categoryApp = function () {
                 function (data) {
                     if (data.success == 1) {
                         $('.js-company[data-id="' + company + '"]').find('.js-company-name').html(category_name);
+                    }else{
+                        if($('.js-company[data-id="' + data.company_id + '"]').length>0) {
+                            $('.js-company[data-id="' + company + '"]').remove();
+                            company = 0;
+                            $('.js-company[data-id="' + data.company_id + '"]').click();
+                        }else{
+                            $('.js-company[data-id="' + company + '"]').find('.js-company-name').html(category_name);
+                            $('.js-company[data-id="' + company + '"]').find('input').val(data.company_id);
+                            $('.js-company[data-id="' + company + '"]').attr('data-id',data.company_id);
+                        }
                     }
                 },
                 "json"

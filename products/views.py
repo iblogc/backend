@@ -416,8 +416,18 @@ def company_batch_delete(request, category_id):
 
 def company_update(request, company_id):
     name = request.POST.get('name').strip()
-    Company.objects.filter(pk=company_id).update(name=name)
-    return HttpResponse(json.dumps({'success': 1}))
+    exists_company = Company.objects.filter(name=name)
+    company = Company.objects.get(pk=company_id)
+    if exists_company.exists():
+        exists_company=exists_company[0]
+        company.categorycompany_set.all().delete()
+        company.companybrand_set.update(company=exists_company)
+        company.delete()
+        return HttpResponse(json.dumps({'success': 2,'company_id':exists_company.id}))
+    else:
+        company.name = name
+        company.save()
+        return HttpResponse(json.dumps({'success': 1}))
 
 
 def brands(request, category_id, company_id):
