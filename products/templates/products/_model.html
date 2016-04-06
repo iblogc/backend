@@ -125,11 +125,12 @@
                         <div name="b">{{ product.brand }}</div>
                         <div name="s">{{ product.series }}</div>
                         <div name="d">{{ product.create_time }}</div>
-                        <div name="edit">
-                            <a href="javascript:void(0);"
+                        <div name="edit-model">
+                            <a href=""
                                class="js-product-detail" data-toggle="modal"
-                               data-target="#menuFromDialog" data-menuId="0"
+                               data-backdrop="static" data-target="#menuFromDialog" data-menuId="0"
                                data-id="{{ product.id }}">编辑模型</a>
+{#                            <a href="" class="js-product-detail" data-id="{{ product.id }}">编辑模型</a>#}
                         </div>
                     </div>
                 {% endautoescape %}
@@ -258,42 +259,45 @@
                                     </table>
                                 </div>
                                 <div>
-                                    <button type="button"
-                                            class="btn btn-primary js-modal-upload-file">
-                                        添加模型文件
-                                    </button>
-                                    <input type="file" class="hide" name="model-file" id="model-file">
-                                    <button type="button"
-                                            class="btn btn-default js-modal-delete-file">
-                                        删除模型文件
-                                    </button>
+{#                                    <button type="button"#}
+{#                                            class="btn btn-primary js-modal-upload-file">#}
+{#                                        添加模型文件#}
+{#                                    </button>#}
+{#                                    <input type="file" class="hide" name="model-file" id="model-file">#}
+{#                                    <button type="button"#}
+{#                                            class="btn btn-default js-modal-delete-file">#}
+{#                                        删除模型文件#}
+{#                                    </button>#}
                                     <div class="js-file-list">
 
                                     </div>
 
                                 </div>
-                                <div>
-                                    <button type="button"
-                                            class="btn btn-primary js-modal-upload-preview">
-                                        添加贴图文件
-                                    </button>
-                                    <input type="file" class="hide" name="model-preview" id="model-preview">
-                                    <button type="button"
-                                            class="btn btn-default js-modal-delete-preview">
-                                        删除贴图文件
-                                    </button>
-                                    <div  class="js-preview-list">
+                                <div data-name="preview-box">
+{#                                    <button type="button"#}
+{#                                            class="btn btn-primary js-modal-upload-preview">#}
+{#                                        添加贴图文件#}
+{#                                    </button>#}
+{#                                    <input type="file" class="hide" name="model-preview" id="model-preview">#}
+{#                                    <button type="button"#}
+{#                                            class="btn btn-default js-modal-delete-preview">#}
+{#                                        删除贴图文件#}
+{#                                    </button>#}
+                                    <div class="js-preview-list">
 
                                     </div>
-
                                 </div>
                             </div>
+
                         </div>
                     </div>
                     <div class="modal-footer">
 
                     </div>
                 </div>
+            </div>
+            <div data-name="previewImg">
+                <div data-name="previewImgLeft"></div><img><div data-name="previewImgRight"></div>
             </div>
         </div>
     </div>
