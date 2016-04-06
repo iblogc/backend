@@ -774,6 +774,7 @@ var categoryApp = function () {
             $('.modal-body-4').show();
             $('#settingForm button[data-action]').show();
             $('#settingForm button[data-for=modal-body-5]').hide();
+            $('#settingForm .modal-body-5 input').removeClass('selected');
             $('#settingForm .modal-title').html('{ { 放属性名 } }的值:');
         });
         $('#settingForm button[data-for=modal-body-6]').on('click', function () {
