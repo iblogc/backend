@@ -255,7 +255,7 @@ var categoryApp = function () {
     };
 
     var series_onclick = function () {
-        brand = 0;
+        seiies = 0;
         if (checkboxFlag)  return;
         series = $(this).attr('data-id');
         changeClass(this);
@@ -863,6 +863,10 @@ var categoryApp = function () {
             console.log(attr_ids);
             console.log(attr_values);
             console.log(attr_searchables);
+            if(attr_values.includes(null) || attr_searchables.includes(null)) {
+                sweetAlert("必须选择属性值！");
+                return;
+            }
             $.post(
                 "/products/category/attribute/value/update/" + settings_series + "/",
                 {

@@ -35,6 +35,7 @@ class Product(models.Model):
     height = models.DecimalField(decimal_places=2, max_digits=10)
     technics = models.CharField(max_length=100, default='', null=False)
     color = models.CharField(max_length=10, default='', null=False)
+    active = models.BooleanField(default=True)
 
     @property
     def chartlet_path(self):
@@ -50,6 +51,7 @@ class ProductModelFiles(models.Model):
                               null=True, blank=True,
                               on_delete=models.SET_NULL)
     file = models.FileField(upload_to = 'file/')
+    active = models.BooleanField(default=True)
 
 
 class ProductModelPreviews(models.Model):
@@ -59,6 +61,7 @@ class ProductModelPreviews(models.Model):
                               null=True, blank=True,
                               on_delete=models.SET_NULL)
     file = models.FileField(upload_to = 'preview/')
+    active = models.BooleanField(default=True)
 
 
 # 产品分类数据表
@@ -69,6 +72,7 @@ class ProductCategory(models.Model):
     no = models.IntegerField(default=0, null=False)
     companies = models.ManyToManyField("customers.Company", through='CategoryCompany',related_name='categories')
     brands = models.ManyToManyField('ProductBrand', through='CategoryBrand',related_name='categories')
+    active = models.BooleanField(default=True)
 
     def __unicode__(self):
         return '%s, %s' % (self.name,self.id)
@@ -101,6 +105,7 @@ class ProductCategoryAttribute(models.Model):
     name = models.CharField(max_length=100, default='', null=False)
     value = models.TextField()
     searchable = models.BooleanField(default=True)
+    active = models.BooleanField(default=True)
 
 # 产品分类属性数值信息表
 class ProductCategoryAttributeValue(models.Model):
@@ -108,11 +113,13 @@ class ProductCategoryAttributeValue(models.Model):
     series = models.ForeignKey("ProductBrandSeries", related_name='attribute_values', default=None, null=True, blank=True, on_delete=models.SET_NULL)
     value = models.CharField(max_length=100, default='', null=False)
     searchable = models.BooleanField(default=True)
+    active = models.BooleanField(default=True)
 
 # 产品品牌关系数据
 class ProductBrand(models.Model):
     name = models.CharField(max_length=100, default='', null=False)
     no = models.IntegerField(default=0, null=False)
+    active = models.BooleanField(default=True)
 
     @property
     def brand_no(self):
@@ -124,6 +131,7 @@ class ProductBrandSeries(models.Model):
     brand = models.ForeignKey("ProductBrand", related_name='series', default=None, null=True, blank=True, on_delete=models.SET_NULL)
     name = models.CharField(max_length=100, default='', null=False)
     no = models.IntegerField(default=0, null=False)
+    active = models.BooleanField(default=True)
 
     @property
     def series_no(self):

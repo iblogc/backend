@@ -4,7 +4,7 @@ import time
 from models import ProductCategory, ProductBrand, ProductBrandSeries, \
     ProductCategoryAttribute, ProductCategoryAttributeValue
 from django.core.cache import cache
-
+from customers.models import Company
 
 class Node(object):
     def __init__(self, _id, pid, obj):
@@ -121,7 +121,7 @@ def get_categories():
     else:
         for c1 in ProductCategory.objects.prefetch_related('sub_categories',
                                                            'sub_categories__sub_categories').filter(
-                step=1).all():
+                step=1,active=True):
             c1_dict = {
                 "id": c1.id,
                 "name": c1.name,
@@ -129,6 +129,8 @@ def get_categories():
             }
             res.append(c1_dict)
             for c2 in c1.sub_categories.all():
+                if not c2.active:
+                    continue
                 c2_dict = {
                     "id": c2.id,
                     "name": c2.name,
@@ -136,6 +138,8 @@ def get_categories():
                 }
                 c1_dict['second'].append(c2_dict)
                 for c3 in c2.sub_categories.all():
+                    if not c3.active:
+                        continue
                     c3_dict = {
                         "id": c3.id,
                         "name": c3.name
@@ -147,10 +151,10 @@ def get_categories():
 
 
 def get_sub_categories(category_id):
-    category = ProductCategory.objects.prefetch_related('sub_categories').get(
-        pk=category_id)
+    categories = ProductCategory.objects.filter(
+        parent_category=category_id, active=True)
     res = []
-    for c in category.sub_categories.all():
+    for c in categories:
         c_dict = {
             "id": c.id,
             "name": c.name,
@@ -160,9 +164,7 @@ def get_sub_categories(category_id):
 
 
 def get_category_companies(category_id):
-    category = ProductCategory.objects.prefetch_related('companies').get(
-        pk=category_id)
-    companies = category.companies.all()
+    companies = Company.objects.filter(categories=category_id, active=True)
     res = []
     for comp in companies:
         res.append({'id': comp.id, 'name': comp.name})
@@ -171,7 +173,7 @@ def get_category_companies(category_id):
 
 def get_company_brands(category_id, company_id):
     brands = ProductBrand.objects.filter(categories=category_id,
-                                         companies=company_id)
+                                         companies=company_id,active=True)
     res = []
     for brand in brands:
         res.append({'id': brand.id, 'name': brand.name})
@@ -179,7 +181,7 @@ def get_company_brands(category_id, company_id):
 
 
 def get_brand_series(brand_id):
-    series = ProductBrandSeries.objects.filter(brand=brand_id)
+    series = ProductBrandSeries.objects.filter(brand=brand_id,active=True)
     res = []
     for se in series:
         res.append({'id': se.id, 'name': se.name})
@@ -187,7 +189,7 @@ def get_brand_series(brand_id):
 
 
 def get_category_attributes(category_id):
-    attributes = ProductCategoryAttribute.objects.filter(category=category_id)
+    attributes = ProductCategoryAttribute.objects.filter(category=category_id,active=True)
     result = []
     for attr in attributes:
         result.append({'id': attr.id, 'name': attr.name,
@@ -200,13 +202,13 @@ def get_category_attribute_values(category_id, series_id):
     attributes = ProductCategoryAttribute.objects.filter(
         category=category_id)
     for attr in attributes:
-        values = attr.values.filter(series=series_id)
+        values = attr.values.filter(series=series_id, active=True)
+        searchable = -1
         value = ''
         if values.exists():
             value = values[0].value
-        else:
-            value = json.loads(attr.value)[0]
+            searchable = values[0].searchable and 1 or 0
         result.append({'id': attr.id, 'name': attr.name,
                        'values': json.loads(attr.value), 'value': value,
-                       'searchable': attr.searchable and 1 or 0})
+                       'searchable': searchable})
     return result
