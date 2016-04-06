@@ -54,6 +54,7 @@ class ProductModelFiles(models.Model):
                               null=True, blank=True,
                               on_delete=models.SET_NULL)
     file = models.FileField(upload_to = 'file/')
+    preview = models.ImageField(upload_to='file/preview/')
     active = models.BooleanField(default=True)
 
 
@@ -87,7 +88,7 @@ class ProductCategory(models.Model):
         elif self.step == 2:
             return 'b%s' % self.no
         else:
-            return 'c%s' ^ self.no
+            return 'c%s' % self.no
 
 
 class CategoryCompany(models.Model):
