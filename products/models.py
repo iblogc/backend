@@ -54,6 +54,7 @@ class ProductModelFiles(models.Model):
                               null=True, blank=True,
                               on_delete=models.SET_NULL)
     file = models.FileField(upload_to = 'file/')
+    preview = models.ImageField(upload_to='file/preview/')
     active = models.BooleanField(default=True)
 
 

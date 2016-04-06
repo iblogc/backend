@@ -299,7 +299,8 @@ class ProductDetailView(LoginRequiredMixin, TemplateView):
             self.product['files'].append({
                 'id': file.id,
                 'name': file.name,
-                'url': file.file.url
+                'url': file.file.url,
+                'preview': file.preview.url
             })
         for preview in p.previews.all().order_by('-id'):
             self.product['previews'].append({
@@ -794,11 +795,12 @@ def category_attribute_default_value_delete(request, attribute_id):
     attribute = ProductCategoryAttribute.objects.get(pk=attribute_id)
     index = int(request.POST.get('index', 0))
     values = json.loads(attribute.value)
-    pre_text = values[index]
-    values.remove(pre_text)
-    attribute.value = json.dumps(values)
-    attribute.save()
-    attribute.values.filter(value=pre_text).delete()
+    if index < len(values):
+        pre_text = values[index]
+        values.remove(pre_text)
+        attribute.value = json.dumps(values)
+        attribute.save()
+        attribute.values.filter(value=pre_text).delete()
     return HttpResponse(
         json.dumps({'success': 1}))
 
