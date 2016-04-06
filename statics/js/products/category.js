@@ -945,6 +945,18 @@ var categoryApp = function () {
         $(document).on('click', '.modal-body-5 input+span', changeModal5Val);
     };
 
+    var loadPager = function(sum){
+        if(sum > 1) {
+            $('div[data-name=nav]').css('visibility', 'visible');
+        } else {
+            $('div[data-name=nav]').css('visibility', 'hidden');
+        }
+        $('select[data-name=navPager]').empty();
+        for(var i = 1; i <= sum; i++){
+            $('select[data-name=navPager]').append('<option value="' + i + '">' + i + '</option>');
+        }
+    };
+
     var export_xls = function () {
         window.open('/products/export/');
     };
@@ -959,9 +971,11 @@ var categoryApp = function () {
             function (data) {
                 $('.js-search-result').find('.js-search-detail').remove();
                 var tmp = 0;
+                var temp = 0;
                 for (tmp in data.data) {
+                    temp = Math.ceil((eval(tmp) + 1) / 20);
                     $('.js-search-result').append(
-                        '<div class="search-detail-row js-search-detail">' +
+                        '<div class="search-detail-row js-search-detail" data-group="' + temp + '">' +
                         '<div>' + data.data[tmp].first_category + '</div>' +
                         '<div>' + data.data[tmp].second_category + '</div>' +
                         '<div>' + data.data[tmp].third_category + '</div>' +
@@ -973,8 +987,11 @@ var categoryApp = function () {
                     );
                 }
                 $('.js-search-result').find('.fa-cog').on('click', setting);
+                $('div.js-search-detail').hide();
+                $('div[data-group=1]').show();
                 tmp++;
-                baseApp.changeSize(tmp * 30 + 416);
+                //baseApp.changeSize(1086);
+                loadPager(temp);
             },
             "json"
         );
@@ -1066,6 +1083,7 @@ var categoryApp = function () {
 
             $('.js-search-button').on('click', search_kw);
             $('.js-search-result').css('visibility', 'hidden');
+            $('div[data-name=nav]').css('visibility', 'hidden');
 
             $(document).on('hidden.bs.modal', '#settingForm', function () {
                 $('#settingForm .modal-body-5 input').removeClass('selected');
@@ -1078,6 +1096,25 @@ var categoryApp = function () {
             $(document).on('click', '.modal-body-5 div[data-name=action-box] span', modal5Action);
             $(document).on('click', '.modal-body-4 .modal-span .fa-close', attribute_delete);
             $(document).on('click', 'button.btn-primary[data-for="modal-body-6"]', save_new_attribute);
+
+
+            //pager
+            $('select[data-name=navPager]').on('change', function(){
+                $('div.js-search-detail').hide();
+                $('div[data-group=' + $('select[data-name=navPager]').val() + ']').show();
+            });
+            $('nav div[data-name=navLeft]').on('click', function(){
+                var tmp = eval($('select[data-name=navPager]').val()) - 1;
+                if(tmp <= 0) return;
+                $('select[data-name=navPager]').val(tmp);
+                $('select[data-name=navPager]').change();
+            });
+            $('nav div[data-name=navRight]').on('click', function(){
+                var tmp = eval($('select[data-name=navPager]').val()) + 1;
+                if(tmp > $('select[data-name=navPager] option').length) return;
+                $('select[data-name=navPager]').val(tmp);
+                $('select[data-name=navPager]').change();
+            });
         }
     }
 }();
