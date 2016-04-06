@@ -420,8 +420,16 @@ def company_update(request, company_id):
     company = Company.objects.get(pk=company_id)
     if exists_company.exists():
         exists_company=exists_company[0]
+        company_categories = company.categories.all()
+        company_brands = company.brands.all()
+        for category in company_categories:
+            CategoryCompany.objects.get_or_create(company=exists_company,
+                                                  category=category)
+        for brand in company_brands:
+            CompanyBrand.objects.get_or_create(company=exists_company,
+                                               brand=brand)
         company.categorycompany_set.all().delete()
-        company.companybrand_set.update(company=exists_company)
+        company.companybrand_set.all().delete()
         company.delete()
         return HttpResponse(json.dumps({'success': 2,'company_id':exists_company.id}))
     else:

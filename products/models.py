@@ -87,7 +87,7 @@ class ProductCategory(models.Model):
         elif self.step == 2:
             return 'b%s' % self.no
         else:
-            return 'c%s' ^ self.no
+            return 'c%s' % self.no
 
 
 class CategoryCompany(models.Model):
