@@ -104,7 +104,7 @@ class ProductView(LoginRequiredMixin, TemplateView):
         ct_q = Q()
         if ct1 or ct2:
             ct_q = Q(create_time__gt=self.df, create_time__lt=self.dt)
-        select_q = Q(type=self.type)
+        select_q = Q(type=self.type, active=1)
 
         products = Product.objects.select_related('brand', 'series',
                                                   'company',
@@ -358,8 +358,9 @@ def category_update(request, category_id):
 def category_delete(request, category_id):
     parent_category = ProductCategory.objects.get(pk=category_id)
     if parent_category.sub_categories.exists():
-        parent_category.sub_categories.all().delete()
-    parent_category.delete()
+        parent_category.sub_categories.all().update(active=False)
+    parent_category.active = False
+    parent_category.save()
     return HttpResponse(json.dumps({'success': 1}))
 
 
@@ -368,7 +369,9 @@ def category_batch_delete(request):
         pk__in=request.POST.get('ids').split(','))
     for parent_category in parent_categories:
         if parent_category.sub_categories.exists():
-            parent_category.sub_categories.all().delete()
+            parent_category.sub_categories.all().update(active=False)
+        parent_category.active = False
+        parent_category.save()
         parent_category.delete()
     return HttpResponse(json.dumps({'success': 1}))
 
@@ -446,8 +449,6 @@ def brand_delete(request, category_id, company_id, brand_id):
     brand = ProductBrand.objects.get(pk=brand_id)
     CompanyBrand.objects.filter(company=company, brand=brand).delete()
     CategoryBrand.objects.filter(category=category, brand=brand).delete()
-    # if not brand.companies.exists():
-    #     CategoryBrand.objects.filter(category=category, brand=brand).delete()
     return HttpResponse(json.dumps({'success': 1}))
 
 
@@ -459,8 +460,6 @@ def brand_batch_delete(request, category_id, company_id):
     for brand in brands:
         CompanyBrand.objects.filter(company=company, brand=brand).delete()
         CategoryBrand.objects.filter(category=category, brand=brand).delete()
-        # if not brand.companies.exists():
-        #     CategoryBrand.objects.filter(category=category, brand=brand).delete()
     return HttpResponse(json.dumps({'success': 1}))
 
 
@@ -492,13 +491,13 @@ def series_create(request, brand_id):
 
 
 def series_delete(request, series_id):
-    ProductBrandSeries.objects.filter(pk=series_id).delete()
+    ProductBrandSeries.objects.filter(pk=series_id).update(active=False)
     return HttpResponse(json.dumps({'success': 1}))
 
 
 def series_batch_delete(request):
     ids = request.POST.get('ids').split(',')
-    ProductBrandSeries.objects.filter(pk__in=ids).delete()
+    ProductBrandSeries.objects.filter(pk__in=ids).update(active=False)
     return HttpResponse(json.dumps({'success': 1}))
 
 
@@ -722,7 +721,7 @@ def category_attribute_create(request, category_id):
 
 
 def category_attribute_delete(request, attribute_id):
-    ProductCategoryAttribute.objects.filter(pk=attribute_id).delete()
+    ProductCategoryAttribute.objects.filter(pk=attribute_id).update(active=False)
     return HttpResponse(
         json.dumps({'success': 1}))
 
@@ -786,7 +785,7 @@ def category_attribute_default_value_delete(request, attribute_id):
         json.dumps({'success': 1}))
 
 def category_attribute_value_delete(request, attribute_id):
-    ProductCategoryAttributeValue.objects.filter(attribute=attribute_id).delete()
-    ProductCategoryAttribute.objects.filter(pk=attribute_id).delete()
+    ProductCategoryAttributeValue.objects.filter(attribute=attribute_id).update(active=False)
+    ProductCategoryAttribute.objects.filter(pk=attribute_id).update(active=False)
     return HttpResponse(
         json.dumps({'success': 1}))

@@ -860,6 +860,10 @@ var categoryApp = function () {
             console.log(attr_ids);
             console.log(attr_values);
             console.log(attr_searchables);
+            if(attr_values.includes(null) || attr_searchables.includes(null)) {
+                sweetAlert("必须选择属性值！");
+                return;
+            }
             $.post(
                 "/products/category/attribute/value/update/" + settings_series + "/",
                 {
