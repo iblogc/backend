@@ -37,6 +37,9 @@ class Product(models.Model):
     color = models.CharField(max_length=10, default='', null=False)
     active = models.BooleanField(default=True)
 
+    def __unicode__(self):
+        return '%s(%s)' % (self.name,self.product_no)
+
     @property
     def chartlet_path(self):
         path = ''
@@ -75,7 +78,7 @@ class ProductCategory(models.Model):
     active = models.BooleanField(default=True)
 
     def __unicode__(self):
-        return '%s, %s' % (self.name,self.id)
+        return '%s(%s)' % (self.name,self.category_no)
 
     @property
     def category_no(self):
@@ -107,6 +110,9 @@ class ProductCategoryAttribute(models.Model):
     searchable = models.BooleanField(default=True)
     active = models.BooleanField(default=True)
 
+    def __unicode__(self):
+        return self.name
+
 # 产品分类属性数值信息表
 class ProductCategoryAttributeValue(models.Model):
     attribute = models.ForeignKey("ProductCategoryAttribute", related_name='values', default=None, null=True, blank=True, on_delete=models.SET_NULL)
@@ -115,11 +121,17 @@ class ProductCategoryAttributeValue(models.Model):
     searchable = models.BooleanField(default=True)
     active = models.BooleanField(default=True)
 
+    def __unicode__(self):
+        return '%s: %s' % (self.attribute.name, self.value)
+
 # 产品品牌关系数据
 class ProductBrand(models.Model):
     name = models.CharField(max_length=100, default='', null=False)
     no = models.IntegerField(default=0, null=False)
     active = models.BooleanField(default=True)
+
+    def __unicode__(self):
+        return '%s(%s)' % (self.name, self.brand_no)
 
     @property
     def brand_no(self):
@@ -132,6 +144,9 @@ class ProductBrandSeries(models.Model):
     name = models.CharField(max_length=100, default='', null=False)
     no = models.IntegerField(default=0, null=False)
     active = models.BooleanField(default=True)
+
+    def __unicode__(self):
+        return '%s(%s)' % (self.name, self.series_no)
 
     @property
     def series_no(self):
