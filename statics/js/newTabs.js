@@ -41,6 +41,49 @@ var newTabs = function () {
     $(window).resize(function () {
         resizeFun($('iframe.show'));
     });
+
+    var allowDrop =function(ev) {
+        ev.preventDefault();
+    };
+
+    var drop = function(ev) {
+        ev.preventDefault();
+        var data=ev.dataTransfer.getData("Text");
+        if(!$(ev.target).hasClass('tabs-title')) return;
+        ev.target.appendChild($('.content-body>.tabs-title div[data-name=' + data + ']')[0]);
+    };
+
+    var appendDrop = function(){
+        $('.content-body>.tabs-title')[0].ondrop = function(ev){
+            drop(ev);
+        };
+
+        $('.content-body>.tabs-title')[0].ondragover = function(ev){
+            allowDrop(ev);
+        };
+
+        var XTabs = $('.content-body>.tabs-title div[data-name]');
+        var Ltabs = XTabs.length;
+        for (var i=0; i<Ltabs; i++) {
+            XTabs[i].onselectstart = function() {
+                return false;
+            };
+            XTabs[i].ondragstart = function(ev) {
+                ev.dataTransfer.effectAllowed = "move";
+                ev.dataTransfer.setData("text", $(ev.target).attr('data-name'));
+                ev.dataTransfer.setDragImage(ev.target, 0, 0);
+                eleDrag = ev.target;
+                return true;
+            };
+            XTabs[i].ondragend = function(ev) {
+                /*拖拽结束*/
+                ev.dataTransfer.clearData("text");
+                eleDrag = null;
+                return false
+            };
+        }
+    };
+
     return {
         init: function () {
             $('.js-parent-menu').on('click', function () {
@@ -66,13 +109,14 @@ var newTabs = function () {
                     } else {
                         tabsIdArr.push(id);
                         var content = '<iframe scrolling="auto" style="min-width: 1310px" frameborder="0" class="show"  src="' + url + '" data-for="' + id + '"></iframe>';
-                        var contentTitle = '<div class="selected" data-name="' + id + '">&nbsp;&nbsp;&nbsp;&nbsp;' + name + '&nbsp;&nbsp;&nbsp;&nbsp;<span class="close-btn"></span></div>';
+                        var contentTitle = '<div draggable="true" class="selected" data-name="' + id + '">&nbsp;&nbsp;&nbsp;&nbsp;' + name + '&nbsp;&nbsp;&nbsp;&nbsp;<span class="close-btn"></span></div>';
                         $('.content-body>.tabs-title>div[data-name]').removeClass('selected');
                         $('.content-body>.tabs-main>div>iframe[data-for]').removeClass('show');
                         $('.content-body>.tabs-title').append(contentTitle);
                         $('.content-body>.tabs-main>div').append(content);
                         resizeFun();
                         $('iframe[data-for=' + id + ']').load(resizeIframe);
+                        appendDrop();
                     }
                 }
             });
@@ -114,7 +158,7 @@ var newTabs = function () {
             }
         },
 
-        changeSize:function(height, obj){
+        changeSize: function(height, obj){
             obj.height(height);
         }
     }
