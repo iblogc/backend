@@ -887,7 +887,7 @@ var categoryApp = function () {
             $('.modal-body-5 input.selected').removeAttr('readonly').next().show();
             modal5UnbindAction();
         } else if ($(this).attr('name') == 'add') {
-            $('.modal-body-5 .modal-row').append('<input type="text" class="form-control" readonly><span>确定</span>')
+            $('.modal-body-5 .modal-row').append('<input type="text" class="form-control js-value-text" readonly><span class="js-value-text-label">确定</span>')
             modal5bindAction();
         } else if ($(this).attr('name') == 'remove') {
             $('.modal-body-5 input.selected').next().remove();
@@ -926,7 +926,7 @@ var categoryApp = function () {
 
     var modal5UnbindAction = function () {
         $(document).off('click', '.modal-body-5 input');
-        $('.modal-body-5 div[data-name=action-box] span').off('click');
+        $(document).off('click', '.modal-body-5 div[data-name=action-box] span', modal5Action);
         $(document).on('click', '.modal-body-5 input+span', changeModal5Val);
     };
 
