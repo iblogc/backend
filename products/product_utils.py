@@ -204,6 +204,8 @@ def get_category_attribute_values(category_id, series_id):
         value = ''
         if values.exists():
             value = values[0].value
+        else:
+            value = json.loads(attr.value)[0]
         result.append({'id': attr.id, 'name': attr.name,
                        'values': json.loads(attr.value), 'value': value,
                        'searchable': attr.searchable and 1 or 0})
