@@ -13,6 +13,7 @@ var categoryApp = function () {
     var series = 0;
     var settings_series = 0;
     var settings_category = 0;
+    var settings_attribute = 0;
     var checkboxFlag = false;
 
     var changeClass = function (obj) {
@@ -744,7 +745,7 @@ var categoryApp = function () {
 
 
     var setting = function () {
-        if ($(this).attr('series-id') == undefined && settings_series==0) return;
+        if ($(this).attr('series-id') == undefined && settings_series == 0) return;
         $('#settingForm').modal('show');
         var category_id = $(this).attr('category-id');
         var series_id = $(this).attr('series-id');
@@ -756,6 +757,8 @@ var categoryApp = function () {
         $('#settingForm .modal-body-6').hide();
         $('#settingForm button[data-for]').hide();
         $(document).on('click', '.modal-body-4 button[data-name=add]', function () {
+            $('.modal-body-6 input[data-type]').val('');
+            $('.modal-body-6 textarea[data-type]').val('');
             $('.modal-body-6').show();
             $('.modal-body-4').hide();
             $('#settingForm .modal-title').html('新增属性');
@@ -763,6 +766,8 @@ var categoryApp = function () {
             $('#settingForm button[data-for=modal-body-6]').show();
         });
         $(document).on('click', '.modal-body-4 .modal-span .fa-cog', function () {
+            settings_attribute = $(this).parent().parent().attr('data-id');
+            init_attribute_value();
             $('.modal-body-5').show();
             $('.modal-body-4').hide();
             $('#settingForm .modal-title').html('修改属性值');
@@ -784,11 +789,30 @@ var categoryApp = function () {
             $('#settingForm button[data-for=modal-body-6]').hide();
             $('#settingForm .modal-title').html('属性设置');
             if ($(this).hasClass('btn-default')) return;
-            //ajax
         });
     };
 
-    var init_setting_form1 = function(){
+    var init_attribute_value = function () {
+        $.get(
+            "category/attribute/default_values/" + settings_attribute + "/",
+            {},
+            function (data) {
+                console.log(data);
+                $('.js-value-text').remove();
+                $('.js-value-text-label').remove();
+                for (var index in data) {
+                    $('.js-attribute-default-rows').append('<input type="text" class="form-control js-value-text" data-index="'+index+'" value="' + data[index] +
+                        '" readonly><span class="js-value-text-label" data-index="'+index+'">确定</span>'
+                    )
+                    ;
+                }
+                $('.js-attribute-default-rows').find('span.js-value-text-label').hide();
+            },
+            "json"
+        );
+    }
+
+    var init_setting_form1 = function () {
         $.get(
             "category/attribute/values/" + settings_category + "/" + settings_series + "/",
             {},
@@ -866,7 +890,7 @@ var categoryApp = function () {
             $('.modal-body-5 input.selected').removeAttr('readonly').next().show();
             modal5UnbindAction();
         } else if ($(this).attr('name') == 'add') {
-            $('.modal-body-5 .modal-row').append('<input type="text" class="form-control" readonly><span>确定</span>')
+            $('.modal-body-5 .modal-row').append('<input type="text" class="form-control js-value-text" readonly><span class="js-value-text-label">确定</span>')
             modal5bindAction();
         } else if ($(this).attr('name') == 'remove') {
             $('.modal-body-5 input.selected').next().remove();
@@ -876,22 +900,34 @@ var categoryApp = function () {
     };
 
     var changeModal5Val = function () {
-        console.log(123);
         modal5bindAction();
         $(this).prev().attr('readonly', 'readonly');
-        //ajax
+        var data_index = $(this).attr('data-index');
+        var text = $('.js-value-text[data-index="'+data_index+'"]').val();
+        $.post(
+                "/products/category/attribute/default_value/update/" + settings_attribute + "/",
+                {
+                    'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+                    'index': data_index,
+                    'text': text,
+                },
+                function (data) {
+                    if (data.success == 1) {
+                    }
+                },
+                "json"
+            );
+        init_setting_form1();
     };
 
     var modal5bindAction = function () {
         $(document).on('click', '.modal-body-5 input', inputSelected);
-        $('.modal-body-5 div[data-name=action-box] span').on('click', modal5Action);
         $(document).off('click', '.modal-body-5 input+span');
         $('.modal-body-5 input+span').hide();
     };
 
     var modal5UnbindAction = function () {
         $(document).off('click', '.modal-body-5 input');
-        $('.modal-body-5 div[data-name=action-box] span').off('click');
         $(document).on('click', '.modal-body-5 input+span', changeModal5Val);
     };
 
@@ -949,8 +985,8 @@ var categoryApp = function () {
     };
 
     var save_new_attribute = function () {
+        if($('.modal-body-6 input[data-type]').val().trim() == '') return;
         $.post(
-
             "/products/category/attribute/create/" + settings_category + "/",
             {
                 'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
@@ -1025,7 +1061,7 @@ var categoryApp = function () {
                 $('#settingForm button[data-action]').show();
                 $('#settingForm button[data-for]').hide();
             });
-
+            $(document).on('click', '.modal-body-5 div[data-name=action-box] span', modal5Action);
             $(document).on('click', '.modal-body-4 .modal-span .fa-close', attribute_delete);
             $(document).on('click', 'button.btn-primary[data-for="modal-body-6"]', save_new_attribute);
         }
