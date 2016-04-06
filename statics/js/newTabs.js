@@ -49,8 +49,12 @@ var newTabs = function () {
     var drop = function(ev) {
         ev.preventDefault();
         var data=ev.dataTransfer.getData("Text");
-        if(!$(ev.target).hasClass('tabs-title')) return;
-        ev.target.appendChild($('.content-body>.tabs-title div[data-name=' + data + ']')[0]);
+        if($(ev.target).hasClass('tabs-title')) {
+            ev.target.appendChild($('.content-body>.tabs-title div[data-name=' + data + ']')[0]);
+        }
+        if($(ev.target).attr('draggable') == 'true') {
+            $(ev.target).after($('.content-body>.tabs-title div[data-name=' + data + ']')[0]);
+        }
     };
 
     var appendDrop = function(){
