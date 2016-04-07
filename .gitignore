@@ -6,3 +6,4 @@ resources/*
 norms/*
 media/*
 .python-version
+local_settings.py
