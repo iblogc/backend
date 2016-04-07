@@ -547,6 +547,7 @@ def import_xls(request):
     if request.method == 'GET':
         return render(request, 'products/upload.html')
     else:
+        cache.set('category', [])
         xls_file = request.FILES.get('file')
         data = xlrd.open_workbook(file_contents=xls_file.read())
         table = data.sheets()[0]
@@ -728,11 +729,12 @@ def import_xls(request):
         category_brands = {}
         company_brands = {}
         for category_company in exists_category_companies:
-            category_companies[category_company.category.name,category_company.company.name] = category_company
+            category_companies[(category_company.category.name,category_company.company.name)] = category_company
+
         for category_brand in exists_category_brands:
-            category_brands[category_brand.category.name,category_brand.brand.name] = category_company
+            category_brands[(category_brand.category.name,category_brand.brand.name)] = category_company
         for company_brand in exists_company_brands:
-            company_brands[company_brand.company.name,company_brand.brand.name] = company_brand
+            company_brands[(company_brand.company.name,company_brand.brand.name)] = company_brand
         new_category_companies = []
         new_category_brands = []
         new_company_brands = []
@@ -745,7 +747,7 @@ def import_xls(request):
                     datas_array[first_category_name][
                         second_category_name][third_category_name]:
                         company = companies[company_name]
-                        if not category_companies.get(third_category_name,company_name):
+                        if not category_companies.get((third_category_name,company_name)):
                             category_company = CategoryCompany(category=category,company=company)
                             new_category_companies.append(category_company)
         for first_category_name in datas_array.keys():
@@ -757,8 +759,8 @@ def import_xls(request):
                             datas_array[first_category_name][
                                 second_category_name][third_category_name]:
                         brand = brands[brand_name]
-                        if not category_brands.get(third_category_name,
-                                                      brand_name):
+                        if not category_brands.get((third_category_name,
+                                                      brand_name)):
                             category_brand = CategoryBrand(
                                 category=category, brand=brand)
                             new_category_brands.append(category_brand)
@@ -771,12 +773,11 @@ def import_xls(request):
                                 second_category_name][third_category_name]:
                         company = companies[company_name]
                         brand = brands[brand_name]
-                        if not company_brands.get(company_name,
-                                                   brand_name):
+                        if not company_brands.get((company_name,
+                                                   brand_name)):
                             company_brand = CompanyBrand(
                                 company=company, brand=brand)
                             new_company_brands.append(company_brand)
-
         CategoryCompany.objects.bulk_create(new_category_companies)
         CategoryBrand.objects.bulk_create(new_category_brands)
         CompanyBrand.objects.bulk_create(new_company_brands)
