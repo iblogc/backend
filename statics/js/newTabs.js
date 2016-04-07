@@ -23,7 +23,7 @@ var newTabs = function () {
         for(var i = 1; i < tmp.length; i++){$(tmp[i]).hide()}
         $(document).on('click', thisTab + '>.tab-title>div', function(){
             var index = $(this).index();
-            var cssArr = [{left:'-50px', opacity:'0'}, {left:'0px', opacity:'1'}, {left:'5  0px', opacity:'0'}];
+            var cssArr = [{left:'-50px', opacity:'0'}, {left:'0px', opacity:'1'}, {left:'50px', opacity:'0'}];
             var tmpDom1 = 'div[data-name=' + $(this.parentNode.parentNode).attr('data-name') + ']>:eq(1)>:eq(' + tabHistory[num] + ')';
             var tmpDom2 = 'div[data-name=' + $(this.parentNode.parentNode).attr('data-name') + ']>:eq(1)>:eq(' + index + ')';
             if(index > tabHistory[num]) {
@@ -52,7 +52,7 @@ var newTabs = function () {
         if($(ev.target).hasClass('tabs-title')) {
             ev.target.appendChild($('.content-body>.tabs-title div[data-name=' + data + ']')[0]);
         }
-        if($(ev.target).attr('draggable') == 'true') {
+        if($(ev.target).attr('draggable') == 'true' || $(ev.target).attr('name') == 'left') {
             $(ev.target).after($('.content-body>.tabs-title div[data-name=' + data + ']')[0]);
         }
     };
@@ -112,7 +112,7 @@ var newTabs = function () {
                         $('.content-body>.tabs-main>div>iframe[data-for=' + id + ']').addClass('show').siblings().removeClass('show');
                     } else {
                         tabsIdArr.push(id);
-                        var content = '<iframe scrolling="auto" style="min-width: 1310px" frameborder="0" class="show"  src="' + url + '" data-for="' + id + '"></iframe>';
+                        var content = '<iframe allowtransparency="true" scrolling="auto" style="min-width: 1310px" frameborder="0" class="show"  src="' + url + '" data-for="' + id + '"></iframe>';
                         var contentTitle = '<div draggable="true" class="selected" data-name="' + id + '">&nbsp;&nbsp;&nbsp;&nbsp;' + name + '&nbsp;&nbsp;&nbsp;&nbsp;<span class="close-btn"></span></div>';
                         $('.content-body>.tabs-title>div[data-name]').removeClass('selected');
                         $('.content-body>.tabs-main>div>iframe[data-for]').removeClass('show');
