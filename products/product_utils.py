@@ -116,36 +116,36 @@ def get_category(c3_id):
 
 def get_categories():
     res = []
-    if cache.get('category'):
-        res = cache.get('category')
-    else:
-        for c1 in ProductCategory.objects.prefetch_related('sub_categories',
-                                                           'sub_categories__sub_categories').filter(
-                step=1,active=True):
-            c1_dict = {
-                "id": c1.id,
-                "name": c1.name,
-                "second": []
+    # if cache.get('category'):
+    #     res = cache.get('category')
+    # else:
+    for c1 in ProductCategory.objects.prefetch_related('sub_categories',
+                                                       'sub_categories__sub_categories').filter(
+            step=1,active=True):
+        c1_dict = {
+            "id": c1.id,
+            "name": c1.name,
+            "second": []
+        }
+        res.append(c1_dict)
+        for c2 in c1.sub_categories.all():
+            if not c2.active:
+                continue
+            c2_dict = {
+                "id": c2.id,
+                "name": c2.name,
+                "third": []
             }
-            res.append(c1_dict)
-            for c2 in c1.sub_categories.all():
-                if not c2.active:
+            c1_dict['second'].append(c2_dict)
+            for c3 in c2.sub_categories.all():
+                if not c3.active:
                     continue
-                c2_dict = {
-                    "id": c2.id,
-                    "name": c2.name,
-                    "third": []
+                c3_dict = {
+                    "id": c3.id,
+                    "name": c3.name
                 }
-                c1_dict['second'].append(c2_dict)
-                for c3 in c2.sub_categories.all():
-                    if not c3.active:
-                        continue
-                    c3_dict = {
-                        "id": c3.id,
-                        "name": c3.name
-                    }
-                    c2_dict['third'].append(c3_dict)
-        cache.set('category', res)
+                c2_dict['third'].append(c3_dict)
+        # cache.set('category', res)
 
     return res
 
