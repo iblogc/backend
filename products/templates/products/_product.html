@@ -121,7 +121,7 @@
                         <div name="status" class="js-status-text-{{ product.id }}">{{ product.status_string }}</div>
                         <div name="edit">
                             <a href="javascript:void(0);"
-                               class="js-product-detail" data-toggle="modal"
+                               class="js-product-detail" data-toggle="modal" data-backdrop="static"
                                data-target="#menuFromDialog" data-menuId="0" data-id="{{ product.id }}">详细信息</a>
                             <br><a
                                 href="javascript:void(0);" class="js-active"  {% if product.status %}style="display: none;"{% endif %}

@@ -13,10 +13,10 @@ var managerApp = function(){
             });
             $('div.bottom-content').bind('mouseover',function(e){
                 $(this).addClass('bottom-content-mouseover');
-            })
+            });
             $('div.bottom-content').bind('mouseout',function(){
                 $(this).remove('bottom-content-mouseover');
-            })
+            });
         }
 
     }

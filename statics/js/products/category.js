@@ -29,6 +29,7 @@ var categoryApp = function () {
         checkboxHide();
         $('button[data-type=normal]').show();
         $('button[data-for=batch-delete]').hide();
+        bindCategoryMainBtn();
         var selected_ids = new Array();
         $('input[type="checkbox"]:checked').each(function () {
             selected_ids.push($(this).val());
@@ -268,7 +269,7 @@ var categoryApp = function () {
         if (first_category != 0) {
             step = 2;
             $('.js-modal-save-button').bind('click', save_second_category);
-            $('#addCategoryForm').modal('show');
+            $('#addCategoryForm').modal({backdrop: 'static', keyboard: false});
             $('#addCategoryFormLabel').html('添加二级分类');
             $('.js-modal-category-label').html('二级分类名称');
             $('.js-modal-category-name').val('');
@@ -280,7 +281,7 @@ var categoryApp = function () {
         if (second_category != 0) {
             step = 3;
             $('.js-modal-save-button').bind('click', save_third_category);
-            $('#addCategoryForm').modal('show');
+            $('#addCategoryForm').modal({backdrop: 'static', keyboard: false});
             $('#addCategoryFormLabel').html('添加三级分类');
             $('.js-modal-category-label').html('三级分类名称');
             $('.js-modal-category-name').val('');
@@ -290,7 +291,7 @@ var categoryApp = function () {
     var add_company = function () {
         if (third_category != 0) {
             $('.js-modal-save-button').bind('click', save_company);
-            $('#addCategoryForm').modal('show');
+            $('#addCategoryForm').modal({backdrop: 'static', keyboard: false});
             $('#addCategoryFormLabel').html('添加厂家');
             $('.js-modal-category-label').html('厂家名称');
             $('.js-modal-category-name').val('');
@@ -300,7 +301,7 @@ var categoryApp = function () {
     var add_brand = function () {
         if (company != 0) {
             $('.js-modal-save-button').bind('click', save_brand);
-            $('#addCategoryForm').modal('show');
+            $('#addCategoryForm').modal({backdrop: 'static', keyboard: false});
             $('#addCategoryFormLabel').html('添加品牌');
             $('.js-modal-category-label').html('品牌名称');
             $('.js-modal-category-name').val('');
@@ -310,7 +311,7 @@ var categoryApp = function () {
     var add_series = function () {
         if (brand != 0) {
             $('.js-modal-save-button').bind('click', save_series);
-            $('#addCategoryForm').modal('show');
+            $('#addCategoryForm').modal({backdrop: 'static', keyboard: false});
             $('#addCategoryFormLabel').html('添加系列');
             $('.js-modal-category-label').html('系列名称');
             $('.js-modal-category-name').val('');
@@ -426,7 +427,7 @@ var categoryApp = function () {
 
     var delete_second_category = function () {
         if (second_category != 0) {
-            $('#deleteCategoryForm').modal('show');
+            $('#deleteCategoryForm').modal({backdrop: 'static', keyboard: false});
             $('.js-modal-confirm-button').bind('click', delete_second_category_confirm);
         }
 
@@ -434,28 +435,28 @@ var categoryApp = function () {
 
     var delete_third_category = function () {
         if (third_category != 0) {
-            $('#deleteCategoryForm').modal('show');
+            $('#deleteCategoryForm').modal({backdrop: 'static', keyboard: false});
             $('.js-modal-confirm-button').bind('click', delete_third_category_confirm);
         }
     };
 
     var delete_company = function () {
         if (third_category != 0 && company != 0) {
-            $('#deleteCategoryForm').modal('show');
+            $('#deleteCategoryForm').modal({backdrop: 'static', keyboard: false});
             $('.js-modal-confirm-button').bind('click', delete_company_confirm);
         }
     };
 
     var delete_brand = function () {
         if (third_category != 0 && company != 0 && brand != 0) {
-            $('#deleteCategoryForm').modal('show');
+            $('#deleteCategoryForm').modal({backdrop: 'static', keyboard: false});
             $('.js-modal-confirm-button').bind('click', delete_brand_confirm);
         }
     };
 
     var delete_series = function () {
         if (series != 0) {
-            $('#deleteCategoryForm').modal('show');
+            $('#deleteCategoryForm').modal({backdrop: 'static', keyboard: false});
             $('.js-modal-confirm-button').bind('click', delete_series_confirm);
         }
     }
@@ -572,7 +573,7 @@ var categoryApp = function () {
     var edit_second_category = function () {
         if (second_category != 0) {
             $('.js-modal-save-button').bind('click', save_second_category_edit);
-            $('#addCategoryForm').modal('show');
+            $('#addCategoryForm').modal({backdrop: 'static', keyboard: false});
             $('#addCategoryFormLabel').html('编辑二级分类');
             $('.js-modal-category-label').html('二级分类名称');
             $('.js-modal-category-name').val($('.js-second-category[data-id="' + second_category + '"]').find('.js-second-category-name').html());
@@ -582,7 +583,7 @@ var categoryApp = function () {
     var edit_third_category = function () {
         if (third_category != 0) {
             $('.js-modal-save-button').bind('click', save_third_category_edit);
-            $('#addCategoryForm').modal('show');
+            $('#addCategoryForm').modal({backdrop: 'static', keyboard: false});
             $('#addCategoryFormLabel').html('编辑三级分类');
             $('.js-modal-category-label').html('三级分类名称');
             $('.js-modal-category-name').val($('.js-third-category[data-id="' + third_category + '"]').find('.js-third-category-name').html());
@@ -592,7 +593,7 @@ var categoryApp = function () {
     var edit_company = function () {
         if (company != 0) {
             $('.js-modal-save-button').bind('click', save_company_edit);
-            $('#addCategoryForm').modal('show');
+            $('#addCategoryForm').modal({backdrop: 'static', keyboard: false});
             $('#addCategoryFormLabel').html('编辑厂家');
             $('.js-modal-category-label').html('厂家名称');
             $('.js-modal-category-name').val($('.js-company[data-id="' + company + '"]').find('.js-company-name').html());
@@ -602,7 +603,7 @@ var categoryApp = function () {
     var edit_brand = function () {
         if (brand != 0) {
             $('.js-modal-save-button').bind('click', save_brand_edit);
-            $('#addCategoryForm').modal('show');
+            $('#addCategoryForm').modal({backdrop: 'static', keyboard: false});
             $('#addCategoryFormLabel').html('编辑品牌');
             $('.js-modal-category-label').html('品牌名称');
             $('.js-modal-category-name').val($('.js-brand[data-id="' + brand + '"]').find('.js-brand-name').html());
@@ -612,7 +613,7 @@ var categoryApp = function () {
     var edit_series = function () {
         if (series != 0) {
             $('.js-modal-save-button').bind('click', save_series_edit);
-            $('#addCategoryForm').modal('show');
+            $('#addCategoryForm').modal({backdrop: 'static', keyboard: false});
             $('#addCategoryFormLabel').html('编辑系列');
             $('.js-modal-category-label').html('系列名称');
             $('.js-modal-category-name').val($('.js-series[data-id="' + series + '"]').find('.js-series-name').html());
@@ -756,7 +757,7 @@ var categoryApp = function () {
 
     var setting = function () {
         if ($(this).attr('series-id') == undefined && settings_series == 0) return;
-        $('#settingForm').modal('show');
+        $('#settingForm').modal({backdrop: 'static', keyboard: false});
         var category_id = $(this).attr('category-id');
         var series_id = $(this).attr('series-id');
         settings_series = series_id;
@@ -858,7 +859,7 @@ var categoryApp = function () {
             },
             "json"
         );
-    }
+    };
 
     var settingAction = function () {
         if ($(this).attr('data-action') == 'save') {
@@ -1046,33 +1047,56 @@ var categoryApp = function () {
             },
             "json"
         );
-    }
+    };
+
+    var bindCategoryMainBtn = function(){
+        $('.js-add-second-category').on('click', add_second_category);
+        $('.js-add-third-category').on('click', add_third_category);
+        $('.js-add-company').on('click', add_company);
+        $('.js-add-brand').on('click', add_brand);
+        $('.js-add-series').on('click', add_series);
+        $('.js-delete-second-category').on('click', delete_second_category);
+        $('.js-delete-third-category').on('click', delete_third_category);
+        $('.js-delete-company').on('click', delete_company);
+        $('.js-delete-brand').on('click', delete_brand);
+        $('.js-delete-series').on('click', delete_series);
+        $('.js-edit-second-category').on('click', edit_second_category);
+        $('.js-edit-third-category').on('click', edit_third_category);
+        $('.js-edit-company').on('click', edit_company);
+        $('.js-edit-brand').on('click', edit_brand);
+        $('.js-edit-series').on('click', edit_series);
+    };
+
+    var unbindCategoryMainBtn = function(){
+        $('.js-add-second-category').off('click');
+        $('.js-add-third-category').off('click');
+        $('.js-add-company').off('click');
+        $('.js-add-brand').off('click');
+        $('.js-add-series').off('click');
+        $('.js-delete-second-category').off('click');
+        $('.js-delete-third-category').off('click');
+        $('.js-delete-company').off('click');
+        $('.js-delete-brand').off('click');
+        $('.js-delete-series').off('click');
+        $('.js-edit-second-category').off('click');
+        $('.js-edit-third-category').off('click');
+        $('.js-edit-company').off('click');
+        $('.js-edit-brand').off('click');
+        $('.js-edit-series').off('click');
+    };
 
 
     return {
 
         init: function () {
             $('.js-first-category').on('click', first_category_onclick);
-            $('.js-add-second-category').on('click', add_second_category);
-            $('.js-add-third-category').on('click', add_third_category);
-            $('.js-add-company').on('click', add_company);
-            $('.js-add-brand').on('click', add_brand);
-            $('.js-add-series').on('click', add_series);
-            $('.js-delete-second-category').on('click', delete_second_category);
-            $('.js-delete-third-category').on('click', delete_third_category);
-            $('.js-delete-company').on('click', delete_company);
-            $('.js-delete-brand').on('click', delete_brand);
-            $('.js-delete-series').on('click', delete_series);
-            $('.js-edit-second-category').on('click', edit_second_category);
-            $('.js-edit-third-category').on('click', edit_third_category);
-            $('.js-edit-company').on('click', edit_company);
-            $('.js-edit-brand').on('click', edit_brand);
-            $('.js-edit-series').on('click', edit_series);
+            bindCategoryMainBtn();
             $('.js-batch-delete-button').on('click', function () {
                 $('input[type="checkbox"]').show();
                 $('button[data-for=batch-delete]').show();
                 $('button[data-type=normal]').hide();
                 checkboxFlag = true;
+                unbindCategoryMainBtn();
             });
             $('.js-modal-cancel-button').on('click', function () {
                 $('#deleteCategoryForm').modal('hide');

@@ -14,7 +14,7 @@ var baseApp = function () {
             }
         });
 
-    }
+    };
 
     var accountTopMenu = function () {
         $('.dropdown-toggle').dropdown();
@@ -24,7 +24,7 @@ var baseApp = function () {
         $('[data-toggle=tooltip]').tooltip({
             container: $('body')
         });
-    }
+    };
 
     var onMouseOverActive = function () {
         $('div.content-table-data').mouseenter(function () {
@@ -33,7 +33,7 @@ var baseApp = function () {
         $('div.content-table-data').mouseleave(function () {
             $(this).removeClass('table-mouse-over');
         })
-    }
+    };
 
     var onMouseOverActive = function () {
         $('div.content-table-data').mouseenter(function () {
@@ -42,7 +42,7 @@ var baseApp = function () {
         $('div.content-table-data').mouseleave(function () {
             $(this).removeClass('table-mouse-over');
         })
-    }
+    };
 
     var accountLocked = function () {
         $('div.account-lock-tag > a').click(function () {
@@ -141,10 +141,11 @@ var baseApp = function () {
         compareDate: function (s, e) {
             var start = $(s);
             var end = $(e);
-            if (start.val() == '') {
-                start.val(end.val());
-                end.val('');
-            } else if (start.val() != '' && end.val() != '') {
+            //if (start.val() == '') {
+            //    start.val(end.val());
+            //    end.val('');
+            //} else
+            if (start.val() != '' && end.val() != '') {
                 var a = new Date(start.val());
                 var b = new Date(end.val());
                 if( a > b ){
