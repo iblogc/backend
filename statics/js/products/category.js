@@ -155,6 +155,7 @@ var categoryApp = function () {
         third_category = 0;
         company = 0;
         brand = 0;
+        series = 0;
     };
 
     var second_category_onclick = function () {
@@ -182,6 +183,7 @@ var categoryApp = function () {
         third_category = 0;
         company = 0;
         brand = 0;
+        series = 0;
     };
 
     var third_category_onclick = function () {
@@ -207,6 +209,7 @@ var categoryApp = function () {
         );
         company = 0;
         brand = 0;
+        series = 0;
     };
 
     var company_onclick = function () {
@@ -231,6 +234,7 @@ var categoryApp = function () {
             "json"
         );
         brand = 0;
+        series = 0;
     };
 
     var brand_onclick = function () {
@@ -252,6 +256,7 @@ var categoryApp = function () {
             },
             "json"
         );
+        series = 0;
     };
 
     var series_onclick = function () {
@@ -560,6 +565,7 @@ var categoryApp = function () {
                 function (data) {
                     if (data.success == 1) {
                         $('div.js-series[data-id="' + series + '"]').remove();
+                        series = 0;
                     }
                 },
                 "json"

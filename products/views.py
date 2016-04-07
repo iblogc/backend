@@ -417,7 +417,7 @@ def company_batch_delete(request, category_id):
 
 def company_update(request, company_id):
     name = request.POST.get('name').strip()
-    exists_company = Company.objects.filter(name=name)
+    exists_company = Company.objects.filter(name=name).exclude(pk=company_id)
     company = Company.objects.get(pk=company_id)
     if exists_company.exists():
         exists_company=exists_company[0]
@@ -691,12 +691,18 @@ def category_search(request):
     kw = request.GET.get('kw').strip()
     per_page = int(request.GET.get('per_page', 50))
     page = int(request.GET.get('page', 1))
+    # series = ProductBrandSeries.objects.filter(
+    #     Q(name__icontains=kw) | Q(brand__name__icontains=kw) | Q(
+    #         brand__companies__name__icontains=kw) | Q(
+    #         brand__categories__name__icontains=kw) | Q(
+    #         brand__categories__parent_category__name__icontains=kw) | Q(
+    #         brand__categories__parent_category__parent_category__name__icontains=kw))
     series = ProductBrandSeries.objects.filter(
-        Q(name__icontains=kw) | Q(brand__name__icontains=kw) | Q(
-            brand__companies__name__icontains=kw) | Q(
-            brand__categories__name__icontains=kw) | Q(
-            brand__categories__parent_category__name__icontains=kw) | Q(
-            brand__categories__parent_category__parent_category__name__icontains=kw))
+        Q(name=kw) | Q(brand__name=kw) | Q(
+            brand__companies__name=kw) | Q(
+            brand__categories__name=kw) | Q(
+            brand__categories__parent_category__name=kw) | Q(
+            brand__categories__parent_category__parent_category__name=kw))
     result = []
     for se in series:
         for c3 in se.brand.categories.all():
