@@ -11,6 +11,11 @@ var managerApp = function(){
             $('input[sid=Date-created]').bind('change',function(){
                 baseApp.compareDate(document.getElementById('startDate-created'),document.getElementById('endDate-created'));
             });
+            $('input[sid=Date-created]').on('keydown', function (event) {
+                if (event.keyCode == 8) {
+                    console.log(this)
+                }
+            });
             $('div.bottom-content').bind('mouseover',function(e){
                 $(this).addClass('bottom-content-mouseover');
             });
