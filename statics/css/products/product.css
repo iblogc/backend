@@ -186,6 +186,13 @@ input[readonly] {
     text-align: center;
 }
 
+.row h1 {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    margin: 30px;
+}
+
 div[data-name=main] {
     border: solid #d3d3d3 1px;
     -webkit-border-radius: 3px;
