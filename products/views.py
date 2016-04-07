@@ -544,111 +544,259 @@ def series_update(request, series_id):
 
 
 def import_xls(request):
-    xls_file = request.FILES.get('file')
-    data = xlrd.open_workbook(file_contents=xls_file.read())
-    table = data.sheets()[0]
-    row_count = table.nrows
-    cell_count = table.ncols
-    print row_count, cell_count
-    first_category = ''
-    second_category = ''
-    third_category = ''
-    company_name = ''
-    brand_name = ''
-    series_name = ''
-    datas_array = []
-    for row_no in range(1, row_count):
-        cells = table.row_values(row_no)
-        if cells:
-            if cells[0].strip() != '':
-                first_category = cells[0].strip()
-            if cells[1].strip() != '':
-                second_category = cells[1].strip()
-            if cells[2].strip() != '':
-                third_category = cells[2].strip()
-            if cells[3].strip() != '':
-                company_name = cells[3].strip()
-            if cells[4].strip() != '':
-                brand_name = cells[4].strip()
-            if cells[5].strip() != '':
-                series_name = cells[5].strip()
-            if first_category == '':
-                continue
-            datas_array.append((first_category, second_category, third_category,
-                                company_name, brand_name, series_name))
-    print datas_array
-    for data_dict in datas_array:
-        try:
-            max_first_category_no = 1
-            max_second_category_no = 1
-            max_third_category_no = 1
-            max_company_no = 1
-            max_brand_no = 1
-            max_series_no = 1
-            if ProductCategory.objects.filter(step=1).exists():
-                max_first_category_no = \
-                    ProductCategory.objects.filter(step=1).order_by('-no')[
-                        0].no + 1
-            first_category, flag = ProductCategory.objects.get_or_create(
-                name=data_dict[0], step=1)
-            if first_category.no == 0:
-                first_category.no = max_first_category_no
-                first_category.save()
-            if ProductCategory.objects.filter(step=2).exists():
-                max_second_category_no = \
-                    ProductCategory.objects.filter(step=2).order_by('-no')[
-                        0].no + 1
-            second_category, flag = ProductCategory.objects.get_or_create(
-                name=data_dict[1], step=2,
-                parent_category=first_category)
-            if second_category.no == 0:
-                second_category.no = max_second_category_no
-                second_category.save()
-            if ProductCategory.objects.filter(step=3).exists():
-                max_third_category_no = \
-                    ProductCategory.objects.filter(step=3).order_by('-no')[
-                        0].no + 1
-            third_category, flag = ProductCategory.objects.get_or_create(
-                name=data_dict[2], step=3,
-                parent_category=second_category)
-            if third_category.no == 0:
-                third_category.no = max_third_category_no
-                third_category.save()
-            if data_dict[3] == '':
-                continue
-            if Company.objects.exists():
-                max_company_no = Company.objects.all().order_by('-no')[0].no + 1
-            company, flag = Company.objects.get_or_create(name=data_dict[3])
-            if company.no == 0:
-                company.no = max_company_no
-                company.save()
-            if data_dict[4] == '':
-                continue
-            CategoryCompany.objects.get_or_create(category=third_category,
-                                                  company=company)
-            if ProductBrand.objects.exists():
-                max_brand_no = ProductBrand.objects.all().order_by('-no')[
-                                   0].no + 1
-            brand, flag = ProductBrand.objects.get_or_create(name=data_dict[4])
-            if brand.no == 0:
-                brand.no = max_brand_no
-                brand.save()
-            CategoryBrand.objects.get_or_create(category=third_category,
-                                                brand=brand)
-            CompanyBrand.objects.get_or_create(company=company, brand=brand)
-            if data_dict[5] == '':
-                continue
-            if ProductBrandSeries.objects.exists():
-                max_series_no = \
-                    ProductBrandSeries.objects.all().order_by('-no')[0].no + 1
-            series, flag = ProductBrandSeries.objects.get_or_create(
-                name=data_dict[5], brand=brand)
-            if series.no == 0:
-                series.no = max_series_no
-                series.save()
-        except Exception as e:
-            print e.message
-    return HttpResponse(json.dumps({'success': 1}))
+    if request.method == 'GET':
+        return render(request, 'products/upload.html')
+    else:
+        cache.set('category', [])
+        xls_file = request.FILES.get('file')
+        data = xlrd.open_workbook(file_contents=xls_file.read())
+        table = data.sheets()[0]
+        row_count = table.nrows
+        cell_count = table.ncols
+        print row_count, cell_count
+        first_category = ''
+        second_category = ''
+        third_category = ''
+        company_name = ''
+        brand_name = ''
+        series_name = ''
+        datas_array = {}
+        category_array = []
+        company_array = []
+        brand_array = []
+        series_array = []
+        for row_no in range(1, row_count):
+            cells = table.row_values(row_no)
+            if cells:
+                if cells[0].strip() != '':
+                    first_category = cells[0].strip()
+                if cells[1].strip() != '':
+                    second_category = cells[1].strip()
+                if cells[2].strip() != '':
+                    third_category = cells[2].strip()
+                if cells[3].strip() != '':
+                    company_name = cells[3].strip()
+                if cells[4].strip() != '':
+                    brand_name = cells[4].strip()
+                if cells[5].strip() != '':
+                    series_name = cells[5].strip()
+                if first_category == '':
+                    continue
+                if not datas_array.get(first_category):
+                    datas_array[first_category] = {}
+                if not first_category in category_array:
+                    category_array.append(first_category)
+                if not datas_array[first_category].get(second_category):
+                    datas_array[first_category][second_category] = {}
+                if not second_category in category_array:
+                    category_array.append(second_category)
+                if not datas_array[first_category][second_category].get(
+                        third_category):
+                    datas_array[first_category][second_category][
+                        third_category] = []
+                if not third_category in category_array:
+                    category_array.append(third_category)
+                if not (company_name, brand_name, series_name) in \
+                        datas_array[first_category][second_category][
+                            third_category]:
+                    datas_array[first_category][second_category][
+                        third_category].append(
+                        (company_name, brand_name, series_name))
+                if not company_name in company_array:
+                    company_array.append(company_name)
+                if not brand_name in brand_array:
+                    brand_array.append(brand_name)
+                if not series_name in series_array:
+                    series_array.append(series_name)
+
+        max_first_category_no = 1
+        max_second_category_no = 1
+        max_third_category_no = 1
+        max_company_no = 1
+        max_brand_no = 1
+        max_series_no = 1
+        if ProductCategory.objects.filter(step=1).exists():
+            max_first_category_no = \
+                ProductCategory.objects.filter(step=1).order_by('-no')[
+                    0].no + 1
+        if ProductCategory.objects.filter(step=2).exists():
+            max_second_category_no = \
+                ProductCategory.objects.filter(step=2).order_by('-no')[
+                    0].no + 1
+        if ProductCategory.objects.filter(step=3).exists():
+            max_third_category_no = \
+                ProductCategory.objects.filter(step=3).order_by('-no')[
+                    0].no + 1
+        if Company.objects.exists():
+            max_company_no = Company.objects.all().order_by('-no')[0].no + 1
+        if ProductBrand.objects.exists():
+            max_brand_no = ProductBrand.objects.all().order_by('-no')[
+                               0].no + 1
+        if ProductBrandSeries.objects.exists():
+            max_series_no = \
+                ProductBrandSeries.objects.all().order_by('-no')[0].no + 1
+        exists_catecories = ProductCategory.objects.filter(name__in=category_array)
+        exists_companies = Company.objects.filter(name__in=company_array)
+        exists_brands = ProductBrand.objects.filter(name__in=brand_array)
+        exists_series = ProductBrandSeries.objects.filter(name__in=series_array)
+        first_categories = {}
+        second_categories = {}
+        third_categories = {}
+        companies = {}
+        brands = {}
+        series = {}
+        for category in exists_catecories:
+            if category.step == 1:
+                first_categories[category.name] = category
+            elif category.step == 2:
+                second_categories[category.name] = category
+            else:
+                third_categories[category.name] = category
+        for company in exists_companies:
+            companies[company.name] = company
+        for brand in exists_brands:
+            brands[brand.name] = brand
+        for se in exists_series:
+            series[se.name] = se
+        new_first_categories = []
+        new_second_categories = []
+        new_third_categories = []
+        new_companies = []
+        new_brands = []
+        new_series = []
+        for first_category_name in datas_array.keys():
+            if not first_categories.get(first_category_name):
+                first_category = ProductCategory(
+                name=first_category_name, no=max_first_category_no, step=1)
+                new_first_categories.append(first_category)
+                max_first_category_no += 1
+        ProductCategory.objects.bulk_create(new_first_categories)
+        for first_category in ProductCategory.objects.filter(name__in=[category.name for category in new_first_categories],step=1):
+            first_categories[first_category.name] = first_category
+        for first_category_name in datas_array.keys():
+            first_category = first_categories[first_category_name]
+            for second_category_name in datas_array[first_category_name].keys():
+                if not second_categories.get(second_category_name):
+                    second_category = ProductCategory(parent_category=first_category,
+                        name=second_category_name, no=max_second_category_no, step=2)
+                    new_second_categories.append(second_category)
+                    max_second_category_no += 1
+        ProductCategory.objects.bulk_create(new_second_categories)
+        for second_category in ProductCategory.objects.filter(name__in=[category.name for category in new_second_categories],step=2):
+            print second_category.id
+            second_categories[second_category.name] = second_category
+        for first_category_name in datas_array.keys():
+            for second_category_name in datas_array[first_category_name].keys():
+                second_category = second_categories[second_category_name]
+                for third_category_name in datas_array[first_category_name][second_category_name].keys():
+                    if not third_categories.get(third_category_name):
+                        third_category = ProductCategory(
+                            parent_category=second_category,
+                            name=third_category_name,
+                            no=max_third_category_no, step=3)
+                        new_third_categories.append(third_category)
+                        max_third_category_no += 1
+        ProductCategory.objects.bulk_create(new_third_categories)
+        for third_category in ProductCategory.objects.filter(name__in=[category.name for category in new_third_categories],step=3):
+            third_categories[third_category.name] = third_category
+        for first_category_name in datas_array.keys():
+            for second_category_name in datas_array[first_category_name].keys():
+                for third_category_name in datas_array[first_category_name][
+                    second_category_name].keys():
+                    for company_name,brand_name,series_name in datas_array[first_category_name][
+                        second_category_name][third_category_name]:
+                        print company_name,brand_name,series_name
+                        if not companies.get(company_name):
+                            company = Company(name=company_name,no=max_company_no)
+                            max_company_no += 1
+                            new_companies.append(company)
+                        if not brands.get(brand_name):
+                            brand = ProductBrand(name=brand_name,no=max_brand_no)
+                            max_brand_no += 1
+                            new_brands.append(brand)
+
+        Company.objects.bulk_create(new_companies)
+        ProductBrand.objects.bulk_create(new_brands)
+
+        for company in Company.objects.filter(name__in=[company.name for company in new_companies]):
+            companies[company.name] = company
+        for brand in ProductBrand.objects.filter(name__in=[brand.name for brand in new_brands]):
+            brands[brand.name] = brand
+        exists_category_companies = CategoryCompany.objects.filter(category__in=third_categories.values(),company__in=companies.values())
+        exists_category_brands = CategoryBrand.objects.filter(category__in=third_categories.values(),brand__in=brands.values())
+        exists_company_brands = CompanyBrand.objects.filter(company__in=companies.values(),brand__in=brands.values())
+        category_companies = {}
+        category_brands = {}
+        company_brands = {}
+        for category_company in exists_category_companies:
+            category_companies[(category_company.category.name,category_company.company.name)] = category_company
+
+        for category_brand in exists_category_brands:
+            category_brands[(category_brand.category.name,category_brand.brand.name)] = category_company
+        for company_brand in exists_company_brands:
+            company_brands[(company_brand.company.name,company_brand.brand.name)] = company_brand
+        new_category_companies = []
+        new_category_brands = []
+        new_company_brands = []
+        for first_category_name in datas_array.keys():
+            for second_category_name in datas_array[first_category_name].keys():
+                for third_category_name in datas_array[first_category_name][
+                    second_category_name].keys():
+                    category = third_categories[third_category_name]
+                    for company_name, brand_name, series_name in \
+                    datas_array[first_category_name][
+                        second_category_name][third_category_name]:
+                        company = companies[company_name]
+                        if not category_companies.get((third_category_name,company_name)):
+                            category_company = CategoryCompany(category=category,company=company)
+                            new_category_companies.append(category_company)
+        for first_category_name in datas_array.keys():
+            for second_category_name in datas_array[first_category_name].keys():
+                for third_category_name in datas_array[first_category_name][
+                    second_category_name].keys():
+                    category = third_categories[third_category_name]
+                    for company_name, brand_name, series_name in \
+                            datas_array[first_category_name][
+                                second_category_name][third_category_name]:
+                        brand = brands[brand_name]
+                        if not category_brands.get((third_category_name,
+                                                      brand_name)):
+                            category_brand = CategoryBrand(
+                                category=category, brand=brand)
+                            new_category_brands.append(category_brand)
+        for first_category_name in datas_array.keys():
+            for second_category_name in datas_array[first_category_name].keys():
+                for third_category_name in datas_array[first_category_name][
+                    second_category_name].keys():
+                    for company_name, brand_name, series_name in \
+                            datas_array[first_category_name][
+                                second_category_name][third_category_name]:
+                        company = companies[company_name]
+                        brand = brands[brand_name]
+                        if not company_brands.get((company_name,
+                                                   brand_name)):
+                            company_brand = CompanyBrand(
+                                company=company, brand=brand)
+                            new_company_brands.append(company_brand)
+        CategoryCompany.objects.bulk_create(new_category_companies)
+        CategoryBrand.objects.bulk_create(new_category_brands)
+        CompanyBrand.objects.bulk_create(new_company_brands)
+        for first_category_name in datas_array.keys():
+            for second_category_name in datas_array[first_category_name].keys():
+                for third_category_name in datas_array[first_category_name][
+                    second_category_name].keys():
+                    for company_name, brand_name, series_name in \
+                            datas_array[first_category_name][
+                                second_category_name][third_category_name]:
+                        brand = brands[brand_name]
+                        if not series.get(series_name):
+                            se = ProductBrandSeries(name=series_name,brand=brand,
+                                                    no=max_series_no)
+                            max_series_no += 1
+                            new_series.append(se)
+        ProductBrandSeries.objects.bulk_create(new_series)
+        return HttpResponse(json.dumps({'success': 1}))
+        # return render(request, 'products/upload.html')
 
 
 def export_xls(request):
