@@ -333,15 +333,20 @@ var categoryApp = function () {
                     'step': step
                 },
                 function (data) {
-                    $('.js-second-category-div').append('<div class="header js-second-category" data-id="' + data.id + '"><input type="checkbox" name="second-category-id" value="' + data.id + '"><div class="center-line js-second-category-name">' + data.name + '</div></div>');
-                    $('div.js-second-category[data-id="' + data.id + '"]').on('click', second_category_onclick);
-                    checkboxHide();
+                    if (data.success == 1) {
+                        $('.js-second-category-div').append('<div class="header js-second-category" data-id="' + data.category.id + '"><input type="checkbox" name="second-category-id" value="' + data.category.id + '"><div class="center-line js-second-category-name">' + data.category.name + '</div></div>');
+                        $('div.js-second-category[data-id="' + data.category.id + '"]').on('click', second_category_onclick);
+                        checkboxHide();
+                        $('.js-modal-save-button').unbind('click');
+                        $('#addCategoryForm').modal('hide');
+                    } else {
+                        sweetAlert(data.message);
+                    }
                 },
                 "json"
             );
         }
-        $('.js-modal-save-button').unbind('click');
-        $('#addCategoryForm').modal('hide');
+
     };
 
     var save_third_category = function () {
@@ -355,15 +360,20 @@ var categoryApp = function () {
                     'step': step
                 },
                 function (data) {
-                    $('.js-third-category-div').append('<div class="header js-third-category" data-id="' + data.id + '"><input type="checkbox" name="third-category-id" value="' + data.id + '"><div class="center-line js-third-category-name">' + data.name + '</div></div>');
-                    $('div.js-third-category[data-id="' + data.id + '"]').on('click', third_category_onclick);
-                    checkboxHide();
+                    if (data.success == 1) {
+                        $('.js-third-category-div').append('<div class="header js-third-category" data-id="' + data.category.id + '"><input type="checkbox" name="third-category-id" value="' + data.category.id + '"><div class="center-line js-third-category-name">' + data.category.name + '</div></div>');
+                        $('div.js-third-category[data-id="' + data.category.id + '"]').on('click', third_category_onclick);
+                        checkboxHide();
+                        $('.js-modal-save-button').unbind('click');
+                        $('#addCategoryForm').modal('hide');
+                    } else {
+                        sweetAlert(data.message);
+                    }
                 },
                 "json"
             );
         }
-        $('.js-modal-save-button').unbind('click');
-        $('#addCategoryForm').modal('hide');
+
     };
 
     var save_company = function () {
@@ -376,15 +386,20 @@ var categoryApp = function () {
                     'name': company_name,
                 },
                 function (data) {
-                    $('.js-company-div').append('<div class="header js-company" data-id="' + data.id + '"><input type="checkbox" name="company-id" value="' + data.id + '"><div class="center-line js-company-name">' + data.name + '</div></div>');
-                    $('div.js-company[data-id="' + data.id + '"]').on('click', company_onclick);
-                    checkboxHide();
+                    if (data.success == 1) {
+                        $('.js-company-div').append('<div class="header js-company" data-id="' + data.company.id + '"><input type="checkbox" name="company-id" value="' + data.company.id + '"><div class="center-line js-company-name">' + data.company.name + '</div></div>');
+                        $('div.js-company[data-id="' + data.company.id + '"]').on('click', company_onclick);
+                        checkboxHide();
+                        $('.js-modal-save-button').unbind('click');
+                        $('#addCategoryForm').modal('hide');
+                    } else {
+                        sweetAlert(data.message);
+                    }
                 },
                 "json"
             );
         }
-        $('.js-modal-save-button').unbind('click');
-        $('#addCategoryForm').modal('hide');
+
     };
 
     var save_brand = function () {
@@ -397,15 +412,20 @@ var categoryApp = function () {
                     'name': brand_name,
                 },
                 function (data) {
-                    $('.js-brand-div').append('<div class="header js-brand" data-id="' + data.id + '"><input type="checkbox" name="brand-id" value="' + data.id + '"><div class="center-line js-brand-name">' + data.name + '</div></div>');
-                    $('div.js-brand[data-id="' + data.id + '"]').on('click', brand_onclick);
-                    checkboxHide();
+                    if (data.success == 1) {
+                        $('.js-brand-div').append('<div class="header js-brand" data-id="' + data.brand.id + '"><input type="checkbox" name="brand-id" value="' + data.brand.id + '"><div class="center-line js-brand-name">' + data.brand.name + '</div></div>');
+                        $('div.js-brand[data-id="' + data.brand.id + '"]').on('click', brand_onclick);
+                        checkboxHide();
+                        $('.js-modal-save-button').unbind('click');
+                        $('#addCategoryForm').modal('hide');
+                    } else {
+                        sweetAlert(data.message);
+                    }
                 },
                 "json"
             );
         }
-        $('.js-modal-save-button').unbind('click');
-        $('#addCategoryForm').modal('hide');
+
     };
 
     var save_series = function () {
@@ -418,15 +438,20 @@ var categoryApp = function () {
                     'name': series_name,
                 },
                 function (data) {
-                    $('.js-series-div').append('<div class="header js-series" data-id="' + data.id + '"><input type="checkbox" name="series-id" value="' + data.id + '"><div class="center-line js-series-name">' + data.name + '</div></div>');
-                    $('div.js-series[data-id="' + data.id + '"]').on('click', series_onclick);
-                    checkboxHide();
+                    if (data.success == 1) {
+                        $('.js-series-div').append('<div class="header js-series" data-id="' + data.series.id + '"><input type="checkbox" name="series-id" value="' + data.series.id + '"><div class="center-line js-series-name">' + data.series.name + '</div></div>');
+                        $('div.js-series[data-id="' + data.series.id + '"]').on('click', series_onclick);
+                        checkboxHide();
+                        $('.js-modal-save-button').unbind('click');
+                        $('#addCategoryForm').modal('hide');
+                    } else {
+                        sweetAlert(data.message);
+                    }
                 },
                 "json"
             );
         }
-        $('.js-modal-save-button').unbind('click');
-        $('#addCategoryForm').modal('hide');
+
     };
 
     var delete_second_category = function () {
@@ -637,13 +662,16 @@ var categoryApp = function () {
                 function (data) {
                     if (data.success == 1) {
                         $('.js-second-category[data-id="' + second_category + '"]').find('.js-second-category-name').html(category_name);
+                        $('.js-modal-save-button').unbind('click');
+                        $('#addCategoryForm').modal('hide');
+                    } else {
+                        sweetAlert(data.message);
                     }
                 },
                 "json"
             );
         }
-        $('.js-modal-save-button').unbind('click');
-        $('#addCategoryForm').modal('hide');
+
     };
 
     var save_third_category_edit = function () {
@@ -658,13 +686,15 @@ var categoryApp = function () {
                 function (data) {
                     if (data.success == 1) {
                         $('.js-third-category[data-id="' + third_category + '"]').find('.js-third-category-name').html(category_name);
+                        $('.js-modal-save-button').unbind('click');
+                        $('#addCategoryForm').modal('hide');
+                    } else {
+                        sweetAlert(data.message);
                     }
                 },
                 "json"
             );
         }
-        $('.js-modal-save-button').unbind('click');
-        $('#addCategoryForm').modal('hide');
     };
 
     var save_company_edit = function () {
@@ -679,23 +709,28 @@ var categoryApp = function () {
                 function (data) {
                     if (data.success == 1) {
                         $('.js-company[data-id="' + company + '"]').find('.js-company-name').html(category_name);
-                    }else{
-                        if($('.js-company[data-id="' + data.company_id + '"]').length>0) {
+                        $('.js-modal-save-button').unbind('click');
+                        $('#addCategoryForm').modal('hide');
+                    } else if (data.success == 2) {
+                        if ($('.js-company[data-id="' + data.company_id + '"]').length > 0) {
                             $('.js-company[data-id="' + company + '"]').remove();
                             company = 0;
                             $('.js-company[data-id="' + data.company_id + '"]').click();
-                        }else{
+                        } else {
                             $('.js-company[data-id="' + company + '"]').find('.js-company-name').html(category_name);
                             $('.js-company[data-id="' + company + '"]').find('input').val(data.company_id);
-                            $('.js-company[data-id="' + company + '"]').attr('data-id',data.company_id);
+                            $('.js-company[data-id="' + company + '"]').attr('data-id', data.company_id);
                         }
+                        $('.js-modal-save-button').unbind('click');
+                        $('#addCategoryForm').modal('hide');
+                    } else {
+                        sweetAlert(data.message);
                     }
                 },
                 "json"
             );
         }
-        $('.js-modal-save-button').unbind('click');
-        $('#addCategoryForm').modal('hide');
+
     };
 
     var save_brand_edit = function () {
@@ -710,13 +745,16 @@ var categoryApp = function () {
                 function (data) {
                     if (data.success == 1) {
                         $('.js-brand[data-id="' + brand + '"]').find('.js-brand-name').html(category_name);
+                        $('.js-modal-save-button').unbind('click');
+                        $('#addCategoryForm').modal('hide');
+                    } else {
+                        sweetAlert(data.message);
                     }
                 },
                 "json"
             );
         }
-        $('.js-modal-save-button').unbind('click');
-        $('#addCategoryForm').modal('hide');
+
     };
 
     var save_series_edit = function () {
@@ -731,13 +769,16 @@ var categoryApp = function () {
                 function (data) {
                     if (data.success == 1) {
                         $('.js-series[data-id="' + series + '"]').find('.js-series-name').html(category_name);
+                        $('.js-modal-save-button').unbind('click');
+                        $('#addCategoryForm').modal('hide');
+                    } else {
+                        sweetAlert(data.message);
                     }
                 },
                 "json"
             );
         }
-        $('.js-modal-save-button').unbind('click');
-        $('#addCategoryForm').modal('hide');
+
     };
 
     var upload_file = function () {
@@ -819,8 +860,8 @@ var categoryApp = function () {
                 $('.js-value-text').remove();
                 $('.js-value-text-label').remove();
                 for (var index in data) {
-                    $('.js-attribute-default-rows').append('<input type="text" class="form-control js-value-text" data-index="'+index+'" value="' + data[index] +
-                        '" readonly><span class="js-value-text-label" data-index="'+index+'">确定</span>'
+                    $('.js-attribute-default-rows').append('<input type="text" class="form-control js-value-text" data-index="' + index + '" value="' + data[index] +
+                        '" readonly><span class="js-value-text-label" data-index="' + index + '">确定</span>'
                     )
                     ;
                 }
@@ -879,7 +920,7 @@ var categoryApp = function () {
             console.log(attr_ids);
             console.log(attr_values);
             console.log(attr_searchables);
-            if(attr_values.includes(null) || attr_searchables.includes(null)) {
+            if (attr_values.includes(null) || attr_searchables.includes(null)) {
                 sweetAlert("必须选择属性值！");
                 return;
             }
@@ -913,7 +954,7 @@ var categoryApp = function () {
             modal5UnbindAction();
         } else if ($(this).attr('name') == 'add') {
             var max_index = parseInt($('.js-value-text').last().attr('data-index')) + 1;
-            $('.modal-body-5 .modal-row').append('<input type="text" class="form-control js-value-text" data-index="'+max_index+'" readonly><span class="js-value-text-label"  data-index="'+max_index+'">确定</span>')
+            $('.modal-body-5 .modal-row').append('<input type="text" class="form-control js-value-text" data-index="' + max_index + '" readonly><span class="js-value-text-label"  data-index="' + max_index + '">确定</span>')
             modal5bindAction();
         } else if ($(this).attr('name') == 'remove') {
             $('.modal-body-5 input.selected').next().remove();
@@ -938,20 +979,20 @@ var categoryApp = function () {
         modal5bindAction();
         $(this).prev().attr('readonly', 'readonly');
         var data_index = $(this).attr('data-index');
-        var text = $('.js-value-text[data-index="'+data_index+'"]').val();
+        var text = $('.js-value-text[data-index="' + data_index + '"]').val();
         $.post(
-                "/products/category/attribute/default_value/update/" + settings_attribute + "/",
-                {
-                    'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
-                    'index': data_index,
-                    'text': text,
-                },
-                function (data) {
-                    if (data.success == 1) {
-                    }
-                },
-                "json"
-            );
+            "/products/category/attribute/default_value/update/" + settings_attribute + "/",
+            {
+                'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+                'index': data_index,
+                'text': text,
+            },
+            function (data) {
+                if (data.success == 1) {
+                }
+            },
+            "json"
+        );
     };
 
     var modal5bindAction = function () {
@@ -965,14 +1006,14 @@ var categoryApp = function () {
         $(document).on('click', '.modal-body-5 input+span', changeModal5Val);
     };
 
-    var loadPager = function(sum){
-        if(sum > 1) {
+    var loadPager = function (sum) {
+        if (sum > 1) {
             $('div[data-name=nav]').css('visibility', 'visible');
         } else {
             $('div[data-name=nav]').css('visibility', 'hidden');
         }
         $('select[data-name=navPager]').empty();
-        for(var i = 1; i <= sum; i++){
+        for (var i = 1; i <= sum; i++) {
             $('select[data-name=navPager]').append('<option value="' + i + '">' + i + '</option>');
         }
     };
@@ -1036,7 +1077,7 @@ var categoryApp = function () {
     };
 
     var save_new_attribute = function () {
-        if($('.modal-body-6 input[data-type]').val().trim() == '') return;
+        if ($('.modal-body-6 input[data-type]').val().trim() == '') return;
         $.post(
             "/products/category/attribute/create/" + settings_category + "/",
             {
@@ -1119,19 +1160,19 @@ var categoryApp = function () {
 
 
             //pager
-            $('select[data-name=navPager]').on('change', function(){
+            $('select[data-name=navPager]').on('change', function () {
                 $('div.js-search-detail').hide();
                 $('div[data-group=' + $('select[data-name=navPager]').val() + ']').show();
             });
-            $('nav div[data-name=navLeft]').on('click', function(){
+            $('nav div[data-name=navLeft]').on('click', function () {
                 var tmp = eval($('select[data-name=navPager]').val()) - 1;
-                if(tmp <= 0) return;
+                if (tmp <= 0) return;
                 $('select[data-name=navPager]').val(tmp);
                 $('select[data-name=navPager]').change();
             });
-            $('nav div[data-name=navRight]').on('click', function(){
+            $('nav div[data-name=navRight]').on('click', function () {
                 var tmp = eval($('select[data-name=navPager]').val()) + 1;
-                if(tmp > $('select[data-name=navPager] option').length) return;
+                if (tmp > $('select[data-name=navPager] option').length) return;
                 $('select[data-name=navPager]').val(tmp);
                 $('select[data-name=navPager]').change();
             });
