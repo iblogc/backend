@@ -455,8 +455,13 @@ var categoryApp = function () {
 
     };
 
+    var deleteInfo = function(words){
+        $('#deleteCategoryForm .modal-body-1>div').html('是否删除 ' + words + ' ?');
+    };
+
     var delete_second_category = function () {
         if (second_category != 0) {
+            deleteInfo($('.js-second-category-div .selected .center-line').html());
             $('#deleteCategoryForm').modal({backdrop: 'static', keyboard: false});
             $('.js-modal-confirm-button').bind('click', delete_second_category_confirm);
         }
@@ -465,6 +470,7 @@ var categoryApp = function () {
 
     var delete_third_category = function () {
         if (third_category != 0) {
+            deleteInfo($('.js-third-category-div .selected .center-line').html());
             $('#deleteCategoryForm').modal({backdrop: 'static', keyboard: false});
             $('.js-modal-confirm-button').bind('click', delete_third_category_confirm);
         }
@@ -472,6 +478,7 @@ var categoryApp = function () {
 
     var delete_company = function () {
         if (third_category != 0 && company != 0) {
+            deleteInfo($('.js-company-div .selected .center-line').html());
             $('#deleteCategoryForm').modal({backdrop: 'static', keyboard: false});
             $('.js-modal-confirm-button').bind('click', delete_company_confirm);
         }
@@ -479,6 +486,7 @@ var categoryApp = function () {
 
     var delete_brand = function () {
         if (third_category != 0 && company != 0 && brand != 0) {
+            deleteInfo($('.js-brand-div .selected .center-line').html());
             $('#deleteCategoryForm').modal({backdrop: 'static', keyboard: false});
             $('.js-modal-confirm-button').bind('click', delete_brand_confirm);
         }
@@ -486,6 +494,7 @@ var categoryApp = function () {
 
     var delete_series = function () {
         if (series != 0) {
+            deleteInfo($('.js-series-div .selected .center-line').html());
             $('#deleteCategoryForm').modal({backdrop: 'static', keyboard: false});
             $('.js-modal-confirm-button').bind('click', delete_series_confirm);
         }
@@ -801,6 +810,13 @@ var categoryApp = function () {
         });
     };
 
+    var sessionValW = function(){
+        var tmpArr = new Array;
+        for(var i = 0; i < $('#settingForm .modal-body-4 select').length; i++){
+            tmpArr[i] = $($('#settingForm .modal-body-4 select')[i]).val();
+        }
+        sessionStorage.tmpArr = tmpArr;
+    };
 
     var setting = function () {
         if ($(this).attr('series-id') == undefined && settings_series == 0) return;
@@ -810,7 +826,6 @@ var categoryApp = function () {
         settings_series = series_id;
         settings_category = category_id;
         init_setting_form1();
-
         $('#settingForm .modal-body-5').hide();
         $('#settingForm .modal-body-6').hide();
         $('#settingForm button[data-for]').hide();
@@ -819,6 +834,7 @@ var categoryApp = function () {
             $('.modal-body-6 textarea[data-type]').val('');
             $('.modal-body-6').show();
             $('.modal-body-4').hide();
+            sessionValW();
             $('#settingForm .modal-title').html('新增属性');
             $('#settingForm button[data-action]').hide();
             $('#settingForm button[data-for=modal-body-6]').show();
@@ -828,6 +844,7 @@ var categoryApp = function () {
             init_attribute_value();
             $('.modal-body-5').show();
             $('.modal-body-4').hide();
+            sessionValW();
             $('#settingForm .modal-title').html('修改属性值');
             $('#settingForm button[data-action]').hide();
             $('#settingForm button[data-for=modal-body-5]').show();
@@ -902,6 +919,11 @@ var categoryApp = function () {
                     $('.modal-body-4').append(row_html);
                     $('.modal-body-4').find('div[data-id="' + attribute.id + '"]').find('select[name="value"]').val(attribute.value);
                     $('.modal-body-4').find('div[data-id="' + attribute.id + '"]').find('select[name="searchable"]').val(attribute.searchable);
+                    var tmpArr = new Array;
+                    tmpArr = sessionStorage.tmpArr.split(',');
+                    for(var i = 0; i < tmpArr.length; i++){
+                        $($('#settingForm .modal-body-4 select')[i]).val(tmpArr[i]);
+                    }
                 }
             },
             "json"
@@ -909,6 +931,7 @@ var categoryApp = function () {
     };
 
     var settingAction = function () {
+        ////////.attr('editTarget','flag');
         if ($(this).attr('data-action') == 'save') {
             var attr_ids = new Array();
             var attr_values = new Array();
