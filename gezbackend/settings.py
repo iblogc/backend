@@ -64,7 +64,11 @@ MIDDLEWARE_CLASSES = [
 
 AUTH_USER_MODEL = 'accounts.Account'
 
-# INTERNAL_IPS = ('127.0.0.1')
+
+INTERNAL_IPS = ('127.0.0.1')
+DEBUG_TOOLBAR_CONFIG = {
+  'JQUERY_URL':'/statics/js/jquery-2.1.4.min.js',
+}
 
 ROOT_URLCONF = 'gezbackend.urls'
 
@@ -107,8 +111,7 @@ else:
             'ENGINE': 'django.db.backends.mysql',
             'NAME': 'LeJuDBv11',
             'USER': 'root',
-            # 'PASSWORD': 'root',
-            'PASSWORD': '123456',
+            'PASSWORD': '',
             'HOST': '127.0.0.1',
             # 'HOST': '127.0.0.1',
             'PORT': '3306'
@@ -158,6 +161,9 @@ STATICFILES_DIRS = (
     STATIC_FILES,
 )
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -178,7 +184,7 @@ TEMPLATES = [
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/1",
+        "LOCATION": "redis://127.0.0.1:6379/3",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }

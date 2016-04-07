@@ -14,7 +14,7 @@ var baseApp = function () {
             }
         });
 
-    }
+    };
 
     var accountTopMenu = function () {
         $('.dropdown-toggle').dropdown();
@@ -24,7 +24,7 @@ var baseApp = function () {
         $('[data-toggle=tooltip]').tooltip({
             container: $('body')
         });
-    }
+    };
 
     var onMouseOverActive = function () {
         $('div.content-table-data').mouseenter(function () {
@@ -33,7 +33,7 @@ var baseApp = function () {
         $('div.content-table-data').mouseleave(function () {
             $(this).removeClass('table-mouse-over');
         })
-    }
+    };
 
     var onMouseOverActive = function () {
         $('div.content-table-data').mouseenter(function () {
@@ -42,7 +42,7 @@ var baseApp = function () {
         $('div.content-table-data').mouseleave(function () {
             $(this).removeClass('table-mouse-over');
         })
-    }
+    };
 
     var accountLocked = function () {
         $('div.account-lock-tag > a').click(function () {
@@ -99,38 +99,20 @@ var baseApp = function () {
         var formatTime = week[time.getDay()] + '&nbsp;,&nbsp;' + yr + '/' + month + '/' + dt + '<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>' + h + ':' + min;
 
         $('#clock').html(formatTime);
-    }
+    };
 
-    // setInterval("headerClock()",500);
-
-    //var breadcrumb = function(){
-    //    var link = window.location.href.substr(0,7);
-    //    var linkArr = window.location.href.substr(7).split('/');
-    //    var str;
-    //    $(linkArr).each(function(i){
-    //        if(i==0){
-    //            link += linkArr[i];
-    //            str='<li><a href="'+link+'">' + '首页' + '</a></li>'
-    //        }else{
-    //            link = link + '\/' + linkArr[i];
-    //            if(linkArr.length-1 === i){
-    //                str = str + '<li class="active">' + linkArr[i] + '</li>';
-    //            }else{
-    //                str = str + '<li><a href="'+link+'">' + linkArr[i] + '</a></li>';
-    //            }
-    //            $('#breadcrumb').html(str);
-    //        }
-    //    });
-    //}
-
-    $(window).resize(function () {
-        var innerH = window.innerHeight - 120;
-        $('#content-body-main').height(innerH);
-        $('#content-body-sheet').attr('style', 'min-height:' + innerH + 'px');
+    var resizeFun = function(){
+        var innerH = window.innerHeight - 130;
+        $('.content-body').css({height: innerH + 'px'});
+        $('.content-body .tabs-main>div').css({height: (innerH-30) + 'px'});
         var copyR = window.innerWidth / 2 - $('#copyRight').width() / 2;
         $('#copyRight').attr('style', 'right:' + copyR + 'px');
         $('.left-menu-body').height(innerH + 50);
-    })
+    };
+
+    $(window).resize(function () {
+        resizeFun();
+    });
 
     return {
         init: function () {
@@ -148,25 +130,22 @@ var baseApp = function () {
             setInterval(function () {
                 return headerClock();
             }, 500);
-
-            //breadcrumb();
-            var innerH = window.innerHeight - 120;
-            $('#content-body-main').height(innerH);
-            $('#content-body-sheet').attr('style', 'min-height:' + innerH + 'px');
-            // console.log(innerH)
-            $('.left-menu-body').height(innerH + 50);
-            var copyR = window.innerWidth / 2 - $('#copyRight').width() / 2;
-            $('#copyRight').attr('style', 'right:' + copyR + 'px');
-            //if(navigator.userAgent.toLowerCase().match('firefox')) $('.content-body-title-hr').attr('style','top:8px');
+            resizeFun();
             
         },
+
+        changeSize: function(height){
+            newTabs.changeSize(height, window.top.$('.tabs-main>div>iframe.show'))
+        },
+
         compareDate: function (s, e) {
             var start = $(s);
             var end = $(e);
-            if (start.val() == '') {
-                start.val(end.val());
-                end.val('');
-            } else if (start.val() != '' && end.val() != '') {
+            //if (start.val() == '') {
+            //    start.val(end.val());
+            //    end.val('');
+            //} else
+            if (start.val() != '' && end.val() != '') {
                 var a = new Date(start.val());
                 var b = new Date(end.val());
                 if( a > b ){

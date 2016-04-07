@@ -1,6 +1,7 @@
 /**
  * Created by yunxia on 2015/12/12.
  */
+var type = 0;
 var s1_val;
 var brand_id;
 var searchUrl;
@@ -16,6 +17,10 @@ var date_from = '';
 var date_to = '';
 var order = '';
 var desc = false;
+var product_id = 0;
+
+var previewImgId = -1;
+
 //产品分类 绑定
 $('select[name=product1]').bind('change', function () {
     $('select[name=product2]').html('<option value="0">请选择</option>');
@@ -76,7 +81,7 @@ $('#product-Search').bind('change', function () {
 
 $('#select-Search').bind('click', function () {
     changeSearchLink();
-    localStorage.setItem('url_temp', kw + ',' + pn + ',' + c1 + ',' + c2 + ',' + c3 + ',' + com + ',' + brand + ',' + series + ',' + date_from + ',' + date_to + ',' + order + ',' + desc);
+    localStorage.setItem('url_temp', type + ',' + kw + ',' + pn + ',' + c1 + ',' + c2 + ',' + c3 + ',' + com + ',' + brand + ',' + series + ',' + date_from + ',' + date_to + ',' + order + ',' + desc);
     location.href = searchUrl;
 });
 
@@ -91,10 +96,10 @@ var changeSearchLink = function () {
     series = $('.js-series').val();
     date_from = $('.js-df').val();
     date_to = $('.js-dt').val();
-    var url = '//' + location.host + location.pathname + '?kw=' + kw + '&pn=' + pn + '&c1=' + c1 + '&c2=' + c2 + '&c3=' + c3 + '&c=' + com + '&b=' + brand + '&s=' + series + '&df=' + date_from + '&dt=' + date_to + '&order=' + order + '&desc=' + (desc ? 1 : 0);
+    var url = '//' + location.host + location.pathname + '?type=' + type + '&kw=' + kw + '&pn=' + pn + '&c1=' + c1 + '&c2=' + c2 + '&c3=' + c3 + '&c=' + com + '&b=' + brand + '&s=' + series + '&df=' + date_from + '&dt=' + date_to + '&order=' + order + '&desc=' + (desc ? 1 : 0);
 
-    localStorage.setItem('lastUrl', 'kw=' + kw + '&pn=' + pn + '&c1=' + c1 + '&c2=' + c2 + '&c3=' + c3 + '&c=' + com + '&b=' + brand + '&s=' + series + '&df=' + date_from + '&dt=' + date_to + '&order=' + order + '&desc=' + (desc ? 1 : 0));
-    searchUrl = '/product/pdt?kw=' + kw + '&pn=' + pn + '&c1=' + c1 + '&c2=' + c2 + '&c3=' + c3 + '&c=' + com + '&b=' + brand + '&s=' + series + '&df=' + date_from + '&dt=' + date_to + '&order=' + order + '&desc=' + (desc ? 1 : 0);
+    localStorage.setItem('lastUrl', 'type=' + type + '&kw=' + kw + '&pn=' + pn + '&c1=' + c1 + '&c2=' + c2 + '&c3=' + c3 + '&c=' + com + '&b=' + brand + '&s=' + series + '&df=' + date_from + '&dt=' + date_to + '&order=' + order + '&desc=' + (desc ? 1 : 0));
+    searchUrl = '/product/pdt?type=' + type + '&kw=' + kw + '&pn=' + pn + '&c1=' + c1 + '&c2=' + c2 + '&c3=' + c3 + '&c=' + com + '&b=' + brand + '&s=' + series + '&df=' + date_from + '&dt=' + date_to + '&order=' + order + '&desc=' + (desc ? 1 : 0);
     $('#search-link').attr('href', searchUrl);
 
 };
@@ -113,12 +118,13 @@ $('.js-header').on('click', function () {
     order = $(this).attr('name');
 
     changeSearchLink();
-    localStorage.setItem('url_temp', kw + ',' + pn + ',' + c1 + ',' + c2 + ',' + c3 + ',' + com + ',' + brand + ',' + series + ',' + date_from + ',' + date_to + ',' + order + ',' + desc);
+    localStorage.setItem('url_temp', type + ',' + kw + ',' + pn + ',' + c1 + ',' + c2 + ',' + c3 + ',' + com + ',' + brand + ',' + series + ',' + date_from + ',' + date_to + ',' + order + ',' + desc);
     location.href = searchUrl;
 });
 
 $('.js-product-detail').on('click', function () {
     var id = $(this).attr('data-id');
+    product_id = id;
     $.post('/products/detail/' + id + '/', {'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()}, function (data) {
         console.log(data);
         $('.js-modal-product-no').html(data.product_no);
@@ -127,19 +133,30 @@ $('.js-product-detail').on('click', function () {
         $('.js-modal-product-company').html(data.company_name);
         $('.js-modal-product-brand').html(data.brand);
         $('.js-modal-product-series').html(data.series);
-        if(data.model) {
-            $('.js-modal-model-no').html(data.model.norm_no);
-            $('.js-modal-model-version').html(data.model.version);
-            if(data.model.norms)
-                $('.js-modal-model-size').html('长-' + data.model.norms['length'] + ' 宽-' + data.model.norms['width'] + ' 高-' + data.model.norms['height']);
-            $('.js-modal-model-material').html(data.model.material);
-            $('.js-modal-model-color').html(data.model.color);
-            $('.js-modal-product-img').attr('src',data.model.chartlet);
-        }
+        $('.js-modal-model-no').html(data.norm_no);
+        $('.js-modal-model-version').html(data.version);
+        $('.js-modal-model-size').html('长-' + data.length + ' 宽-' + data.width + ' 高-' + data.height);
+        $('.js-modal-model-material').html(data.material);
+        $('.js-modal-model-color').html(data.color);
+        $('.js-modal-product-img').attr('src',data.chartlet);
         $('.js-modal-args').empty();
+        $('.js-file-list').empty();
+        $('.js-preview-list').empty();
         for(var key in data.args){
             $('.js-modal-args').append('<li><span>'+key+':</span><span>'+data.args[key]+'</span></li>');
         }
+        for(var index in data.files){
+            var file = data.files[index];
+            $('.js-file-list').append('<div data-id="'+file.id+'">'+file.name+'</div>');
+        }
+        var tmp = 0;
+        for(var index in data.previews){
+            tmp++;
+            var preview = data.previews[index];
+            $('.js-preview-list').append('<div data-id="'+preview.id+'" data-url="'+preview.url+'"><img class="inline-table product-info-box-img" src="'+preview.url+'"/></div>');
+            //$('.js-preview-list').append('<div data-id="'+preview.id+'"><a href="'+preview.url+'" target="_blank"><img class="inline-table product-info-box-img" src="'+preview.url+'"/></a></div>');
+        }
+        $('.js-preview-list').css('width', tmp * 110);
         $('.js-modal-product-remarks').html(data.remarks);
     }, 'JSON');
 });
@@ -149,6 +166,8 @@ $('.js-active').on('click', function () {
     $.post('/products/active/' + id + '/', {'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()}, function (data) {
         $('.js-status-text-' + id).html('启用');
     }, 'JSON');
+    $(this).parent().find('.js-active').hide();
+    $(this).parent().find('.js-void').show();
 });
 
 $('.js-void').on('click', function () {
@@ -156,40 +175,125 @@ $('.js-void').on('click', function () {
     $.post('/products/void/' + id + '/', {'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()}, function (data) {
         $('.js-status-text-' + id).html('禁用');
     }, 'JSON');
+    $(this).parent().find('.js-active').show();
+    $(this).parent().find('.js-void').hide();
 });
+
+//var upload_model_file = function() {
+//    var data = new FormData();
+//    data.append('file', document.getElementById('model-file').files[0]);
+//    data.append('product_id', product_id);
+//    data.append('csrfmiddlewaretoken', $('input[name="csrfmiddlewaretoken"]').val());
+//    $.ajax({
+//        type: "POST",
+//        url: "/products/product/file/upload/",
+//        data: data,
+//        cache: false,
+//        dataType: 'json',
+//        processData: false, // Don't process the files
+//        contentType: false, // Set content type to false as jQuery will tell the server its a query string request
+//        success: function (data) {
+//            $('.js-file-list').append('<div data-id="'+data.id+'">'+data.name+'</div>');
+//        }
+//    });
+//};
+//
+//var upload_model_preview = function() {
+//    var data = new FormData();
+//    data.append('file', document.getElementById('model-preview').files[0]);
+//    data.append('product_id', product_id);
+//    data.append('csrfmiddlewaretoken', $('input[name="csrfmiddlewaretoken"]').val());
+//    $.ajax({
+//        type: "POST",
+//        url: "/products/product/preview/upload/",
+//        data: data,
+//        cache: false,
+//        dataType: 'json',
+//        processData: false, // Don't process the files
+//        contentType: false, // Set content type to false as jQuery will tell the server its a query string request
+//        success: function (data) {
+//            $('.js-preview-list').append('<div data-id="'+data.id+'"><a href="'+data.url+'" target="_blank"><img class="inline-table product-info-box-img" src="'+data.url+'"/></a></div>');
+//            $('img[data-id="'+product_id+'"]').attr('src',data.url);
+//        }
+//    });
+//};
+
+var loadPreviewImg = function(){
+    var tmp = $(this).attr('data-url');
+    $('div[data-name=previewImg] img').attr('src', tmp);
+    $('div[data-name=previewImg]').show();
+    previewImgId = eval($(this).attr('data-id'));
+    console.log(previewImgId + '-----')
+};
+
+var changePreviewImg = function(){
+    if($(this).attr('data-name') == 'previewImgLeft'){
+        if(previewImgId == $('div[data-name=preview-box] .js-preview-list div[data-id]').length) {
+            previewImgId = 1;
+        } else {
+            previewImgId++;
+        }
+    } else if ($(this).attr('data-name') == 'previewImgRight'){
+        if(previewImgId == 1) {
+            previewImgId = $('div[data-name=preview-box] .js-preview-list div[data-id]').length;
+        } else {
+            previewImgId--;
+        }
+    }
+    var tmp = $('.js-preview-list div[data-id=' + previewImgId + ']').attr('data-url');
+    $('div[data-name=previewImg] img').attr('src', tmp);
+};
 
 var productApp = function () {
     return {
         init: function () {
+            type = $('input[name="page_type"]').val();
             $('#product-Search').val('');
             for (var i = 0; i < category.length; i++) {
                 $('select[name=product1]').append('<option name="' + i + '" value="' + category[i].id + '">' + category[i].name + '</option>');
             }
-            ;
             console.log(localStorage.getItem("url_temp"));
             if (url == localStorage.getItem("lastUrl")) {
                 var temp = localStorage.getItem("url_temp").split(',');
-                $('.js-kw').val(temp[0]);
-                $('.js-pn').val(temp[1]);
-                $('.js-c1').val(temp[2]);
-                if (temp[2] != '0') {
+                $('.js-kw').val(temp[1]);
+                $('.js-pn').val(temp[2]);
+                $('.js-c1').val(temp[3]);
+                if (temp[3] != '0') {
                     $('select[name=product1]').change();
                 }
-                $('.js-c2').val(temp[3]);
-                if (temp[3] != '0') {
+                $('.js-c2').val(temp[4]);
+                if (temp[4] != '0') {
                     $('select[name=product2]').change();
                 }
-                $('.js-c3').val(temp[4]);
-                $('.js-company').val(temp[5]);
-                $('.js-brand').val(temp[6]);
-                $('.js-series').val(temp[7]);
-                $('.js-df').val(temp[8]);
-                $('.js-dt').val(temp[9]);
-                order = temp[10];
-                desc = temp[11] == 'true';
+                $('.js-c3').val(temp[5]);
+                $('.js-company').val(temp[6]);
+                $('.js-brand').val(temp[7]);
+                $('.js-series').val(temp[8]);
+                $('.js-df').val(temp[9]);
+                $('.js-dt').val(temp[10]);
+                type = temp[0];
+                order = temp[11];
+                desc = temp[12] == 'true';
             }
-            ;
+            $('.js-modal-upload-file').on('click', function () {
+                $('input[name="model-file"]').click();
+            });
+            //$('input[name="model-file"]').on('change', upload_model_file);
+            $('.js-modal-upload-preview').on('click', function () {
+                $('input[name="model-preview"]').click();
+                console.log($('input[name="model-preview"]'))
+            });
+            //$('input[name="model-preview"]').on('change', upload_model_preview);
 
-        },
+            $(document).on('dblclick', '.modal-body .js-preview-list>div', loadPreviewImg);
+            $('div[data-name=previewImg]').on('click', function(){$(this).hide()});
+            $('div[data-name=previewImg]>div').hover(function(){
+                $('div[data-name=previewImg]').off('click');
+                $(document).on('click', 'div[data-name=previewImg]>div', changePreviewImg);
+            },function(){
+                $('div[data-name=previewImg]').on('click', function(){$(this).hide()});
+                $(document).off('click', 'div[data-name=previewImg]>div', changePreviewImg);
+            });
+        }
     }
 }();

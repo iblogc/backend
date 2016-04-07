@@ -12,7 +12,7 @@
     {#  <div class="utils-area col-md-2 right">#}
     {#    <a href="/product/category" role="button" class="btn btn-important" > 返回到分类设置 </a>#}
     {#  </div>#}
-    <input type="hidden" name="page_type" value="0">
+    <input type="hidden" name="page_type" value="1">
     <div>
         <div class="select">
             <div class="left select-table">
@@ -107,52 +107,34 @@
                 <div class="js-header" name="b">品牌</div>
                 <div class="js-header" name="s">系列</div>
                 <div class="js-header" name="d">上传日期</div>
-                <div name="status">状态</div>
                 <div name="edit">编辑</div>
             </div>
-            {% if products|length > 1 %}
-                {% for product in products %}
-                    {% autoescape off %}
-                        <br>
-                        <div class="row" data-name="main">
-                            <div name="img"><img src="{{ product.charlet }}"
-                                                 class="inline-table product-info-box-img">
-                            </div>
-                            <div name="n">{{ product.name }}</div>
-                            <div name="pn">{{ product.product_no }}</div>
-                            <div name="c1">{{ product.c1 }}</div>
-                            <div name="c2">{{ product.c2 }}</div>
-                            <div name="c3">{{ product.c3 }}</div>
-                            <div name="c">{{ product.company }}</div>
-                            <div name="b">{{ product.brand }}</div>
-                            <div name="s">{{ product.series }}</div>
-                            <div name="d">{{ product.create_time }}</div>
-                            <div name="status"
-                                 class="js-status-text-{{ product.id }}">{{ product.status_string }}</div>
-                            <div name="edit">
-                                <a href="javascript:void(0);"
-                                   class="js-product-detail" data-toggle="modal" data-backdrop="static"
-                                   data-target="#menuFromDialog" data-menuId="0"
-                                   data-id="{{ product.id }}">详细信息</a>
-                                <br><a
-                                    href="javascript:void(0);" class="js-active"
-                                    {% if product.status %}style="display: none;"{% endif %}
-                                    data-id="{{ product.id }}">启用</a>
-                                <a
-                                        href="javascript:void(0);"
-                                        class="js-void"
-                                        {% if product.status %}{% else %}style="display: none;"{% endif %}
-                                        data-id="{{ product.id }}">禁用</a>
-                            </div>
+            {% for product in products %}
+                {% autoescape off %}
+                    <br>
+                    <div class="row" data-name="main">
+                        <div name="img"><img src="{{ product.charlet }}"
+                                             class="inline-table product-info-box-img" data-id="{{ product.id }}">
                         </div>
-                    {% endautoescape %}
-                {% endfor %}
-            {% else %}
-                <br>
-                <div class="row" data-name="main">
-                <h1 class="center">暂无符合条件的查询信息</h1>
-                </div>
-            {% endif %}
+                        <div name="n">{{ product.name }}</div>
+                        <div name="pn">{{ product.product_no }}</div>
+                        <div name="c1">{{ product.c1 }}</div>
+                        <div name="c2">{{ product.c2 }}</div>
+                        <div name="c3">{{ product.c3 }}</div>
+                        <div name="c">{{ product.company }}</div>
+                        <div name="b">{{ product.brand }}</div>
+                        <div name="s">{{ product.series }}</div>
+                        <div name="d">{{ product.create_time }}</div>
+                        <div name="edit-model">
+                            <a href=""
+                               class="js-product-detail" data-toggle="modal"
+                               data-backdrop="static" data-target="#menuFromDialog" data-menuId="0"
+                               data-id="{{ product.id }}">编辑模型</a>
+{#                            <a href="" class="js-product-detail" data-id="{{ product.id }}">编辑模型</a>#}
+                        </div>
+                    </div>
+                {% endautoescape %}
+            {% endfor %}
         </div>
 
         <div class="right pagination-div">
@@ -212,17 +194,12 @@
                             <div class="tab-title">
                                 <div class="selected">产品信息</div>
                                 <div>产品规格</div>
-                                <div>产品参数</div>
-                                <div>产品图片</div>
-                                <div>备注信息</div>
+                                <div>模型文件</div>
+                                <div>贴图文件</div>
                             </div>
                             <div class="tab-main">
                                 <div>
                                     <table>
-                                        <tr>
-                                            <th width="200px">名称</th>
-                                            <th width="300px">详细信息</th>
-                                        </tr>
                                         <tr>
                                             <th>产品编号</th>
                                             <td class="js-modal-product-no"></td>
@@ -252,10 +229,6 @@
                                 <div>
                                     <table>
                                         <tr>
-                                            <th width="200px">名称</th>
-                                            <th width="300px">详细信息</th>
-                                        </tr>
-                                        <tr>
                                             <th>规格编号</th>
                                             <td class="js-modal-model-no"></td>
                                         </tr>
@@ -278,23 +251,45 @@
                                     </table>
                                 </div>
                                 <div>
-                                    <ul class="product-param list-type-none js-modal-args">
-                                    </ul>
+{#                                    <button type="button"#}
+{#                                            class="btn btn-primary js-modal-upload-file">#}
+{#                                        添加模型文件#}
+{#                                    </button>#}
+{#                                    <input type="file" class="hide" name="model-file" id="model-file">#}
+{#                                    <button type="button"#}
+{#                                            class="btn btn-default js-modal-delete-file">#}
+{#                                        删除模型文件#}
+{#                                    </button>#}
+                                    <div class="js-file-list">
+
+                                    </div>
+
                                 </div>
-                                <div>
-                                    <img class="js-modal-product-img"
-                                         src="../../statics/imgs/icon/title-icon.png">
-                                </div>
-                                <div>
-                                    <p class="js-modal-product-remarks"></p>
+                                <div data-name="preview-box">
+{#                                    <button type="button"#}
+{#                                            class="btn btn-primary js-modal-upload-preview">#}
+{#                                        添加贴图文件#}
+{#                                    </button>#}
+{#                                    <input type="file" class="hide" name="model-preview" id="model-preview">#}
+{#                                    <button type="button"#}
+{#                                            class="btn btn-default js-modal-delete-preview">#}
+{#                                        删除贴图文件#}
+{#                                    </button>#}
+                                    <div class="js-preview-list">
+
+                                    </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                     <div class="modal-footer">
 
                     </div>
                 </div>
+            </div>
+            <div data-name="previewImg">
+                <div data-name="previewImgLeft"></div><img><div data-name="previewImgRight"></div>
             </div>
         </div>
     </div>
