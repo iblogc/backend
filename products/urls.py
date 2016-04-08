@@ -8,12 +8,10 @@ urlpatterns = [
     #category manage
     url(r'category/$', CategoryView.as_view(), name='category'),
     url(r'category/search/$', category_search, name='category-search'),
-    url(r'sub_category/(?P<category_id>\d+)/$', sub_categories, name='sub-category'),
     url(r'sub_category/(?P<category_id>\d+)/delete/$', category_delete, name='sub-category-delete'),
     url(r'sub_category/batch_delete/$', category_batch_delete, name='sub-category-batch-delete'),
     url(r'sub_category/(?P<category_id>\d+)/create/$', category_create, name='sub-category-create'),
     url(r'sub_category/(?P<category_id>\d+)/update/$', category_update, name='sub-category-update'),
-    url(r'sub_category/(?P<category_id>\d+)/companies/$', companies, name='sub-category-companies'),
     url(r'sub_category/(?P<category_id>\d+)/company/create/$', company_create, name='sub-category-company-create'),
 
     #company brand series

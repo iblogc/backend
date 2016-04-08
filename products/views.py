@@ -269,11 +269,6 @@ class CategoryView(LoginRequiredMixin, TemplateView):
         return context
 
 
-def sub_categories(request, category_id):
-    categories = get_sub_categories(category_id)
-    return HttpResponse(json.dumps(categories))
-
-
 def category_create(request, category_id):
     name = request.POST.get('name').strip()
     if name == '':
@@ -323,11 +318,6 @@ def category_batch_delete(request):
         parent_category.save()
         parent_category.delete()
     return HttpResponse(json.dumps({'success': 1}))
-
-
-def companies(request, category_id):
-    companies = get_category_companies(category_id)
-    return HttpResponse(json.dumps(companies))
 
 
 def company_create(request, category_id):

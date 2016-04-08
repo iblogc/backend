@@ -159,7 +159,7 @@ var categoryApp = function () {
         first_category = $(this).attr('data-id');
         changeClass(this);
         $.get(
-            "/products/sub_category/" + first_category + "/",
+            "/sdk/category/" + first_category + "/sub_categories/",
             {},
             function (data) {
                 for (var index in data) {
@@ -188,7 +188,7 @@ var categoryApp = function () {
         second_category = $(this).attr('data-id');
         changeClass(this);
         $.get(
-            "/products/sub_category/" + second_category + "/",
+            "/sdk/category/" + second_category + "/sub_categories/",
             {},
             function (data) {
                 for (var index in data) {
@@ -215,7 +215,7 @@ var categoryApp = function () {
         third_category = $(this).attr('data-id');
         changeClass(this);
         $.get(
-            "/products/sub_category/" + third_category + "/companies/",
+            "/sdk/category/" + third_category + "/companies/",
             {},
             function (data) {
                 for (var index in data) {

@@ -16,3 +16,8 @@ class CategoryViewSet(viewsets.ViewSet):
     def sub_categories(self, request, pk):
         return Response(get_sub_categories(pk),
                         status=status.HTTP_200_OK)
+
+    @detail_route(methods=['get'])
+    def companies(self, request, pk):
+        return Response(get_category_companies(pk),
+                        status=status.HTTP_200_OK)
