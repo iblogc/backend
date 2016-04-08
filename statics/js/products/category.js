@@ -261,7 +261,7 @@ var categoryApp = function () {
     };
 
     var series_onclick = function () {
-        seiies = 0;
+        series = 0;
         if (checkboxFlag)  return;
         series = $(this).attr('data-id');
         changeClass(this);
