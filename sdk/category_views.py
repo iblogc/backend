@@ -25,7 +25,10 @@ class CategoryViewSet(viewsets.ViewSet):
         #         brand__categories__name__icontains=kw) | Q(
         #         brand__categories__parent_category__name__icontains=kw) | Q(
         #         brand__categories__parent_category__parent_category__name__icontains=kw))
-        series = ProductBrandSeries.objects.filter(
+        series = ProductBrandSeries.objects.select_related(
+            'brand').prefetch_related('brand__companies', 'brand__categories',
+                                      'brand__categories__parent_category',
+                                      'brand__categories__parent_category__parent_category').filter(
             Q(name=kw) | Q(brand__name=kw) | Q(
                 brand__companies__name=kw) | Q(
                 brand__categories__name=kw) | Q(
@@ -53,8 +56,8 @@ class CategoryViewSet(viewsets.ViewSet):
         current_page = p.page(page)
         total_pages = p.num_pages
         return Response(
-                {'data': current_page.object_list, 'total_pages': total_pages,
-                 'current_page': page},status=status.HTTP_200_OK)
+            {'data': current_page.object_list, 'total_pages': total_pages,
+             'current_page': page}, status=status.HTTP_200_OK)
 
     @detail_route(methods=['get'])
     def sub_categories(self, request, pk):
@@ -105,9 +108,10 @@ class CategoryViewSet(viewsets.ViewSet):
 
     def create(self, request):
         name = request.POST.get('name').strip()
-        parent_category_id = request.POST.get('category_id',0)
+        parent_category_id = request.POST.get('category_id', 0)
         if name == '':
-            return Response({'success': 0, 'message': '分类名不能为空！'},status=status.HTTP_200_OK)
+            return Response({'success': 0, 'message': '分类名不能为空！'},
+                            status=status.HTTP_200_OK)
         step = request.POST.get('step').strip()
         parent_category = ProductCategory.objects.filter(pk=parent_category_id)
         if parent_category.exists():
@@ -127,9 +131,10 @@ class CategoryViewSet(viewsets.ViewSet):
         category.no = max_no
         category.save()
         category_dict['id'] = category.id
-        return Response({'success': 1, 'category': category_dict},status=status.HTTP_201_CREATED)
+        return Response({'success': 1, 'category': category_dict},
+                        status=status.HTTP_201_CREATED)
 
     @detail_route()
     def attribute(self, request, pk=None):
         attributes = get_category_attributes(pk)
-        return Response(attributes,status=status.HTTP_200_OK)
+        return Response(attributes, status=status.HTTP_200_OK)

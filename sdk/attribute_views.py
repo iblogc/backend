@@ -68,6 +68,35 @@ class AttributeViewSet(viewsets.ViewSet):
         values = json.loads(ProductCategoryAttribute.objects.get(pk=pk).value)
         return  Response(values,status=status.HTTP_200_OK)
 
+    def update(self, request, pk=None):
+        attribute = ProductCategoryAttribute.objects.get(pk=pk)
+        index = int(request.POST.get('index', 0))
+        text = request.POST.get('text').strip()
+        values = json.loads(attribute.value)
+        pre_text = ''
+        if len(values) <= index:
+            values.append(text)
+        else:
+            pre_text = values[index]
+            values[index] = text
+        attribute.value = json.dumps(values)
+        attribute.save()
+        attribute.values.filter(value=pre_text).update(value=text)
+        return Response({'success': 1},status=status.HTTP_200_OK)
+
+    @detail_route(methods=['post'])
+    def delete_default_value(self, request, pk=None):
+        attribute = ProductCategoryAttribute.objects.get(pk=pk)
+        index = int(request.POST.get('index', 0))
+        values = json.loads(attribute.value)
+        if index < len(values):
+            pre_text = values[index]
+            values.remove(pre_text)
+            attribute.value = json.dumps(values)
+            attribute.save()
+            attribute.values.filter(value=pre_text).delete()
+        return Response({'success': 1},status=status.HTTP_200_OK)
+
 
 
 
