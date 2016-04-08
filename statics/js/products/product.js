@@ -69,10 +69,17 @@ $('input[sid=Date-created]').bind('change', function () {
     baseApp.compareDate(document.getElementById('startDate-created'), document.getElementById('endDate-created'));
 });
 
+
 //更新时间 绑定
 $('input[sid=Date-update]').bind('change', function () {
     changeSearchLink();
     baseApp.compareDate(document.getElementById('startDate-update'), document.getElementById('endDate-update'));
+});
+
+$('input[sid=Date-update]').on('keydown', function (event) {
+    if (event.keyCode == 8) {
+        $(this).val('');
+    }
 });
 
 $('#product-Search').bind('change', function () {
