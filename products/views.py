@@ -382,11 +382,6 @@ def company_update(request, company_id):
         return HttpResponse(json.dumps({'success': 1}))
 
 
-def brands(request, category_id, company_id):
-    brands = get_company_brands(category_id, company_id)
-    return HttpResponse(json.dumps(brands))
-
-
 def brand_create(request, category_id, company_id):
     name = request.POST.get('name').strip()
     if name == '':
@@ -433,11 +428,6 @@ def brand_update(request, brand_id):
         return HttpResponse(json.dumps({'success': 0, 'message': '品牌名不能为空'}))
     ProductBrand.objects.filter(pk=brand_id).update(name=name)
     return HttpResponse(json.dumps({'success': 1}))
-
-
-def brand_series(request, brand_id):
-    series = get_brand_series(brand_id)
-    return HttpResponse(json.dumps(series))
 
 
 def series_create(request, brand_id):

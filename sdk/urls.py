@@ -4,10 +4,14 @@ from rest_framework import routers
 from .attribute_views import AttributeViewSet
 from .category_views import CategoryViewSet
 from .product_views import ProductViewSet
+from .brand_views import BrandViewSet
+from .company_views import CompanyViewSet
 
 router = routers.SimpleRouter()
 router.register(r'category', CategoryViewSet, 'cateogry')
 router.register(r'attr', AttributeViewSet, 'attr')
 router.register(r'product', ProductViewSet, 'product')
+router.register(r'brand', BrandViewSet, 'brand')
+router.register(r'company', CompanyViewSet, 'company')
 
 urlpatterns = router.urls

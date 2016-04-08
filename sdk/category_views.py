@@ -21,3 +21,11 @@ class CategoryViewSet(viewsets.ViewSet):
     def companies(self, request, pk):
         return Response(get_category_companies(pk),
                         status=status.HTTP_200_OK)
+
+    @detail_route()
+    def brands(self, request, pk=None):
+        company_id = request.GET.get('company_id', 0)
+        return Response(get_company_brands(pk, company_id),
+                        status=status.HTTP_200_OK)
+
+    

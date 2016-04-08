@@ -240,8 +240,8 @@ var categoryApp = function () {
         company = $(this).attr('data-id');
         changeClass(this);
         $.get(
-            "/products/company/" + third_category + "/" + company + "/brands/",
-            {},
+            "/sdk/category/" + third_category + "/brands/",
+            {'company_id':company},
             function (data) {
 
                 for (var index in data) {
@@ -264,7 +264,7 @@ var categoryApp = function () {
         brand = $(this).attr('data-id');
         changeClass(this);
         $.get(
-            "/products/brand/" + brand + "/series/",
+            "/sdk/brand/" + brand + "/series/",
             {},
             function (data) {
                 for (var index in data) {

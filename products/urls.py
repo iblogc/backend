@@ -19,10 +19,8 @@ urlpatterns = [
     url(r'company/(?P<category_id>\d+)/batch_delete/$', company_batch_delete, name='company-batch-delete'),
     url(r'company/(?P<company_id>\d+)/update/$', company_update,
         name='company-update'),
-    url(r'company/(?P<category_id>\d+)/(?P<company_id>\d+)/brands/$', brands, name='company-brand'),
     url(r'company/(?P<category_id>\d+)/(?P<company_id>\d+)/brand/create/$', brand_create, name='company-brand-create'),
     #brand series
-    url(r'brand/(?P<brand_id>\d+)/series/$', brand_series, name='brand-series'),
     url(r'brand/(?P<brand_id>\d+)/update/$', brand_update, name='brand-update'),
     url(r'brand/(?P<category_id>\d+)/(?P<company_id>\d+)/(?P<brand_id>\d+)/delete/$', brand_delete,
         name='brand-delete'),
