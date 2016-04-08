@@ -1093,7 +1093,7 @@ var categoryApp = function () {
             $('.modal-body-5 input.selected').remove();
             var index = $(this).attr('data-index');
             $.post(
-                "/products/category/attribute/default_value/delete/" + settings_attribute + "/",
+                "/sdk/attr/" + settings_attribute + "/delete_default_value/",
                 {
                     'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
                     'index': index,
@@ -1112,19 +1112,23 @@ var categoryApp = function () {
         $(this).prev().attr('readonly', 'readonly');
         var data_index = $(this).attr('data-index');
         var text = $('.js-value-text[data-index="' + data_index + '"]').val();
-        $.post(
-            "/products/category/attribute/default_value/update/" + settings_attribute + "/",
-            {
-                'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+        var csrftoken = getCookie('csrftoken');
+        $.ajax({
+            url: "/sdk/attr/" + settings_attribute + "/",
+            headers: {
+                'X-CSRFToken': csrftoken,
+            },
+            data: {
                 'index': data_index,
                 'text': text,
             },
-            function (data) {
+            type: "PUT",
+            dataType: 'json',
+            success: function (data) {
                 if (data.success == 1) {
                 }
-            },
-            "json"
-        );
+            }
+        });
     };
 
     var modal5bindAction = function () {
