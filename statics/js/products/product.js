@@ -131,7 +131,7 @@ $('.js-header').on('click', function () {
 $('.js-product-detail').on('click', function () {
     var id = $(this).attr('data-id');
     product_id = id;
-    $.post('/products/detail/' + id + '/', {'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()}, function (data) {
+    $.get('/sdk/product/' + id + '/', {}, function (data) {
         console.log(data);
         $('.js-modal-product-no').html(data.product_no);
         $('.js-modal-product-name').html(data.product_name);
@@ -169,7 +169,7 @@ $('.js-product-detail').on('click', function () {
 
 $('.js-active').on('click', function () {
     var id = $(this).attr('data-id');
-    $.post('/products/active/' + id + '/', {'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()}, function (data) {
+    $.post('/sdk/product/' + id + '/active/', {'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()}, function (data) {
         $('.js-status-text-' + id).html('启用');
     }, 'JSON');
     $(this).parent().find('.js-active').hide();
@@ -178,7 +178,7 @@ $('.js-active').on('click', function () {
 
 $('.js-void').on('click', function () {
     var id = $(this).attr('data-id');
-    $.post('/products/void/' + id + '/', {'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()}, function (data) {
+    $.post('/sdk/product/' + id + '/void/', {'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()}, function (data) {
         $('.js-status-text-' + id).html('禁用');
     }, 'JSON');
     $(this).parent().find('.js-active').show();

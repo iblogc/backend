@@ -28,8 +28,10 @@ urlpatterns = [
     url(r'^system/?', include("system.urls", namespace='system')),
     url(r'^media/(?P<path>.*)$', serve,
      {'document_root': settings.MEDIA_ROOT}),
+    url(r'^api-auth/',
+        include('rest_framework.urls', namespace='rest_framework')),
     # sdk
-    url(r'^sdk/?', include("sdk.urls", namespace='test')),
+    url(r'^sdk/', include("sdk.urls", namespace='sdk')),
     # resource files
     # url(r'^resources/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.RESOURCES_FILES}),
 ]

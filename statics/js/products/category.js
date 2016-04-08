@@ -124,6 +124,25 @@ var categoryApp = function () {
                 );
             }
         } else if ($(this).attr('data-type') == 0) {
+            var selected_series = $('.js-series.selected').attr('data-id');
+            var selected_brand = $('.js-brand.selected').attr('data-id');
+            var selected_company = $('.js-company.selected').attr('data-id');
+            var selected_third_category = $('.js-third-category.selected').attr('data-id');
+            var selected_second_category = $('.js-second-category.selected').attr('data-id');
+            var selected_first_category = $('.js-first-category.selected').attr('data-id');
+            if(selected_series!=undefined)
+                $('.js-series[data-id="'+selected_series+'"]').click();
+            else if(selected_brand!=undefined)
+                $('.js-brand[data-id="'+selected_brand+'"]').click();
+            else if(selected_company!=undefined)
+                $('.js-company[data-id="'+selected_company+'"]').click();
+            else if(selected_third_category!=undefined)
+                $('.js-third-category[data-id="'+selected_third_category+'"]').click();
+            else if(selected_second_category!=undefined)
+                $('.js-second-category[data-id="'+selected_second_category+'"]').click();
+            else if(selected_first_category!=undefined)
+                $('.js-first-category[data-id="'+selected_first_category+'"]').click();
+
             console.log('cancel');
         }
         $('input[type=checkbox]').removeAttr("checked");
@@ -261,7 +280,7 @@ var categoryApp = function () {
     };
 
     var series_onclick = function () {
-        seiies = 0;
+        series = 0;
         if (checkboxFlag)  return;
         series = $(this).attr('data-id');
         changeClass(this);

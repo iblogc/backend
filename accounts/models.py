@@ -3,8 +3,8 @@ from django.db import models
 from django.conf import settings
 from .manager import UserManager
 from django.contrib.auth.base_user import AbstractBaseUser
-
-
+from gezbackend.utils import get_password, get_random_code
+import hashlib
 # Create your models here.
 # 系统帐户数据表
 class Account(AbstractBaseUser):
@@ -22,7 +22,21 @@ class Account(AbstractBaseUser):
     objects = UserManager()
 
     def check_password(self, password):
-        return True
+        print get_password(password,self.get_or_generate_security())
+        print hashlib.sha1(password + hashlib.sha1(self.security).hexdigest()).hexdigest()
+        print self.password
+        if get_password(password,self.get_or_generate_security()) == self.password\
+                or hashlib.sha1(password + hashlib.sha1(self.security).hexdigest()).hexdigest() == self.password:
+            return True
+        else:
+            return False
+
+    def get_or_generate_security(self):
+        if self.security:
+            return self.security
+        else:
+            self.security = get_random_code(10)
+            self.save()
 
     def has_perm(self, perm, obj=None):
         return self.is_superuser

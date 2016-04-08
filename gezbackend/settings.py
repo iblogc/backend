@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'accounts',
     'attachments',
     'customers',
@@ -109,9 +110,9 @@ else:
         'default': {
             'ENGINE': 'django.db.backends.mysql',
             'NAME': 'LeJuDBv11',
-            'USER': 'root',
-            'PASSWORD': '',
-            'HOST': '127.0.0.1',
+            'USER': 'LeJuDbManager',
+            'PASSWORD': 'LjDm234@#$',
+            'HOST': '192.168.3.112',
             # 'HOST': '127.0.0.1',
             'PORT': '3306'
         }
@@ -191,6 +192,8 @@ CACHES = {
 }
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 SESSION_CACHE_ALIAS = "default"
+
+LOGIN_REDIRECT_URL = '/'
 
 try:
     from local_settings import *
