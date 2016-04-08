@@ -145,8 +145,10 @@ var newTabs = function () {
                         $(this.parentNode).next().addClass('selected');
                         $('.content-body>.tabs-main>div>iframe[data-for=' + $(this.parentNode).next().attr('data-name') + ']').addClass('show');
                     } else if ($(this.parentNode).prev().length > 0){
-                        $(this.parentNode).prev().addClass('selected');
-                        $('.content-body>.tabs-main>div>iframe[data-for=' + $(this.parentNode).prev().attr('data-name') + ']').addClass('show');
+                        if($(this.parentNode).prev().attr('name') != 'left'){
+                            $(this.parentNode).prev().addClass('selected');
+                            $('.content-body>.tabs-main>div>iframe[data-for=' + $(this.parentNode).prev().attr('data-name') + ']').addClass('show');
+                        }
                     }
                 }
                 $(this.parentNode).remove();

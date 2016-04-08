@@ -246,6 +246,11 @@ div[data-name=navRight] {
     padding-right: 20px;
 }
 
+.modal-body-3>.attention-text {
+    width: 100%;
+    text-align: center;
+}
+
 /* search-detail */
 .search-detail {
     margin-top: 30px;

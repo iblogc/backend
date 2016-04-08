@@ -64,23 +64,22 @@ $('select[name=series]').bind('change', function () {
 });
 
 //创建时间 绑定事件
-$('input[sid=Date-created]').bind('change', function () {
+$(document).on('change', 'input[sid=Date-created]', function () {
     changeSearchLink();
-    baseApp.compareDate(document.getElementById('startDate-created'), document.getElementById('endDate-created'));
+
 });
 
 
 //更新时间 绑定
 $('input[sid=Date-update]').bind('change', function () {
     changeSearchLink();
-    baseApp.compareDate(document.getElementById('startDate-update'), document.getElementById('endDate-update'));
 });
 
-$('input[sid=Date-update]').on('keydown', function (event) {
-    if (event.keyCode == 8) {
-        $(this).val('');
-    }
-});
+//$('input[sid=Date-update]').on('keydown', function (event) {
+//    if (event.keyCode == 8) {
+//        $(this).val('');
+//    }
+//});
 
 $('#product-Search').bind('change', function () {
     changeSearchLink();
@@ -301,6 +300,34 @@ var productApp = function () {
                 $('div[data-name=previewImg]').on('click', function(){$(this).hide()});
                 $(document).off('click', 'div[data-name=previewImg]>div', changePreviewImg);
             });
+
+            $("#startDate-update").datetimepicker({
+                format: "yyyy-mm-dd",
+                autoclose: true,
+                minView: "month",
+                maxView: "decade",
+                todayBtn: true,
+                pickerPosition: "bottom-left",
+                language: 'zh-CN'
+            }).on("click", function (ev) {
+                console.log(123)
+                $("#startDate-update").datetimepicker("setEndDate", $("#endDate-update").val());
+            });
+            $("#endDate-update").datetimepicker({
+                format: "yyyy-mm-dd",
+                autoclose: true,
+                minView: "month",
+                maxView: "decade",
+                todayBtn: true,
+                pickerPosition: "bottom-left",
+                language: 'zh-CN'
+            }).on("click", function (ev) {
+                $("#endDate-update").datetimepicker("setStartDate", $("#startDate-update").val());
+            });
+
+            $('.input-group-addon').on('click',function(){
+                $(this).prev().val('');
+            })
         }
     }
 }();
