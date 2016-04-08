@@ -8,12 +8,13 @@ from rest_framework import status
 from rest_framework.response import Response
 from django.core.paginator import Paginator
 from django.db.models import Q
+from braces.views import LoginRequiredMixin
 
 import sys
 reload(sys)
 sys.setdefaultencoding("utf-8")
 
-class ProductViewSet(viewsets.ViewSet):
+class ProductViewSet(LoginRequiredMixin, viewsets.ViewSet):
     def list(self, request):
         type = int(request.GET.get('type', 0))
         page_id = int(request.GET.get('page_id', 1))
@@ -79,7 +80,8 @@ class ProductViewSet(viewsets.ViewSet):
                                                   'company',
                                                   'category',
                                                   'category__parent_category',
-                                                  'category__parent_category__parent_category').filter(
+                                                  'category__parent_category__parent_category',
+                                                  ).prefetch_related('files', 'previews').filter(
             kw_q, com_q, b_q, pn_q, categroy_q, s_q,
             ct_q, select_q).order_by(
             '-id')
@@ -129,7 +131,7 @@ class ProductViewSet(viewsets.ViewSet):
             page = p.page(page_id)
             pages = p.num_pages
             try:
-                next_page = Paginator(products, per_page).page(
+                next_page = p.page(
                     page_id + 1).has_next()
             except:
                 next_page = False

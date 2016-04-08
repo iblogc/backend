@@ -17,6 +17,22 @@ var categoryApp = function () {
     var checkboxFlag = false;
     var modalTmp;
 
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
     var changeClass = function (obj) {
         $(obj).addClass('selected').siblings().removeClass('selected');
     };
@@ -40,7 +56,7 @@ var categoryApp = function () {
             console.log('confirm');
             if (brand != 0) {
                 $.post(
-                    encodeURI("/products/series/batch_delete/"),
+                    encodeURI("/sdk/series/batch_delete/"),
                     {
                         'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
                         'ids': ids,
@@ -57,9 +73,11 @@ var categoryApp = function () {
                 );
             } else if (company != 0) {
                 $.post(
-                    encodeURI('/products/brand/' + third_category + '/' + company + '/batch_delete/'),
+                    encodeURI('/sdk/brand/batch_delete/'),
                     {
                         'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+                        'category_id':third_category,
+                        'company_id':company,
                         'ids': ids,
                     },
                     function (data) {
@@ -74,9 +92,10 @@ var categoryApp = function () {
                 );
             } else if (third_category != 0) {
                 $.post(
-                    encodeURI('/products/company/' + third_category + '/batch_delete/'),
+                    encodeURI('/sdk/company/batch_delete/'),
                     {
                         'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+                        'category_id':third_category,
                         'ids': ids,
                     },
                     function (data) {
@@ -91,7 +110,7 @@ var categoryApp = function () {
                 );
             } else if (second_category != 0) {
                 $.post(
-                    encodeURI('/products/sub_category/batch_delete/'),
+                    encodeURI('/sdk/category/batch_delete/'),
                     {
                         'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
                         'ids': ids,
@@ -108,7 +127,7 @@ var categoryApp = function () {
                 );
             } else if (first_category != 0) {
                 $.post(
-                    encodeURI('/products/sub_category/batch_delete/'),
+                    encodeURI('/sdk/category/batch_delete/'),
                     {
                         'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
                         'ids': ids,
@@ -131,18 +150,18 @@ var categoryApp = function () {
             var selected_third_category = $('.js-third-category.selected').attr('data-id');
             var selected_second_category = $('.js-second-category.selected').attr('data-id');
             var selected_first_category = $('.js-first-category.selected').attr('data-id');
-            if(selected_series!=undefined)
-                $('.js-series[data-id="'+selected_series+'"]').click();
-            else if(selected_brand!=undefined)
-                $('.js-brand[data-id="'+selected_brand+'"]').click();
-            else if(selected_company!=undefined)
-                $('.js-company[data-id="'+selected_company+'"]').click();
-            else if(selected_third_category!=undefined)
-                $('.js-third-category[data-id="'+selected_third_category+'"]').click();
-            else if(selected_second_category!=undefined)
-                $('.js-second-category[data-id="'+selected_second_category+'"]').click();
-            else if(selected_first_category!=undefined)
-                $('.js-first-category[data-id="'+selected_first_category+'"]').click();
+            if (selected_series != undefined)
+                $('.js-series[data-id="' + selected_series + '"]').click();
+            else if (selected_brand != undefined)
+                $('.js-brand[data-id="' + selected_brand + '"]').click();
+            else if (selected_company != undefined)
+                $('.js-company[data-id="' + selected_company + '"]').click();
+            else if (selected_third_category != undefined)
+                $('.js-third-category[data-id="' + selected_third_category + '"]').click();
+            else if (selected_second_category != undefined)
+                $('.js-second-category[data-id="' + selected_second_category + '"]').click();
+            else if (selected_first_category != undefined)
+                $('.js-first-category[data-id="' + selected_first_category + '"]').click();
 
             console.log('cancel');
         }
@@ -160,7 +179,7 @@ var categoryApp = function () {
         first_category = $(this).attr('data-id');
         changeClass(this);
         $.get(
-            "/products/sub_category/" + first_category + "/",
+            "/sdk/category/" + first_category + "/sub_categories/",
             {},
             function (data) {
                 for (var index in data) {
@@ -189,7 +208,7 @@ var categoryApp = function () {
         second_category = $(this).attr('data-id');
         changeClass(this);
         $.get(
-            "/products/sub_category/" + second_category + "/",
+            "/sdk/category/" + second_category + "/sub_categories/",
             {},
             function (data) {
                 for (var index in data) {
@@ -216,7 +235,7 @@ var categoryApp = function () {
         third_category = $(this).attr('data-id');
         changeClass(this);
         $.get(
-            "/products/sub_category/" + third_category + "/companies/",
+            "/sdk/category/" + third_category + "/companies/",
             {},
             function (data) {
                 for (var index in data) {
@@ -241,8 +260,8 @@ var categoryApp = function () {
         company = $(this).attr('data-id');
         changeClass(this);
         $.get(
-            "/products/company/" + third_category + "/" + company + "/brands/",
-            {},
+            "/sdk/category/" + third_category + "/brands/",
+            {'company_id': company},
             function (data) {
 
                 for (var index in data) {
@@ -265,7 +284,7 @@ var categoryApp = function () {
         brand = $(this).attr('data-id');
         changeClass(this);
         $.get(
-            "/products/brand/" + brand + "/series/",
+            "/sdk/brand/" + brand + "/series/",
             {},
             function (data) {
                 for (var index in data) {
@@ -347,9 +366,10 @@ var categoryApp = function () {
         var category_name = $('.js-modal-category-name').val();
         if (first_category != 0) {
             $.post(
-                "/products/sub_category/" + first_category + "/create/",
+                "/sdk/category/",
                 {
                     'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+                    'category_id':first_category,
                     'name': category_name,
                     'step': step
                 },
@@ -374,9 +394,10 @@ var categoryApp = function () {
         var category_name = $('.js-modal-category-name').val();
         if (second_category != 0) {
             $.post(
-                "/products/sub_category/" + second_category + "/create/",
+                "/sdk/category/",
                 {
                     'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+                    'category_id':second_category,
                     'name': category_name,
                     'step': step
                 },
@@ -401,9 +422,10 @@ var categoryApp = function () {
         var company_name = $('.js-modal-category-name').val();
         if (third_category != 0) {
             $.post(
-                "/products/sub_category/" + third_category + "/company/create/",
+                "/sdk/company/",
                 {
                     'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+                    'category_id':third_category,
                     'name': company_name,
                 },
                 function (data) {
@@ -427,9 +449,11 @@ var categoryApp = function () {
         var brand_name = $('.js-modal-category-name').val();
         if (company != 0 && third_category != 0) {
             $.post(
-                "/products/company/" + third_category + "/" + company + "/brand/create/",
+                "/sdk/brand/",
                 {
                     'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+                    'category_id': third_category,
+                    'company_id': company,
                     'name': brand_name,
                 },
                 function (data) {
@@ -453,9 +477,10 @@ var categoryApp = function () {
         var series_name = $('.js-modal-category-name').val();
         if (brand != 0) {
             $.post(
-                "/products/brand/" + brand + "/series/create/",
+                "/sdk/series/",
                 {
                     'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+                    'brand_id':brand,
                     'name': series_name,
                 },
                 function (data) {
@@ -475,14 +500,17 @@ var categoryApp = function () {
 
     };
 
-    var deleteInfo = function(words){
+    var deleteInfo = function (words) {
         $('#deleteCategoryForm .modal-body-1>div').html('是否删除 ' + words + ' ?');
     };
 
     var delete_second_category = function () {
         if (second_category != 0) {
             deleteInfo($('.js-second-category-div .selected .center-line').html());
-            $('#deleteCategoryForm').modal({backdrop: 'static', keyboard: false});
+            $('#deleteCategoryForm').modal({
+                backdrop: 'static',
+                keyboard: false
+            });
             $('.js-modal-confirm-button').bind('click', delete_second_category_confirm);
         }
 
@@ -491,7 +519,10 @@ var categoryApp = function () {
     var delete_third_category = function () {
         if (third_category != 0) {
             deleteInfo($('.js-third-category-div .selected .center-line').html());
-            $('#deleteCategoryForm').modal({backdrop: 'static', keyboard: false});
+            $('#deleteCategoryForm').modal({
+                backdrop: 'static',
+                keyboard: false
+            });
             $('.js-modal-confirm-button').bind('click', delete_third_category_confirm);
         }
     };
@@ -499,7 +530,10 @@ var categoryApp = function () {
     var delete_company = function () {
         if (third_category != 0 && company != 0) {
             deleteInfo($('.js-company-div .selected .center-line').html());
-            $('#deleteCategoryForm').modal({backdrop: 'static', keyboard: false});
+            $('#deleteCategoryForm').modal({
+                backdrop: 'static',
+                keyboard: false
+            });
             $('.js-modal-confirm-button').bind('click', delete_company_confirm);
         }
     };
@@ -507,7 +541,10 @@ var categoryApp = function () {
     var delete_brand = function () {
         if (third_category != 0 && company != 0 && brand != 0) {
             deleteInfo($('.js-brand-div .selected .center-line').html());
-            $('#deleteCategoryForm').modal({backdrop: 'static', keyboard: false});
+            $('#deleteCategoryForm').modal({
+                backdrop: 'static',
+                keyboard: false
+            });
             $('.js-modal-confirm-button').bind('click', delete_brand_confirm);
         }
     };
@@ -515,19 +552,25 @@ var categoryApp = function () {
     var delete_series = function () {
         if (series != 0) {
             deleteInfo($('.js-series-div .selected .center-line').html());
-            $('#deleteCategoryForm').modal({backdrop: 'static', keyboard: false});
+            $('#deleteCategoryForm').modal({
+                backdrop: 'static',
+                keyboard: false
+            });
             $('.js-modal-confirm-button').bind('click', delete_series_confirm);
         }
     }
 
     var delete_second_category_confirm = function () {
         if (second_category != 0) {
-            $.post(
-                "/products/sub_category/" + second_category + "/delete/",
-                {
-                    'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+            var csrftoken = getCookie('csrftoken');
+            $.ajax({
+                url: "/sdk/category/" + second_category + "/",
+                headers: {
+                    'X-CSRFToken': csrftoken,
                 },
-                function (data) {
+                type: "DELETE",
+                dataType: 'json',
+                success: function (data) {
                     if (data.success == 1) {
                         $('div.js-second-category[data-id="' + second_category + '"]').remove();
                         second_category = 0;
@@ -536,9 +579,8 @@ var categoryApp = function () {
                         $('.js-brand-div').empty();
                         $('.js-series-div').empty();
                     }
-                },
-                "json"
-            );
+                }
+            });
         }
         $('#deleteCategoryForm').modal('hide');
         $('.js-modal-confirm-button').unbind('click');
@@ -546,12 +588,15 @@ var categoryApp = function () {
 
     var delete_third_category_confirm = function () {
         if (third_category != 0) {
-            $.post(
-                "/products/sub_category/" + third_category + "/delete/",
-                {
-                    'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+            var csrftoken = getCookie('csrftoken');
+            $.ajax({
+                url: "/sdk/category/" + third_category + "/",
+                headers: {
+                    'X-CSRFToken': csrftoken,
                 },
-                function (data) {
+                type: "DELETE",
+                dataType: 'json',
+                success: function (data) {
                     if (data.success == 1) {
                         $('div.js-third-category[data-id="' + third_category + '"]').remove();
                         third_category = 0;
@@ -559,9 +604,8 @@ var categoryApp = function () {
                         $('.js-brand-div').empty();
                         $('.js-series-div').empty();
                     }
-                },
-                "json"
-            );
+                }
+            });
         }
         $('#deleteCategoryForm').modal('hide');
         $('.js-modal-confirm-button').unbind('click');
@@ -569,21 +613,27 @@ var categoryApp = function () {
 
     var delete_company_confirm = function () {
         if (third_category != 0 && company != 0) {
-            $.post(
-                "/products/company/" + third_category + "/" + company + "/delete/",
-                {
-                    'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+            var csrftoken = getCookie('csrftoken');
+            $.ajax({
+                url: "/sdk/company/" + company + "/",
+                headers: {
+                    'X-CSRFToken': csrftoken,
                 },
-                function (data) {
+                data: {
+                    'category_id': third_category,
+
+                },
+                type: "DELETE",
+                dataType: 'json',
+                success: function (data) {
                     if (data.success == 1) {
                         $('div.js-company[data-id="' + company + '"]').remove();
                         company = 0;
                         $('.js-brand-div').empty();
                         $('.js-series-div').empty();
                     }
-                },
-                "json"
-            );
+                }
+            });
         }
         $('#deleteCategoryForm').modal('hide');
         $('.js-modal-confirm-button').unbind('click');
@@ -591,20 +641,26 @@ var categoryApp = function () {
 
     var delete_brand_confirm = function () {
         if (third_category != 0 && company != 0 && brand != 0) {
-            $.post(
-                "/products/brand/" + third_category + "/" + company + "/" + brand + "/delete/",
-                {
-                    'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+            var csrftoken = getCookie('csrftoken');
+            $.ajax({
+                url: "/sdk/brand/" + brand + "/",
+                headers: {
+                    'X-CSRFToken': csrftoken,
                 },
-                function (data) {
+                data: {
+                    'category_id': third_category,
+                    'company_id': company
+                },
+                type: "DELETE",
+                dataType: 'json',
+                success: function (data) {
                     if (data.success == 1) {
                         $('div.js-brand[data-id="' + brand + '"]').remove();
                         brand = 0;
                         $('.js-series-div').empty();
                     }
-                },
-                "json"
-            );
+                }
+            });
         }
         $('#deleteCategoryForm').modal('hide');
         $('.js-modal-confirm-button').unbind('click');
@@ -612,19 +668,21 @@ var categoryApp = function () {
 
     var delete_series_confirm = function () {
         if (series != 0) {
-            $.post(
-                "/products/series/" + series + "/delete/",
-                {
-                    'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+            var csrftoken = getCookie('csrftoken');
+            $.ajax({
+                url: "/sdk/series/" + series + "/",
+                headers: {
+                    'X-CSRFToken': csrftoken,
                 },
-                function (data) {
+                type: "DELETE",
+                dataType: 'json',
+                success: function (data) {
                     if (data.success == 1) {
                         $('div.js-series[data-id="' + series + '"]').remove();
                         series = 0;
                     }
-                },
-                "json"
-            );
+                }
+            });
         }
         $('#deleteCategoryForm').modal('hide');
         $('.js-modal-confirm-button').unbind('click');
@@ -683,13 +741,18 @@ var categoryApp = function () {
     var save_second_category_edit = function () {
         var category_name = $('.js-modal-category-name').val();
         if (second_category != 0) {
-            $.post(
-                "/products/sub_category/" + second_category + "/update/",
-                {
-                    'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+            var csrftoken = getCookie('csrftoken');
+            $.ajax({
+                url: "/sdk/category/" + second_category + "/",
+                headers: {
+                    'X-CSRFToken': csrftoken,
+                },
+                data: {
                     'name': category_name,
                 },
-                function (data) {
+                type: "PUT",
+                dataType: 'json',
+                success: function (data) {
                     if (data.success == 1) {
                         $('.js-second-category[data-id="' + second_category + '"]').find('.js-second-category-name').html(category_name);
                         $('.js-modal-save-button').unbind('click');
@@ -697,9 +760,8 @@ var categoryApp = function () {
                     } else {
                         sweetAlert(data.message);
                     }
-                },
-                "json"
-            );
+                }
+            });
         }
 
     };
@@ -707,13 +769,18 @@ var categoryApp = function () {
     var save_third_category_edit = function () {
         var category_name = $('.js-modal-category-name').val();
         if (third_category != 0) {
-            $.post(
-                "/products/sub_category/" + third_category + "/update/",
-                {
-                    'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+            var csrftoken = getCookie('csrftoken');
+            $.ajax({
+                url: "/sdk/category/" + third_category + "/",
+                headers: {
+                    'X-CSRFToken': csrftoken,
+                },
+                data: {
                     'name': category_name,
                 },
-                function (data) {
+                type: "PUT",
+                dataType: 'json',
+                success: function (data) {
                     if (data.success == 1) {
                         $('.js-third-category[data-id="' + third_category + '"]').find('.js-third-category-name').html(category_name);
                         $('.js-modal-save-button').unbind('click');
@@ -721,22 +788,26 @@ var categoryApp = function () {
                     } else {
                         sweetAlert(data.message);
                     }
-                },
-                "json"
-            );
+                }
+            });
         }
     };
 
     var save_company_edit = function () {
         var category_name = $('.js-modal-category-name').val();
         if (company != 0) {
-            $.post(
-                "/products/company/" + company + "/update/",
-                {
-                    'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+            var csrftoken = getCookie('csrftoken');
+            $.ajax({
+                url: "/sdk/company/" + company + "/",
+                headers: {
+                    'X-CSRFToken': csrftoken,
+                },
+                data: {
                     'name': category_name,
                 },
-                function (data) {
+                type: "PUT",
+                dataType: 'json',
+                success: function (data) {
                     if (data.success == 1) {
                         $('.js-company[data-id="' + company + '"]').find('.js-company-name').html(category_name);
                         $('.js-modal-save-button').unbind('click');
@@ -756,9 +827,8 @@ var categoryApp = function () {
                     } else {
                         sweetAlert(data.message);
                     }
-                },
-                "json"
-            );
+                }
+            });
         }
 
     };
@@ -766,13 +836,18 @@ var categoryApp = function () {
     var save_brand_edit = function () {
         var category_name = $('.js-modal-category-name').val();
         if (brand != 0) {
-            $.post(
-                "/products/brand/" + brand + "/update/",
-                {
-                    'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+            var csrftoken = getCookie('csrftoken');
+            $.ajax({
+                url: "/sdk/brand/" + brand + "/",
+                headers: {
+                    'X-CSRFToken': csrftoken,
+                },
+                data: {
                     'name': category_name,
                 },
-                function (data) {
+                type: "PUT",
+                dataType: 'json',
+                success: function (data) {
                     if (data.success == 1) {
                         $('.js-brand[data-id="' + brand + '"]').find('.js-brand-name').html(category_name);
                         $('.js-modal-save-button').unbind('click');
@@ -780,9 +855,8 @@ var categoryApp = function () {
                     } else {
                         sweetAlert(data.message);
                     }
-                },
-                "json"
-            );
+                }
+            });
         }
 
     };
@@ -790,13 +864,18 @@ var categoryApp = function () {
     var save_series_edit = function () {
         var category_name = $('.js-modal-category-name').val();
         if (series != 0) {
-            $.post(
-                "/products/series/" + series + "/update/",
-                {
-                    'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+            var csrftoken = getCookie('csrftoken');
+            $.ajax({
+                url: "/sdk/series/" + series + "/",
+                headers: {
+                    'X-CSRFToken': csrftoken,
+                },
+                data: {
                     'name': category_name,
                 },
-                function (data) {
+                type: "PUT",
+                dataType: 'json',
+                success: function (data) {
                     if (data.success == 1) {
                         $('.js-series[data-id="' + series + '"]').find('.js-series-name').html(category_name);
                         $('.js-modal-save-button').unbind('click');
@@ -804,9 +883,8 @@ var categoryApp = function () {
                     } else {
                         sweetAlert(data.message);
                     }
-                },
-                "json"
-            );
+                }
+            });
         }
 
     };
@@ -830,9 +908,9 @@ var categoryApp = function () {
         });
     };
 
-    var sessionValW = function(){
+    var sessionValW = function () {
         var tmpArr = new Array;
-        for(var i = 0; i < $('#settingForm .modal-body-4 select').length; i++){
+        for (var i = 0; i < $('#settingForm .modal-body-4 select').length; i++) {
             tmpArr[i] = $($('#settingForm .modal-body-4 select')[i]).val();
         }
         sessionStorage.tmpArr = tmpArr;
@@ -941,7 +1019,7 @@ var categoryApp = function () {
                     $('.modal-body-4').find('div[data-id="' + attribute.id + '"]').find('select[name="searchable"]').val(attribute.searchable);
                     var tmpArr = new Array;
                     tmpArr = sessionStorage.tmpArr.split(',');
-                    for(var i = 0; i < tmpArr.length; i++){
+                    for (var i = 0; i < tmpArr.length; i++) {
                         $($('#settingForm .modal-body-4 select')[i]).val(tmpArr[i]);
                     }
                 }
@@ -1068,13 +1146,13 @@ var categoryApp = function () {
 
     var search_kw = function () {
         var kw = $('.js-kw').val();
-        if(kw.trim() == '') {
+        if (kw.trim() == '') {
             $('#attentionForm').modal({backdrop: 'static', keyboard: false});
             $('#attentionForm .attention-text').html('请输入关键字！');
             return;
         }
         $.get(
-            "/products/category/search/",
+            "/sdk/category/search/",
             {
                 'kw': kw,
             },
@@ -1144,7 +1222,7 @@ var categoryApp = function () {
         );
     };
 
-    var bindCategoryMainBtn = function(){
+    var bindCategoryMainBtn = function () {
         $('.js-add-second-category').on('click', add_second_category);
         $('.js-add-third-category').on('click', add_third_category);
         $('.js-add-company').on('click', add_company);
@@ -1162,7 +1240,7 @@ var categoryApp = function () {
         $('.js-edit-series').on('click', edit_series);
     };
 
-    var unbindCategoryMainBtn = function(){
+    var unbindCategoryMainBtn = function () {
         $('.js-add-second-category').off('click');
         $('.js-add-third-category').off('click');
         $('.js-add-company').off('click');
@@ -1230,7 +1308,7 @@ var categoryApp = function () {
             $(document).on('click', '.modal-body-4 .modal-span .fa-close', attribute_delete);
             $(document).on('click', 'button.btn-primary[data-for="modal-body-6"]', save_new_attribute);
 
-            $('#attentionForm .btn').on('click', function(){
+            $('#attentionForm .btn').on('click', function () {
                 $('#attentionForm').modal('hide');
             });
 
