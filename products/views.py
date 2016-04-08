@@ -226,18 +226,6 @@ class ProductView(LoginRequiredMixin, TemplateView):
         return resp(0, "action success", "")
 
 
-class ProductActiveView(LoginRequiredMixin, TemplateView):
-    def post(self, request, *args, **kwargs):
-        Product.objects.filter(pk=kwargs['pk']).update(status=1)
-        return resp(0, "action success", "")
-
-
-class ProductVoidView(LoginRequiredMixin, TemplateView):
-    def post(self, request, *args, **kwargs):
-        Product.objects.filter(pk=kwargs['pk']).update(status=0)
-        return resp(0, "action success", "")
-
-
 def upload_product_file(request):
     product_id = request.POST.get('product_id')
     files = request.FILES.getlist('file')

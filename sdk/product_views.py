@@ -230,3 +230,13 @@ class ProductViewSet(viewsets.ViewSet):
             })
         product['args'] = json.loads(p.args.decode('utf-8'))
         return Response(product,status=status.HTTP_200_OK)
+
+    @detail_route(methods=['post','get'])
+    def void(self, request, pk=None):
+        Product.objects.filter(pk=pk).update(status=0)
+        return Response(status=status.HTTP_200_OK)
+
+    @detail_route(methods=['post','get'])
+    def active(self, request, pk=None):
+        Product.objects.filter(pk=pk).update(status=1)
+        return Response(status=status.HTTP_200_OK)

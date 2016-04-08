@@ -170,7 +170,7 @@ $('.js-product-detail').on('click', function () {
 
 $('.js-active').on('click', function () {
     var id = $(this).attr('data-id');
-    $.post('/products/active/' + id + '/', {'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()}, function (data) {
+    $.post('/sdk/product/' + id + '/active/', {'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()}, function (data) {
         $('.js-status-text-' + id).html('启用');
     }, 'JSON');
     $(this).parent().find('.js-active').hide();
@@ -179,7 +179,7 @@ $('.js-active').on('click', function () {
 
 $('.js-void').on('click', function () {
     var id = $(this).attr('data-id');
-    $.post('/products/void/' + id + '/', {'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()}, function (data) {
+    $.post('/sdk/product/' + id + '/void/', {'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()}, function (data) {
         $('.js-status-text-' + id).html('禁用');
     }, 'JSON');
     $(this).parent().find('.js-active').show();
