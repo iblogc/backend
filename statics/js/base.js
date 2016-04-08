@@ -68,7 +68,10 @@ var baseApp = function () {
                     return false;
                 } else {
                     var password = md5($('input[type=password]').val());
-                    $.post('/users/unlock', {username: workId, password: password}, function (data) {
+                    $.post('/users/unlock', {
+                        username: workId,
+                        password: password
+                    }, function (data) {
                         if (data.result == 0) {
                             // location.href = '/';
                             $('div.locked-screen-overly').remove();
@@ -101,10 +104,10 @@ var baseApp = function () {
         $('#clock').html(formatTime);
     };
 
-    var resizeFun = function(){
+    var resizeFun = function () {
         var innerH = window.innerHeight - 130;
         $('.content-body').css({height: innerH + 'px'});
-        $('.content-body .tabs-main>div').css({height: (innerH-30) + 'px'});
+        $('.content-body .tabs-main>div').css({height: (innerH - 30) + 'px'});
         var copyR = window.innerWidth / 2 - $('#copyRight').width() / 2;
         $('#copyRight').attr('style', 'right:' + copyR + 'px');
         $('.left-menu-body').height(innerH + 50);
@@ -131,10 +134,9 @@ var baseApp = function () {
                 return headerClock();
             }, 500);
             resizeFun();
-            
         },
 
-        changeSize: function(height){
+        changeSize: function (height) {
             newTabs.changeSize(height, window.top.$('.tabs-main>div>iframe.show'))
         },
 
@@ -166,6 +168,7 @@ var baseApp = function () {
         //        forceParse: 0,
         //    });
         //},
+
 
     }
 }();

@@ -269,82 +269,6 @@ class CategoryView(LoginRequiredMixin, TemplateView):
         return context
 
 
-def category_create(request, category_id):
-    name = request.POST.get('name').strip()
-    if name == '':
-        return HttpResponse(json.dumps({'success': 0, 'message': '分类名不能为空！'}))
-    step = request.POST.get('step').strip()
-    parent_category = ProductCategory.objects.get(pk=category_id)
-    max_no = 1
-    if ProductCategory.objects.filter(step=step).exists():
-        max_no = ProductCategory.objects.filter(step=step).order_by('-no')[
-                     0].no + 1
-    category_dict = {'id': 0, 'name': name}
-    category = ProductCategory()
-    category.parent_category = parent_category
-    category.name = name
-    category.step = step
-    category.status = 1
-    category.no = max_no
-    category.save()
-    category_dict['id'] = category.id
-    return HttpResponse(json.dumps({'success': 1, 'category': category_dict}))
-
-
-def category_update(request, category_id):
-    name = request.POST.get('name').strip()
-    if name == '':
-        return HttpResponse(json.dumps({'success': 0, 'message': '分类名不能为空！'}))
-    ProductCategory.objects.filter(pk=category_id).update(name=name)
-    return HttpResponse(json.dumps({'success': 1}))
-
-
-def category_delete(request, category_id):
-    parent_category = ProductCategory.objects.get(pk=category_id)
-    if parent_category.sub_categories.exists():
-        parent_category.sub_categories.all().update(active=False)
-    parent_category.active = False
-    parent_category.save()
-    return HttpResponse(json.dumps({'success': 1}))
-
-
-def category_batch_delete(request):
-    parent_categories = ProductCategory.objects.filter(
-        pk__in=request.POST.get('ids').split(','))
-    for parent_category in parent_categories:
-        if parent_category.sub_categories.exists():
-            parent_category.sub_categories.all().update(active=False)
-        parent_category.active = False
-        parent_category.save()
-        parent_category.delete()
-    return HttpResponse(json.dumps({'success': 1}))
-
-
-def company_create(request, category_id):
-    name = request.POST.get('name').strip()
-    if name == '':
-        return HttpResponse(json.dumps({'success': 0, 'message': '厂家名不能为空'}))
-    category = ProductCategory.objects.get(pk=category_id)
-    max_no = 1
-    if Company.objects.exists():
-        max_no = Company.objects.all().order_by('-no')[0].no + 1
-    company_dict = {'id': 0, 'name': name}
-    company, flag = Company.objects.get_or_create(name=name)
-    if company.no == 0:
-        company.no = max_no
-        company.save()
-    CategoryCompany.objects.get_or_create(category=category, company=company)
-    company_dict['id'] = company.id
-    return HttpResponse(json.dumps({'success': 1, 'company': company_dict}))
-
-
-def company_delete(request, category_id, company_id):
-    category = ProductCategory.objects.get(pk=category_id)
-    company = Company.objects.get(pk=company_id)
-    CategoryCompany.objects.filter(company=company, category=category).delete()
-    return HttpResponse(json.dumps({'success': 1}))
-
-
 def company_batch_delete(request, category_id):
     category = ProductCategory.objects.get(pk=category_id)
     companies = Company.objects.filter(
@@ -774,48 +698,6 @@ def export_xls(request):
         'Content-Disposition'] = u"attachment; filename='s%s.xlsx'" % datetime.datetime.now().microsecond
 
     return response
-
-
-def category_search(request):
-    kw = request.GET.get('kw').strip()
-    per_page = int(request.GET.get('per_page', 50))
-    page = int(request.GET.get('page', 1))
-    # series = ProductBrandSeries.objects.filter(
-    #     Q(name__icontains=kw) | Q(brand__name__icontains=kw) | Q(
-    #         brand__companies__name__icontains=kw) | Q(
-    #         brand__categories__name__icontains=kw) | Q(
-    #         brand__categories__parent_category__name__icontains=kw) | Q(
-    #         brand__categories__parent_category__parent_category__name__icontains=kw))
-    series = ProductBrandSeries.objects.filter(
-        Q(name=kw) | Q(brand__name=kw) | Q(
-            brand__companies__name=kw) | Q(
-            brand__categories__name=kw) | Q(
-            brand__categories__parent_category__name=kw) | Q(
-            brand__categories__parent_category__parent_category__name=kw))
-    result = []
-    for se in series:
-        for c3 in se.brand.categories.all():
-            for company in se.brand.companies.all():
-                result_dict = {
-                    'first_category': c3.parent_category.parent_category.name,
-                    'second_category': c3.parent_category.name,
-                    'third_category': c3.name,
-                    'category_id': c3.id, 'series_id': se.id,
-                    'company': company.name, 'brand': se.brand.name,
-                    'series': se.name,}
-                if result_dict['first_category'] == kw or result_dict[
-                    'second_category'] == kw or result_dict[
-                    'third_category'] == kw or result_dict['company'] == kw or \
-                                result_dict['brand'] == kw or result_dict[
-                    'series'] == kw:
-                    result.append(result_dict)
-    p = Paginator(result, per_page)
-    current_page = p.page(page)
-    total_pages = p.num_pages
-    return HttpResponse(
-        json.dumps(
-            {'data': current_page.object_list, 'total_pages': total_pages,
-             'current_page': page}))
 
 
 def category_attributes(request, category_id):
