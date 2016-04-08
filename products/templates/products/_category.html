@@ -324,7 +324,8 @@
 <script type="text/javascript">
     $(function () {
         categoryApp.init();
-
+        for(var i = 0; i <= $('.modal-dialog').length; i++){
+            baseApp.startDrag($('.modal-dialog .modal-header')[i], $('.modal-dialog')[i]);
+        }
     });
-
 </script>

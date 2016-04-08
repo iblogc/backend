@@ -310,6 +310,9 @@
     $(function () {
         productApp.init();
         newTabs.iTab($('div[data-name=detail-tabs]'));
+        for(var i = 0; i <= $('.modal-dialog').length; i++){
+            baseApp.startDrag($('.modal-dialog .modal-header')[i], $('.modal-dialog')[i]);
+        }
     });
 
 </script>

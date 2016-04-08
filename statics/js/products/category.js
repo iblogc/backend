@@ -16,6 +16,7 @@ var categoryApp = function () {
     var settings_attribute = 0;
     var checkboxFlag = false;
     var modalTmp;
+    var settingModalFlag = false;
 
     function getCookie(name) {
         var cookieValue = null;
@@ -76,8 +77,8 @@ var categoryApp = function () {
                     encodeURI('/sdk/brand/batch_delete/'),
                     {
                         'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
-                        'category_id':third_category,
-                        'company_id':company,
+                        'category_id': third_category,
+                        'company_id': company,
                         'ids': ids,
                     },
                     function (data) {
@@ -95,7 +96,7 @@ var categoryApp = function () {
                     encodeURI('/sdk/company/batch_delete/'),
                     {
                         'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
-                        'category_id':third_category,
+                        'category_id': third_category,
                         'ids': ids,
                     },
                     function (data) {
@@ -369,7 +370,7 @@ var categoryApp = function () {
                 "/sdk/category/",
                 {
                     'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
-                    'category_id':first_category,
+                    'category_id': first_category,
                     'name': category_name,
                     'step': step
                 },
@@ -397,7 +398,7 @@ var categoryApp = function () {
                 "/sdk/category/",
                 {
                     'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
-                    'category_id':second_category,
+                    'category_id': second_category,
                     'name': category_name,
                     'step': step
                 },
@@ -425,7 +426,7 @@ var categoryApp = function () {
                 "/sdk/company/",
                 {
                     'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
-                    'category_id':third_category,
+                    'category_id': third_category,
                     'name': company_name,
                 },
                 function (data) {
@@ -480,7 +481,7 @@ var categoryApp = function () {
                 "/sdk/series/",
                 {
                     'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
-                    'brand_id':brand,
+                    'brand_id': brand,
                     'name': series_name,
                 },
                 function (data) {
@@ -916,6 +917,14 @@ var categoryApp = function () {
         sessionStorage.tmpArr = tmpArr;
     };
 
+    var seesionValR = function () {
+        var tmpArr = new Array;
+        tmpArr = sessionStorage.tmpArr.split(',');
+        for (var i = 0; i < tmpArr.length; i++) {
+            $($('#settingForm .modal-body-4 select')[i]).val(tmpArr[i]);
+        }
+    };
+
     var setting = function () {
         if ($(this).attr('series-id') == undefined && settings_series == 0) return;
         $('#settingForm').modal({backdrop: 'static', keyboard: false});
@@ -923,6 +932,7 @@ var categoryApp = function () {
         var series_id = $(this).attr('series-id');
         settings_series = series_id;
         settings_category = category_id;
+        settingModalFlag = true;
         init_setting_form1();
         $('#settingForm .modal-body-5').hide();
         $('#settingForm .modal-body-6').hide();
@@ -938,6 +948,7 @@ var categoryApp = function () {
             $('#settingForm button[data-for=modal-body-6]').show();
         });
         $(document).on('click', '.modal-body-4 .modal-span .fa-cog', function () {
+            settingModalFlag = false;
             settings_attribute = $(this).parent().parent().attr('data-id');
             init_attribute_value();
             $('.modal-body-5').show();
@@ -948,6 +959,7 @@ var categoryApp = function () {
             $('#settingForm button[data-for=modal-body-5]').show();
         });
         $('#settingForm button[data-for=modal-body-5]').on('click', function () {
+            settingModalFlag = false;
             $('.modal-body-5').hide();
             $('.modal-body-4').show();
             init_setting_form1();
@@ -985,12 +997,12 @@ var categoryApp = function () {
             },
             "json"
         );
-    }
+    };
 
     var init_setting_form1 = function () {
         $.get(
             "/sdk/series/" + settings_series + "/attribute_values/",
-            {'category_id':settings_category},
+            {'category_id': settings_category},
             function (data) {
                 $('.js-modal-attribute-row').remove();
                 for (var index in data) {
@@ -1017,12 +1029,9 @@ var categoryApp = function () {
                     $('.modal-body-4').append(row_html);
                     $('.modal-body-4').find('div[data-id="' + attribute.id + '"]').find('select[name="value"]').val(attribute.value);
                     $('.modal-body-4').find('div[data-id="' + attribute.id + '"]').find('select[name="searchable"]').val(attribute.searchable);
-                    // console.log(this)
-                    // var tmpArr = new Array;
-                    // tmpArr = sessionStorage.tmpArr.split(',');
-                    // for (var i = 0; i < tmpArr.length; i++) {
-                    //     $($('#settingForm .modal-body-4 select')[i]).val(tmpArr[i]);
-                    // }
+                }
+                if(!settingModalFlag) {
+                    seesionValR();
                 }
             },
             "json"
@@ -1332,12 +1341,12 @@ var categoryApp = function () {
                 $('select[data-name=navPager]').change();
             });
 
-            $('.modal').on('show.bs.modal', function(){
+            $('.modal').on('show.bs.modal', function () {
                 modalTmp = this;
                 baseApp.dialogShow(this);
             });
 
-            window.top.$('.tabs-main > div').scroll(function(){
+            window.top.$('.tabs-main > div').scroll(function () {
                 baseApp.dialogShow(modalTmp);
             })
         }

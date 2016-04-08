@@ -1003,6 +1003,11 @@ input[type=text], input[type=password] {
     display: inline-block;
 }
 
+.modal-dialog {
+    position: absolute;
+    left: 400px;
+}
+
 .modal-content {
     -webkit-border-radius: 7px !important;
     -moz-border-radius: 7px !important;
@@ -1022,6 +1027,7 @@ input[type=text], input[type=password] {
     border-radius: 5px 5px 0px 0px !important;
     background: #314464;
     color: #fff;
+    cursor: pointer;
 }
 
 .modal-footer {
