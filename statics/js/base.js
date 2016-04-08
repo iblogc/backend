@@ -35,15 +35,6 @@ var baseApp = function () {
         })
     };
 
-    var onMouseOverActive = function () {
-        $('div.content-table-data').mouseenter(function () {
-            $(this).addClass('table-mouse-over');
-        });
-        $('div.content-table-data').mouseleave(function () {
-            $(this).removeClass('table-mouse-over');
-        })
-    };
-
     var accountLocked = function () {
         $('div.account-lock-tag > a').click(function () {
             var workId = 0;
@@ -139,6 +130,11 @@ var baseApp = function () {
         changeSize: function (height) {
             newTabs.changeSize(height, window.top.$('.tabs-main>div>iframe.show'))
         },
+
+        dialogShow: function(obj){
+            var tmp = eval(window.top.$('.tabs-main > div').scrollTop()) + 40;
+            $($(obj).children()[0]).css('margin-top', tmp +'px');
+        }
 
         //compareDate: function (s, e) {
         //    var start = $(s);

@@ -307,7 +307,6 @@
     var url = {% autoescape off %}{{ urls }}{% endautoescape %};
     $(function () {
         productApp.init();
-        baseApp.pickDate($('.form_date'));
         newTabs.iTab($('div[data-name=detail-tabs]'));
     });
 

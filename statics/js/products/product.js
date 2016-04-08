@@ -18,6 +18,7 @@ var date_to = '';
 var order = '';
 var desc = false;
 var product_id = 0;
+var modalTmp;
 
 var previewImgId = -1;
 
@@ -66,13 +67,13 @@ $('select[name=series]').bind('change', function () {
 //创建时间 绑定事件
 $(document).on('change', 'input[sid=Date-created]', function () {
     changeSearchLink();
-
 });
 
 
 //更新时间 绑定
 $('input[sid=Date-update]').bind('change', function () {
     changeSearchLink();
+    $(this).next().show();
 });
 
 //$('input[sid=Date-update]').on('keydown', function (event) {
@@ -310,8 +311,9 @@ var productApp = function () {
                 pickerPosition: "bottom-left",
                 language: 'zh-CN'
             }).on("click", function (ev) {
-                console.log(123)
                 $("#startDate-update").datetimepicker("setEndDate", $("#endDate-update").val());
+            }).on('change', function(){
+                if($("#endDate-update").val() == '') $("#endDate-update").val($("#startDate-update").val()).change();;
             });
             $("#endDate-update").datetimepicker({
                 format: "yyyy-mm-dd",
@@ -323,10 +325,24 @@ var productApp = function () {
                 language: 'zh-CN'
             }).on("click", function (ev) {
                 $("#endDate-update").datetimepicker("setStartDate", $("#startDate-update").val());
+            }).on('change', function(){
+                if($("#startDate-update").val() == '') $("#startDate-update").val($("#endDate-update").val()).change();
             });
+            console.log(window.top.$('.tabs-main > div').scrollTop);
 
+            $('.input-group-addon').hide();
             $('.input-group-addon').on('click',function(){
                 $(this).prev().val('');
+                $(this).hide();
+            });
+
+            $('.modal').on('show.bs.modal', function(){
+                modalTmp = this;
+                baseApp.dialogShow(this);
+            });
+
+            window.top.$('.tabs-main > div').scroll(function(){
+                baseApp.dialogShow(modalTmp);
             })
         }
     }

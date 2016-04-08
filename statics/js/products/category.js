@@ -15,6 +15,7 @@ var categoryApp = function () {
     var settings_category = 0;
     var settings_attribute = 0;
     var checkboxFlag = false;
+    var modalTmp;
 
     function getCookie(name) {
         var cookieValue = null;
@@ -1302,6 +1303,15 @@ var categoryApp = function () {
                 $('select[data-name=navPager]').val(tmp);
                 $('select[data-name=navPager]').change();
             });
+
+            $('.modal').on('show.bs.modal', function(){
+                modalTmp = this;
+                baseApp.dialogShow(this);
+            });
+
+            window.top.$('.tabs-main > div').scroll(function(){
+                baseApp.dialogShow(modalTmp);
+            })
         }
     }
 }();
