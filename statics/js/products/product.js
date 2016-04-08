@@ -73,7 +73,6 @@ $(document).on('change', 'input[sid=Date-created]', function () {
 //更新时间 绑定
 $('input[sid=Date-update]').bind('change', function () {
     changeSearchLink();
-    $(this).next().show();
 });
 
 //$('input[sid=Date-update]').on('keydown', function (event) {
@@ -251,6 +250,56 @@ var changePreviewImg = function(){
     $('div[data-name=previewImg] img').attr('src', tmp);
 };
 
+var datePickerActive = function(){
+
+    $("#startDate-update").datetimepicker({
+        format: "yyyy-mm-dd",
+        autoclose: true,
+        minView: "month",
+        maxView: "decade",
+        todayBtn: true,
+        language: 'zh-CN'
+    }).on("click", function (ev) {
+        $("#startDate-update").datetimepicker("setEndDate", $("#endDate-update").val());
+    }).on('change', function(){
+        if($("#endDate-update").val() == '') $("#endDate-update").val($("#startDate-update").val()).change();;
+    });
+    $("#endDate-update").datetimepicker({
+        format: "yyyy-mm-dd",
+        autoclose: true,
+        minView: "month",
+        maxView: "decade",
+        todayBtn: true,
+        language: 'zh-CN'
+    }).on("click", function (ev) {
+        $("#endDate-update").datetimepicker("setStartDate", $("#startDate-update").val());
+    }).on('change', function(){
+        if($("#startDate-update").val() == '') $("#startDate-update").val($("#endDate-update").val()).change();
+    });
+
+
+    $('.input-group-addon').hide();
+    $('.input-group-addon').on('click',function(){
+        $(this).prev().val('');
+        $(this).hide();
+    });
+
+    $('.select-update-time').mouseenter(function () {
+        if($(this).val() != '') $(this).next().show();
+    });
+    $('.select-update-time').mouseleave(function () {
+        $(this).next().hide();
+    });
+    $('.input-group-addon').mouseenter(function () {
+        if($(this).prev().val() != '') $(this).show();
+    });
+    $('.input-group-addon').mouseleave(function () {
+        $(this).hide();
+    });
+
+
+};
+
 var productApp = function () {
     return {
         init: function () {
@@ -302,39 +351,9 @@ var productApp = function () {
                 $(document).off('click', 'div[data-name=previewImg]>div', changePreviewImg);
             });
 
-            $("#startDate-update").datetimepicker({
-                format: "yyyy-mm-dd",
-                autoclose: true,
-                minView: "month",
-                maxView: "decade",
-                todayBtn: true,
-                pickerPosition: "bottom-left",
-                language: 'zh-CN'
-            }).on("click", function (ev) {
-                $("#startDate-update").datetimepicker("setEndDate", $("#endDate-update").val());
-            }).on('change', function(){
-                if($("#endDate-update").val() == '') $("#endDate-update").val($("#startDate-update").val()).change();;
-            });
-            $("#endDate-update").datetimepicker({
-                format: "yyyy-mm-dd",
-                autoclose: true,
-                minView: "month",
-                maxView: "decade",
-                todayBtn: true,
-                pickerPosition: "bottom-left",
-                language: 'zh-CN'
-            }).on("click", function (ev) {
-                $("#endDate-update").datetimepicker("setStartDate", $("#startDate-update").val());
-            }).on('change', function(){
-                if($("#startDate-update").val() == '') $("#startDate-update").val($("#endDate-update").val()).change();
-            });
-            console.log(window.top.$('.tabs-main > div').scrollTop);
+            datePickerActive();
 
-            $('.input-group-addon').hide();
-            $('.input-group-addon').on('click',function(){
-                $(this).prev().val('');
-                $(this).hide();
-            });
+
 
             $('.modal').on('show.bs.modal', function(){
                 modalTmp = this;
