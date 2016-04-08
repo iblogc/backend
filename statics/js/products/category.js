@@ -56,7 +56,7 @@ var categoryApp = function () {
             console.log('confirm');
             if (brand != 0) {
                 $.post(
-                    encodeURI("/products/series/batch_delete/"),
+                    encodeURI("/sdk/series/batch_delete/"),
                     {
                         'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
                         'ids': ids,
@@ -73,9 +73,11 @@ var categoryApp = function () {
                 );
             } else if (company != 0) {
                 $.post(
-                    encodeURI('/products/brand/' + third_category + '/' + company + '/batch_delete/'),
+                    encodeURI('/sdk/brand/batch_delete/'),
                     {
                         'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+                        'category_id':third_category,
+                        'company_id':company,
                         'ids': ids,
                     },
                     function (data) {
@@ -90,9 +92,10 @@ var categoryApp = function () {
                 );
             } else if (third_category != 0) {
                 $.post(
-                    encodeURI('/products/company/' + third_category + '/batch_delete/'),
+                    encodeURI('/sdk/company/batch_delete/'),
                     {
                         'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+                        'category_id':third_category,
                         'ids': ids,
                     },
                     function (data) {
@@ -446,9 +449,11 @@ var categoryApp = function () {
         var brand_name = $('.js-modal-category-name').val();
         if (company != 0 && third_category != 0) {
             $.post(
-                "/products/company/" + third_category + "/" + company + "/brand/create/",
+                "/sdk/brand/",
                 {
                     'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+                    'category_id': third_category,
+                    'company_id': company,
                     'name': brand_name,
                 },
                 function (data) {
@@ -472,9 +477,10 @@ var categoryApp = function () {
         var series_name = $('.js-modal-category-name').val();
         if (brand != 0) {
             $.post(
-                "/products/brand/" + brand + "/series/create/",
+                "/sdk/series/",
                 {
                     'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+                    'brand_id':brand,
                     'name': series_name,
                 },
                 function (data) {
@@ -635,20 +641,26 @@ var categoryApp = function () {
 
     var delete_brand_confirm = function () {
         if (third_category != 0 && company != 0 && brand != 0) {
-            $.post(
-                "/products/brand/" + third_category + "/" + company + "/" + brand + "/delete/",
-                {
-                    'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+            var csrftoken = getCookie('csrftoken');
+            $.ajax({
+                url: "/sdk/brand/" + brand + "/",
+                headers: {
+                    'X-CSRFToken': csrftoken,
                 },
-                function (data) {
+                data: {
+                    'category_id': third_category,
+                    'company_id': company
+                },
+                type: "DELETE",
+                dataType: 'json',
+                success: function (data) {
                     if (data.success == 1) {
                         $('div.js-brand[data-id="' + brand + '"]').remove();
                         brand = 0;
                         $('.js-series-div').empty();
                     }
-                },
-                "json"
-            );
+                }
+            });
         }
         $('#deleteCategoryForm').modal('hide');
         $('.js-modal-confirm-button').unbind('click');
@@ -656,19 +668,21 @@ var categoryApp = function () {
 
     var delete_series_confirm = function () {
         if (series != 0) {
-            $.post(
-                "/products/series/" + series + "/delete/",
-                {
-                    'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+            var csrftoken = getCookie('csrftoken');
+            $.ajax({
+                url: "/sdk/series/" + series + "/",
+                headers: {
+                    'X-CSRFToken': csrftoken,
                 },
-                function (data) {
+                type: "DELETE",
+                dataType: 'json',
+                success: function (data) {
                     if (data.success == 1) {
                         $('div.js-series[data-id="' + series + '"]').remove();
                         series = 0;
                     }
-                },
-                "json"
-            );
+                }
+            });
         }
         $('#deleteCategoryForm').modal('hide');
         $('.js-modal-confirm-button').unbind('click');
@@ -782,13 +796,18 @@ var categoryApp = function () {
     var save_company_edit = function () {
         var category_name = $('.js-modal-category-name').val();
         if (company != 0) {
-            $.post(
-                "/products/company/" + company + "/update/",
-                {
-                    'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+            var csrftoken = getCookie('csrftoken');
+            $.ajax({
+                url: "/sdk/company/" + company + "/",
+                headers: {
+                    'X-CSRFToken': csrftoken,
+                },
+                data: {
                     'name': category_name,
                 },
-                function (data) {
+                type: "PUT",
+                dataType: 'json',
+                success: function (data) {
                     if (data.success == 1) {
                         $('.js-company[data-id="' + company + '"]').find('.js-company-name').html(category_name);
                         $('.js-modal-save-button').unbind('click');
@@ -808,9 +827,8 @@ var categoryApp = function () {
                     } else {
                         sweetAlert(data.message);
                     }
-                },
-                "json"
-            );
+                }
+            });
         }
 
     };
@@ -818,13 +836,18 @@ var categoryApp = function () {
     var save_brand_edit = function () {
         var category_name = $('.js-modal-category-name').val();
         if (brand != 0) {
-            $.post(
-                "/products/brand/" + brand + "/update/",
-                {
-                    'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+            var csrftoken = getCookie('csrftoken');
+            $.ajax({
+                url: "/sdk/brand/" + brand + "/",
+                headers: {
+                    'X-CSRFToken': csrftoken,
+                },
+                data: {
                     'name': category_name,
                 },
-                function (data) {
+                type: "PUT",
+                dataType: 'json',
+                success: function (data) {
                     if (data.success == 1) {
                         $('.js-brand[data-id="' + brand + '"]').find('.js-brand-name').html(category_name);
                         $('.js-modal-save-button').unbind('click');
@@ -832,9 +855,8 @@ var categoryApp = function () {
                     } else {
                         sweetAlert(data.message);
                     }
-                },
-                "json"
-            );
+                }
+            });
         }
 
     };
@@ -842,13 +864,18 @@ var categoryApp = function () {
     var save_series_edit = function () {
         var category_name = $('.js-modal-category-name').val();
         if (series != 0) {
-            $.post(
-                "/products/series/" + series + "/update/",
-                {
-                    'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+            var csrftoken = getCookie('csrftoken');
+            $.ajax({
+                url: "/sdk/series/" + series + "/",
+                headers: {
+                    'X-CSRFToken': csrftoken,
+                },
+                data: {
                     'name': category_name,
                 },
-                function (data) {
+                type: "PUT",
+                dataType: 'json',
+                success: function (data) {
                     if (data.success == 1) {
                         $('.js-series[data-id="' + series + '"]').find('.js-series-name').html(category_name);
                         $('.js-modal-save-button').unbind('click');
@@ -856,9 +883,8 @@ var categoryApp = function () {
                     } else {
                         sweetAlert(data.message);
                     }
-                },
-                "json"
-            );
+                }
+            });
         }
 
     };

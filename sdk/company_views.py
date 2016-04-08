@@ -7,7 +7,7 @@ from products.product_utils import *
 from rest_framework import status
 from rest_framework.response import Response
 from customers.models import Company
-from products.models import ProductBrand, ProductBrandSeries, CategoryCompany
+from products.models import ProductBrand, ProductBrandSeries, CategoryCompany, CompanyBrand
 
 
 class CompanyViewSet(viewsets.ViewSet):
@@ -65,3 +65,31 @@ class CompanyViewSet(viewsets.ViewSet):
             CategoryCompany.objects.filter(company=company,
                                            category=category).delete()
         return Response({'success': 1},status=status.HTTP_200_OK)
+
+    def update(self, request, pk=None):
+        name = request.POST.get('name').strip()
+        if name == '':
+            return Response(
+                {'success': 0, 'message': '厂家名不能为空'},status=status.HTTP_200_OK)
+        exists_company = Company.objects.filter(name=name).exclude(
+            pk=pk)
+        company = Company.objects.get(pk=pk)
+        if exists_company.exists():
+            exists_company = exists_company[0]
+            company_categories = company.categories.all()
+            company_brands = company.brands.all()
+            for category in company_categories:
+                CategoryCompany.objects.get_or_create(company=exists_company,
+                                                      category=category)
+            for brand in company_brands:
+                CompanyBrand.objects.get_or_create(company=exists_company,
+                                                   brand=brand)
+            company.categorycompany_set.all().delete()
+            company.companybrand_set.all().delete()
+            company.delete()
+            return Response(
+                {'success': 2, 'company_id': exists_company.id},status=status.HTTP_200_OK)
+        else:
+            company.name = name
+            company.save()
+            return Response({'success': 1},status=status.HTTP_200_OK)

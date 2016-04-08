@@ -8,22 +8,6 @@ urlpatterns = [
     #category manage
     url(r'category/$', CategoryView.as_view(), name='category'),
 
-    #company brand series
-    url(r'company/(?P<category_id>\d+)/batch_delete/$', company_batch_delete, name='company-batch-delete'),
-    url(r'company/(?P<company_id>\d+)/update/$', company_update,
-        name='company-update'),
-    url(r'company/(?P<category_id>\d+)/(?P<company_id>\d+)/brand/create/$', brand_create, name='company-brand-create'),
-    #brand series
-    url(r'brand/(?P<brand_id>\d+)/update/$', brand_update, name='brand-update'),
-    url(r'brand/(?P<category_id>\d+)/(?P<company_id>\d+)/(?P<brand_id>\d+)/delete/$', brand_delete,
-        name='brand-delete'),
-    url(r'brand/(?P<category_id>\d+)/(?P<company_id>\d+)/batch_delete/$', brand_batch_delete,
-        name='brand-batch-delete'),
-    url(r'brand/(?P<brand_id>\d+)/series/create/$', series_create, name='brand-series-create'),
-
-    url(r'series/(?P<series_id>\d+)/delete/$', series_delete, name='series-delete'),
-    url(r'series/batch_delete/$', series_batch_delete, name='series-batch-delete'),
-    url(r'series/(?P<series_id>\d+)/update/$', series_update, name='series-update'),
     # import
     url(r'import/$', import_xls, name='import'),
 
