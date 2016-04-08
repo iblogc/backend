@@ -138,35 +138,34 @@ var baseApp = function () {
             newTabs.changeSize(height, window.top.$('.tabs-main>div>iframe.show'))
         },
 
-        compareDate: function (s, e) {
-            var start = $(s);
-            var end = $(e);
-            //if (start.val() == '') {
-            //    start.val(end.val());
-            //    end.val('');
-            //} else
-            if (start.val() != '' && end.val() != '') {
-                var a = new Date(start.val());
-                var b = new Date(end.val());
-                if( a > b ){
-                    var temp = start.val();
-                    start.val(end.val());
-                    end.val(temp);
-                }
-            }
-        },
-        pickDate: function (obj) {
-            $(obj).datetimepicker({
-                language: 'zh-CN',
-                weekStart: 1,
-                todayBtn: 1,
-                autoclose: 1,
-                todayHighlight: 1,
-                startView: 2,
-                minView: 2,
-                forceParse: 0,
-            });
-        },
+        //compareDate: function (s, e) {
+        //    var start = $(s);
+        //    var end = $(e);
+        //    if(start.val() != '' && end.val() == ''){
+        //        end.datetimepicker('setStartDate', start.val());
+        //    };
+        //    //if (start.val() != '' && end.val() != '') {
+        //    //    var a = new Date(start.val());
+        //    //    var b = new Date(end.val());
+        //    //    if( a > b ){
+        //    //        var temp = start.val();
+        //    //        start.val(end.val());
+        //    //        end.val(temp);
+        //    //    }
+        //    //}
+        //},
+        //pickDate: function (obj) {
+        //    $(obj).datetimepicker({
+        //        language: 'zh-CN',
+        //        weekStart: 1,
+        //        todayBtn: 1,
+        //        autoclose: 1,
+        //        todayHighlight: 1,
+        //        startView: 2,
+        //        minView: 2,
+        //        forceParse: 0,
+        //    });
+        //},
 
     }
 }();

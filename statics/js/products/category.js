@@ -1048,6 +1048,11 @@ var categoryApp = function () {
 
     var search_kw = function () {
         var kw = $('.js-kw').val();
+        if(kw.trim() == '') {
+            $('#attentionForm').modal({backdrop: 'static', keyboard: false});
+            $('#attentionForm .attention-text').html('请输入关键字！');
+            return;
+        }
         $.get(
             "/products/category/search/",
             {
@@ -1205,6 +1210,9 @@ var categoryApp = function () {
             $(document).on('click', '.modal-body-4 .modal-span .fa-close', attribute_delete);
             $(document).on('click', 'button.btn-primary[data-for="modal-body-6"]', save_new_attribute);
 
+            $('#attentionForm .btn').on('click', function(){
+                $('#attentionForm').modal('hide');
+            });
 
             //pager
             $('select[data-name=navPager]').on('change', function () {

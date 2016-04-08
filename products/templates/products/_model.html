@@ -67,7 +67,7 @@
                        placeholder="搜索...">
             </div>
             <div class="left select-table">
-                <div class="dateText first left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上传日期：</div>
+                <div class="dateText first left">上传日期：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
                 <div class="input-group date form_date"
                      data-date-format="yyyy-mm-dd">
                     <input sid="Date-update"
@@ -76,7 +76,7 @@
                            value=""
                            readonly>
                     <span class="input-group-addon"><span
-                            class="glyphicon glyphicon-calendar"></span></span>
+                            class="glyphicon glyphicon-remove"></span></span>
                 </div>
             </div>
             <div class="left select-table">
@@ -88,7 +88,7 @@
                            size="16" type="text" id="endDate-update"
                            value="" readonly>
                     <span class="input-group-addon"><span
-                            class="glyphicon glyphicon-calendar"></span></span>
+                            class="glyphicon glyphicon-remove"></span></span>
                 </div>
             </div>
             {#            <button class="btn btn-primary select1 select2" type="button">导出</button>#}
@@ -309,7 +309,6 @@
     var url = {% autoescape off %}{{ urls }}{% endautoescape %};
     $(function () {
         productApp.init();
-        baseApp.pickDate($('.form_date'));
         newTabs.iTab($('div[data-name=detail-tabs]'));
     });
 

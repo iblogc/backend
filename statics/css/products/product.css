@@ -64,6 +64,7 @@ input[readonly] {
 
 .select-update-time {
     display: inline;
+    padding: 6px!important;
 }
 
 .select-search {
