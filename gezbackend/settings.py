@@ -109,9 +109,9 @@ else:
         'default': {
             'ENGINE': 'django.db.backends.mysql',
             'NAME': 'LeJuDBv11',
-            'USER': 'root',
-            'PASSWORD': '',
-            'HOST': '127.0.0.1',
+            'USER': 'LeJuDbManager',
+            'PASSWORD': 'LjDm234@#$',
+            'HOST': '192.168.3.112',
             # 'HOST': '127.0.0.1',
             'PORT': '3306'
         }
