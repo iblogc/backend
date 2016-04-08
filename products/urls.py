@@ -13,15 +13,6 @@ urlpatterns = [
 
     url(r'export/$', export_xls, name='export'),
 
-    url(r'category/attributes/(?P<category_id>\d+)/$', category_attributes, name='category-attributes'),
-    url(r'category/attribute/create/(?P<category_id>\d+)/$', category_attribute_create, name='category-attribute-create'),
-    url(r'category/attribute/delete/(?P<attribute_id>\d+)/$', category_attribute_delete,
-        name='category-attribute-delete'),
-    url(r'category/attribute/default_values/(?P<attribute_id>\d+)/$',
-        category_attribute_default_values,
-        name='category-attribute-default-values'),
-
-    url(r'category/attribute/values/(?P<category_id>\d+)/(?P<series_id>\d+)/$', category_attribute_values, name='category-attribute-values'),
     url(r'category/attribute/value/update/(?P<series_id>\d+)/$', category_attribute_value_update,
         name='category-attribute-value-update'),
     url(r'category/attribute/value/delete/(?P<attribute_id>\d+)/$', category_attribute_value_delete,

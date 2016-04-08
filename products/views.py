@@ -578,46 +578,6 @@ def export_xls(request):
     return response
 
 
-def category_attributes(request, category_id):
-    attributes = get_category_attributes(category_id)
-    return HttpResponse(
-        json.dumps(attributes))
-
-
-def category_attribute_create(request, category_id):
-    name = request.POST.get('name')
-    value = [v.strip() for v in request.POST.get('value').split('\n')]
-    if '' in value:
-        value.remove('')
-    searchable = int(request.POST.get('searchable', 1)) == 1
-    attribute = ProductCategoryAttribute()
-    attribute.name = name
-    attribute.category = ProductCategory.objects.get(pk=category_id)
-    attribute.value = json.dumps(value)
-    attribute.searchable = searchable
-    attribute.save()
-    return HttpResponse(
-        json.dumps({'success': 1}))
-
-
-def category_attribute_delete(request, attribute_id):
-    ProductCategoryAttribute.objects.filter(pk=attribute_id).update(
-        active=False)
-    return HttpResponse(
-        json.dumps({'success': 1}))
-
-
-def category_attribute_default_values(request, attribute_id):
-    values = ProductCategoryAttribute.objects.get(pk=attribute_id).value
-    return HttpResponse(values)
-
-
-def category_attribute_values(request, category_id, series_id):
-    attributes = get_category_attribute_values(category_id, series_id)
-    return HttpResponse(
-        json.dumps(attributes))
-
-
 def category_attribute_value_update(request, series_id):
     attribute_ids = request.POST.getlist('ids[]')
     attribute_values = request.POST.getlist('values[]')

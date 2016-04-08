@@ -42,3 +42,32 @@ class AttributeViewSet(viewsets.ViewSet):
         return Response(res,
                         status=status.HTTP_200_OK)
 
+    def create(self, request):
+        name = request.POST.get('name','')
+        category_id = request.POST.get('category_id', 0)
+        value = [v.strip() for v in request.POST.get('value','').split('\n')]
+        if '' in value:
+            value.remove('')
+        searchable = int(request.POST.get('searchable', 1)) == 1
+        attribute = ProductCategoryAttribute()
+        attribute.name = name
+        attribute.category = ProductCategory.objects.get(pk=category_id)
+        attribute.value = json.dumps(value)
+        attribute.searchable = searchable
+        attribute.save()
+        return Response({'success': 1},status=status.HTTP_201_CREATED)
+
+    def destroy(self, request, pk=None):
+        ProductCategoryAttribute.objects.filter(pk=pk).update(
+            active=False)
+        ProductCategoryAttributeValue.objects.filter(attribute_id=pk).update(active=False)
+        return Response({'success': 1},status=status.HTTP_200_OK)
+
+    @detail_route(methods=['get'])
+    def default_values(self, request, pk=None):
+        values = json.loads(ProductCategoryAttribute.objects.get(pk=pk).value)
+        return  Response(values,status=status.HTTP_200_OK)
+
+
+
+

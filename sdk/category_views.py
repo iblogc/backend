@@ -128,3 +128,8 @@ class CategoryViewSet(viewsets.ViewSet):
         category.save()
         category_dict['id'] = category.id
         return Response({'success': 1, 'category': category_dict},status=status.HTTP_201_CREATED)
+
+    @detail_route()
+    def attribute(self, request, pk=None):
+        attributes = get_category_attributes(pk)
+        return Response(attributes,status=status.HTTP_200_OK)

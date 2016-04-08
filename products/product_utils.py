@@ -207,7 +207,7 @@ def get_category_attributes(category_id):
 def get_category_attribute_values(category_id, series_id):
     result = []
     attributes = ProductCategoryAttribute.objects.filter(
-        category=category_id)
+        category=category_id,active=True)
     for attr in attributes:
         values = attr.values.filter(series=series_id, active=True)
         searchable = -1

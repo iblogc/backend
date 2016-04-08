@@ -969,7 +969,7 @@ var categoryApp = function () {
 
     var init_attribute_value = function () {
         $.get(
-            "category/attribute/default_values/" + settings_attribute + "/",
+            "/sdk/attr/" + settings_attribute + "/default_values/",
             {},
             function (data) {
                 console.log(data);
@@ -989,8 +989,8 @@ var categoryApp = function () {
 
     var init_setting_form1 = function () {
         $.get(
-            "category/attribute/values/" + settings_category + "/" + settings_series + "/",
-            {},
+            "/sdk/series/" + settings_series + "/attribute_values/",
+            {'category_id':settings_category},
             function (data) {
                 $('.js-modal-attribute-row').remove();
                 for (var index in data) {
@@ -1017,11 +1017,12 @@ var categoryApp = function () {
                     $('.modal-body-4').append(row_html);
                     $('.modal-body-4').find('div[data-id="' + attribute.id + '"]').find('select[name="value"]').val(attribute.value);
                     $('.modal-body-4').find('div[data-id="' + attribute.id + '"]').find('select[name="searchable"]').val(attribute.searchable);
-                    var tmpArr = new Array;
-                    tmpArr = sessionStorage.tmpArr.split(',');
-                    for (var i = 0; i < tmpArr.length; i++) {
-                        $($('#settingForm .modal-body-4 select')[i]).val(tmpArr[i]);
-                    }
+                    // console.log(this)
+                    // var tmpArr = new Array;
+                    // tmpArr = sessionStorage.tmpArr.split(',');
+                    // for (var i = 0; i < tmpArr.length; i++) {
+                    //     $($('#settingForm .modal-body-4 select')[i]).val(tmpArr[i]);
+                    // }
                 }
             },
             "json"
@@ -1047,7 +1048,7 @@ var categoryApp = function () {
                 return;
             }
             $.post(
-                "/products/category/attribute/value/update/" + settings_series + "/",
+                "/sdk/series/" + settings_series + "/update_attribute_values/",
                 {
                     'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
                     'ids': attr_ids,
@@ -1188,27 +1189,28 @@ var categoryApp = function () {
 
     var attribute_delete = function () {
         var attribute_id = $(this).parent().parent().attr('data-id');
-        $.post(
-            "/products/category/attribute/value/delete/" + attribute_id + "/",
-            {
-                'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+        var csrftoken = getCookie('csrftoken');
+        $.ajax({
+            url: "/sdk/attr/" + attribute_id + "/",
+            headers: {
+                'X-CSRFToken': csrftoken,
             },
-            function (data) {
-                if (data.success == 1) {
+            type: "DELETE",
+            dataType: 'json',
+            success: function (data) {
 
-                }
-            },
-            "json"
-        );
+            }
+        });
         $(this.parentNode.parentNode).remove();
     };
 
     var save_new_attribute = function () {
         if ($('.modal-body-6 input[data-type]').val().trim() == '') return;
         $.post(
-            "/products/category/attribute/create/" + settings_category + "/",
+            "/sdk/attr/",
             {
                 'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+                'category_id': settings_category,
                 'name': $('input[name="new-attribute-name"]').val(),
                 'value': $('textarea[name="new-attribute-value"]').val(),
                 'searchable': $('select[name="new-attribute-searchable"]').val()
