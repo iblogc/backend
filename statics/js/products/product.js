@@ -18,6 +18,7 @@ var date_to = '';
 var order = '';
 var desc = false;
 var product_id = 0;
+var modalTmp;
 
 var previewImgId = -1;
 
@@ -64,16 +65,21 @@ $('select[name=series]').bind('change', function () {
 });
 
 //创建时间 绑定事件
-$('input[sid=Date-created]').bind('change', function () {
+$(document).on('change', 'input[sid=Date-created]', function () {
     changeSearchLink();
-    baseApp.compareDate(document.getElementById('startDate-created'), document.getElementById('endDate-created'));
 });
+
 
 //更新时间 绑定
 $('input[sid=Date-update]').bind('change', function () {
     changeSearchLink();
-    baseApp.compareDate(document.getElementById('startDate-update'), document.getElementById('endDate-update'));
 });
+
+//$('input[sid=Date-update]').on('keydown', function (event) {
+//    if (event.keyCode == 8) {
+//        $(this).val('');
+//    }
+//});
 
 $('#product-Search').bind('change', function () {
     changeSearchLink();
@@ -125,7 +131,7 @@ $('.js-header').on('click', function () {
 $('.js-product-detail').on('click', function () {
     var id = $(this).attr('data-id');
     product_id = id;
-    $.post('/products/detail/' + id + '/', {'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()}, function (data) {
+    $.get('/sdk/product/' + id + '/', {}, function (data) {
         console.log(data);
         $('.js-modal-product-no').html(data.product_no);
         $('.js-modal-product-name').html(data.product_name);
@@ -163,7 +169,7 @@ $('.js-product-detail').on('click', function () {
 
 $('.js-active').on('click', function () {
     var id = $(this).attr('data-id');
-    $.post('/products/active/' + id + '/', {'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()}, function (data) {
+    $.post('/sdk/product/' + id + '/active/', {'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()}, function (data) {
         $('.js-status-text-' + id).html('启用');
     }, 'JSON');
     $(this).parent().find('.js-active').hide();
@@ -172,7 +178,7 @@ $('.js-active').on('click', function () {
 
 $('.js-void').on('click', function () {
     var id = $(this).attr('data-id');
-    $.post('/products/void/' + id + '/', {'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()}, function (data) {
+    $.post('/sdk/product/' + id + '/void/', {'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()}, function (data) {
         $('.js-status-text-' + id).html('禁用');
     }, 'JSON');
     $(this).parent().find('.js-active').show();
@@ -244,6 +250,56 @@ var changePreviewImg = function(){
     $('div[data-name=previewImg] img').attr('src', tmp);
 };
 
+var datePickerActive = function(){
+
+    $("#startDate-update").datetimepicker({
+        format: "yyyy-mm-dd",
+        autoclose: true,
+        minView: "month",
+        maxView: "decade",
+        todayBtn: true,
+        language: 'zh-CN'
+    }).on("click", function (ev) {
+        $("#startDate-update").datetimepicker("setEndDate", $("#endDate-update").val());
+    }).on('change', function(){
+        if($("#endDate-update").val() == '') $("#endDate-update").val($("#startDate-update").val()).change();;
+    });
+    $("#endDate-update").datetimepicker({
+        format: "yyyy-mm-dd",
+        autoclose: true,
+        minView: "month",
+        maxView: "decade",
+        todayBtn: true,
+        language: 'zh-CN'
+    }).on("click", function (ev) {
+        $("#endDate-update").datetimepicker("setStartDate", $("#startDate-update").val());
+    }).on('change', function(){
+        if($("#startDate-update").val() == '') $("#startDate-update").val($("#endDate-update").val()).change();
+    });
+
+
+    $('.input-group-addon').hide();
+    $('.input-group-addon').on('click',function(){
+        $(this).prev().val('');
+        $(this).hide();
+    });
+
+    $('.select-update-time').mouseenter(function () {
+        if($(this).val() != '') $(this).next().show();
+    });
+    $('.select-update-time').mouseleave(function () {
+        $(this).next().hide();
+    });
+    $('.input-group-addon').mouseenter(function () {
+        if($(this).prev().val() != '') $(this).show();
+    });
+    $('.input-group-addon').mouseleave(function () {
+        $(this).hide();
+    });
+
+
+};
+
 var productApp = function () {
     return {
         init: function () {
@@ -294,6 +350,19 @@ var productApp = function () {
                 $('div[data-name=previewImg]').on('click', function(){$(this).hide()});
                 $(document).off('click', 'div[data-name=previewImg]>div', changePreviewImg);
             });
+
+            datePickerActive();
+
+
+
+            $('.modal').on('show.bs.modal', function(){
+                modalTmp = this;
+                baseApp.dialogShow(this);
+            });
+
+            window.top.$('.tabs-main > div').scroll(function(){
+                baseApp.dialogShow(modalTmp);
+            })
         }
     }
 }();

@@ -5,6 +5,7 @@ from models import ProductCategory, ProductBrand, ProductBrandSeries, \
     ProductCategoryAttribute, ProductCategoryAttributeValue
 from django.core.cache import cache
 from customers.models import Company
+from django.db.models import Q
 
 class Node(object):
     def __init__(self, _id, pid, obj):
@@ -171,9 +172,15 @@ def get_category_companies(category_id):
     return res
 
 
-def get_company_brands(category_id, company_id):
-    brands = ProductBrand.objects.filter(categories=category_id,
-                                         companies=company_id,active=True)
+def get_company_brands(category_id=None, company_id=None):
+    select_q = Q()
+    if category_id and not company_id:
+        select_q = Q(categories=category_id, active=True)
+    if company_id and not category_id:
+        select_q = Q(companies=company_id, active=True)
+    if category_id and company_id:
+        select_q = Q(categories=category_id, companies=company_id, active=True)
+    brands = ProductBrand.objects.filter(select_q)
     res = []
     for brand in brands:
         res.append({'id': brand.id, 'name': brand.name})
@@ -200,7 +207,7 @@ def get_category_attributes(category_id):
 def get_category_attribute_values(category_id, series_id):
     result = []
     attributes = ProductCategoryAttribute.objects.filter(
-        category=category_id)
+        category=category_id,active=True)
     for attr in attributes:
         values = attr.values.filter(series=series_id, active=True)
         searchable = -1

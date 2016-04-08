@@ -67,7 +67,7 @@
                        placeholder="搜索...">
             </div>
             <div class="left select-table">
-                <div class="dateText first left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上传日期：</div>
+                <div class="dateText first left">上传日期：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
                 <div class="input-group date form_date"
                      data-date-format="yyyy-mm-dd">
                     <input sid="Date-update"
@@ -76,7 +76,7 @@
                            value=""
                            readonly>
                     <span class="input-group-addon"><span
-                            class="glyphicon glyphicon-calendar"></span></span>
+                            class="glyphicon glyphicon-remove"></span></span>
                 </div>
             </div>
             <div class="left select-table">
@@ -88,7 +88,7 @@
                            size="16" type="text" id="endDate-update"
                            value="" readonly>
                     <span class="input-group-addon"><span
-                            class="glyphicon glyphicon-calendar"></span></span>
+                            class="glyphicon glyphicon-remove"></span></span>
                 </div>
             </div>
             {#            <button class="btn btn-primary select1 select2" type="button">导出</button>#}
@@ -201,8 +201,8 @@
                                 <div>
                                     <table>
                                         <tr>
-                                            <th>产品编号</th>
-                                            <td class="js-modal-product-no"></td>
+                                            <th width="200px">产品编号</th>
+                                            <td width="300px" class="js-modal-product-no"></td>
                                         </tr>
                                         <tr>
                                             <th>产品名称</th>
@@ -229,8 +229,8 @@
                                 <div>
                                     <table>
                                         <tr>
-                                            <th>规格编号</th>
-                                            <td class="js-modal-model-no"></td>
+                                            <th width="200px">规格编号</th>
+                                            <td width="300px" class="js-modal-model-no"></td>
                                         </tr>
                                         <tr>
                                             <th>产品型号</th>
@@ -309,8 +309,10 @@
     var url = {% autoescape off %}{{ urls }}{% endautoescape %};
     $(function () {
         productApp.init();
-        baseApp.pickDate($('.form_date'));
         newTabs.iTab($('div[data-name=detail-tabs]'));
+        for(var i = 0; i <= $('.modal-dialog').length; i++){
+            baseApp.startDrag($('.modal-dialog .modal-header')[i], $('.modal-dialog')[i]);
+        }
     });
 
 </script>

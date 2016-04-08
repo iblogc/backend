@@ -45,16 +45,6 @@ class LoginView(TemplateView):
                     'message': '',
                     'data': ''
                 }))
-            import hashlib
-            if not user.password == hashlib.sha1(
-                            password + hashlib.sha1(
-                        user.security).hexdigest()).hexdigest():
-                # 登录密码错误
-                return HttpResponse(json.dumps({
-                    'result': 1,
-                    'message': '',
-                    'data': ''
-                }))
             login(request, user)
             if hasattr(user, 'admin'):
                 admin = user.admin
