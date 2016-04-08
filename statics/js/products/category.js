@@ -66,7 +66,7 @@ var categoryApp = function () {
                             for (var index in selected_ids) {
                                 $('div.js-series[data-id="' + selected_ids[index] + '"]').remove();
                             }
-
+                            series = 0;
                         }
                     },
                     "json"
@@ -85,7 +85,7 @@ var categoryApp = function () {
                             for (var index in selected_ids) {
                                 $('div.js-brand[data-id="' + selected_ids[index] + '"]').remove();
                             }
-
+                            brand = 0;
                         }
                     },
                     "json"
@@ -103,7 +103,7 @@ var categoryApp = function () {
                             for (var index in selected_ids) {
                                 $('div.js-company[data-id="' + selected_ids[index] + '"]').remove();
                             }
-
+                            company = 0;
                         }
                     },
                     "json"
@@ -120,7 +120,7 @@ var categoryApp = function () {
                             for (var index in selected_ids) {
                                 $('div.js-third-category[data-id="' + selected_ids[index] + '"]').remove();
                             }
-
+                            third_category = 0;
                         }
                     },
                     "json"
@@ -137,7 +137,7 @@ var categoryApp = function () {
                             for (var index in selected_ids) {
                                 $('div.js-second-category[data-id="' + selected_ids[index] + '"]').remove();
                             }
-
+                            selected_company = 0;
                         }
                     },
                     "json"
