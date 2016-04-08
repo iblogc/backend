@@ -132,7 +132,7 @@ $('.js-header').on('click', function () {
 $('.js-product-detail').on('click', function () {
     var id = $(this).attr('data-id');
     product_id = id;
-    $.post('/products/detail/' + id + '/', {'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()}, function (data) {
+    $.get('/sdk/product/' + id + '/', {}, function (data) {
         console.log(data);
         $('.js-modal-product-no').html(data.product_no);
         $('.js-modal-product-name').html(data.product_name);

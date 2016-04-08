@@ -268,50 +268,6 @@ def upload_product_preview(request):
          "url": model_preview.file.url}))
 
 
-class ProductDetailView(LoginRequiredMixin, TemplateView):
-    template_name = "products/_product.html"
-
-    def post(self, request, *args, **kwargs):
-        p = Product.objects.get(id=kwargs['pk'])
-        self.product = {
-            "id": p.id,
-            "product_no": p.product_no,
-            "product_name": p.name or 'N/A',
-            "company_name": p.company and p.company.name or 'N/A',
-            "category_name": get_category(p.category_id) or 'N/A',
-            "brand": p.brand and p.brand.name or 'N/A',
-            "series": p.series and p.series.name or 'N/A',
-            "args": {},
-            "remarks": p.remark or 'N/A',
-            "norm_no": p.norms_no or 'N/A',
-            "version": p.version_no or 'N/A',
-            # "model_name": model.name,
-            "length": str(p.length),
-            "width": str(p.width),
-            "height": str(p.height),
-            "material": p.material or 'N/A',
-            "color": p.color or 'N/A',
-            'chartlet': p.chartlet_path,
-            'files': [],
-            'previews': []
-        }
-        for file in p.files.all().order_by('-id'):
-            self.product['files'].append({
-                'id': file.id,
-                'name': file.name,
-                'url': file.file.url,
-                'preview': file.preview.url
-            })
-        for preview in p.previews.all().order_by('-id'):
-            self.product['previews'].append({
-                'id': preview.id,
-                'name': preview.name,
-                'url': preview.file.url
-            })
-        self.product['args'] = json.loads(p.args.decode('utf-8'))
-        return HttpResponse(json.dumps(self.product))
-
-
 class CategoryView(LoginRequiredMixin, TemplateView):
     template_name = "products/_category.html"
 
