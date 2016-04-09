@@ -22,9 +22,6 @@ class Account(AbstractBaseUser):
     objects = UserManager()
 
     def check_password(self, password):
-        print get_password(password,self.get_or_generate_security())
-        print hashlib.sha1(password + hashlib.sha1(self.security).hexdigest()).hexdigest()
-        print self.password
         if get_password(password,self.get_or_generate_security()) == self.password\
                 or hashlib.sha1(password + hashlib.sha1(self.security).hexdigest()).hexdigest() == self.password:
             return True

@@ -27,7 +27,7 @@ git地址: http://192.168.3.112:10080/huanghanxian/gezadmin
 
 #### gunicorn
 gunicorn无法处理静态资源，需要配合其他服务器如nginx等使用。
->gunicorn Lejuadmin.wsgi
+>gunicorn gezbackend.wsgi
 
 
 # 调试

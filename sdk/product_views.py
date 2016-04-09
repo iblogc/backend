@@ -230,7 +230,8 @@ class ProductViewSet(LoginRequiredMixin, viewsets.ViewSet):
                 'name': preview.name,
                 'url': preview.file.url
             })
-        product['args'] = json.loads(p.args.decode('utf-8'))
+        if p.args:
+            product['args'] = json.loads(p.args.decode('utf-8'))
         return Response(product,status=status.HTTP_200_OK)
 
     @detail_route(methods=['post','get'])
