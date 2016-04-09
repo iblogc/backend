@@ -155,31 +155,18 @@ class ProductViewSet(LoginRequiredMixin, viewsets.ViewSet):
                 charlet = ""
                 charlet = product.chartlet_path
                 result.append({
-                    "id": product.id if not kw else change_style(
-                        str(product.id), kw.strip()),
-                    "name": product.name if not kw else change_style(
-                        product.name, kw.strip()),
-                    "product_no": product.product_no if not kw else change_style(
-                        product.product_no,
-                        kw.strip()),
-                    "brand": brand_name if not kw else change_style(
-                        brand_name, kw.strip()),
-                    "series": series_name if not kw else change_style(
-                        series_name, kw.strip()),
-                    "c1": c1 if not kw else change_style(c1,
-                                                              kw.strip()),
-                    "c2": c2 if not kw else change_style(c2,
-                                                              kw.strip()),
-                    "c3": c3 if not kw else change_style(c3,
-                                                              kw.strip()),
-                    "company": company_name if not kw else change_style(
-                        company_name, kw.strip()),
-                    "style": style if not kw else change_style(style,
-                                                                    kw.strip()),
-                    "create_time": ctime if not kw else change_style(ctime,
-                                                                          kw.strip()),
-                    "update_time": utime if not kw else change_style(utime,
-                                                                          kw.strip()),
+                    "id": product.id,
+                    "name": product.name,
+                    "product_no": product.product_no,
+                    "brand": brand_name,
+                    "series": series_name,
+                    "c1": c1,
+                    "c2": c2,
+                    "c3": c3,
+                    "company": company_name,
+                    "style": style,
+                    "create_time": ctime,
+                    "update_time": utime,
                     "charlet": charlet,
                     "status": product.status,
                     "status_string": product.status and '启用' or '禁用',
@@ -230,7 +217,8 @@ class ProductViewSet(LoginRequiredMixin, viewsets.ViewSet):
                 'name': preview.name,
                 'url': preview.file.url
             })
-        product['args'] = json.loads(p.args.decode('utf-8'))
+        if p.args:
+            product['args'] = json.loads(p.args.decode('utf-8'))
         return Response(product,status=status.HTTP_200_OK)
 
     @detail_route(methods=['post','get'])

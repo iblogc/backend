@@ -7,6 +7,7 @@ from .product_views import ProductViewSet
 from .brand_views import BrandViewSet
 from .company_views import CompanyViewSet
 from .series_views import SeriesViewSet
+from .account_views import AccountViewSet
 
 router = routers.SimpleRouter()
 router.register(r'category', CategoryViewSet, 'cateogry')
@@ -15,5 +16,5 @@ router.register(r'product', ProductViewSet, 'product')
 router.register(r'brand', BrandViewSet, 'brand')
 router.register(r'company', CompanyViewSet, 'company')
 router.register(r'series', SeriesViewSet, 'series')
-
+router.register(r'account', AccountViewSet, 'account')
 urlpatterns = router.urls

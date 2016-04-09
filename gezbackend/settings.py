@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework.authtoken',
+    'oauth2_provider',
     'accounts',
     'attachments',
     'customers',
@@ -47,8 +49,6 @@ INSTALLED_APPS = [
     'property',
     'system',
     'sdk',
-    # 'debug_toolbar',
-    # 'debugtools',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -66,28 +66,8 @@ MIDDLEWARE_CLASSES = [
 AUTH_USER_MODEL = 'accounts.Account'
 
 
-INTERNAL_IPS = ('127.0.0.1')
-DEBUG_TOOLBAR_CONFIG = {
-  'JQUERY_URL':'/statics/js/jquery-2.1.4.min.js',
-}
-
 ROOT_URLCONF = 'gezbackend.urls'
 
-TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-            ],
-        },
-    },
-]
 
 WSGI_APPLICATION = 'gezbackend.wsgi.application'
 
@@ -119,6 +99,23 @@ else:
         }
     }
 
+OAUTH2_PROVIDER = {
+    # this is the list of available scopes
+    'SCOPES': {'read': 'Read scope', 'write': 'Write scope',
+               'groups': 'Access to your groups'}
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'oauth2_provider.ext.rest_framework.OAuth2Authentication',
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+
+    )
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators

@@ -17,8 +17,6 @@ class CategoryViewSet(viewsets.ViewSet):
     @list_route(methods=['get'])
     def search(self, request):
         kw = request.GET.get('kw').strip()
-        per_page = int(request.GET.get('per_page', 50))
-        page = int(request.GET.get('page', 1))
         # series = ProductBrandSeries.objects.filter(
         #     Q(name__icontains=kw) | Q(brand__name__icontains=kw) | Q(
         #         brand__companies__name__icontains=kw) | Q(
@@ -33,11 +31,16 @@ class CategoryViewSet(viewsets.ViewSet):
                 brand__companies__name=kw) | Q(
                 brand__categories__name=kw) | Q(
                 brand__categories__parent_category__name=kw) | Q(
-                brand__categories__parent_category__parent_category__name=kw))
+                brand__categories__parent_category__parent_category__name=kw)).order_by(
+            'brand__categories__parent_category__parent_category__no',
+            'brand__categories__parent_category__no', 'brand__categories__no',
+            'brand__companies__no', 'brand__no', 'no')
         result = []
         for se in series:
             for c3 in se.brand.categories.all():
                 for company in se.brand.companies.all():
+                    if not (se.active and se.brand.active and company.active and c3.active and c3.parent_category.active and c3.parent_category.parent_category.active):
+                        continue
                     result_dict = {
                         'first_category': c3.parent_category.parent_category.name,
                         'second_category': c3.parent_category.name,
@@ -52,12 +55,8 @@ class CategoryViewSet(viewsets.ViewSet):
                                     result_dict['brand'] == kw or result_dict[
                         'series'] == kw:
                         result.append(result_dict)
-        p = Paginator(result, per_page)
-        current_page = p.page(page)
-        total_pages = p.num_pages
         return Response(
-            {'data': current_page.object_list, 'total_pages': total_pages,
-             'current_page': page}, status=status.HTTP_200_OK)
+            {'data': result}, status=status.HTTP_200_OK)
 
     @detail_route(methods=['get'])
     def sub_categories(self, request, pk):
