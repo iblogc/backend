@@ -19,39 +19,39 @@ class CategoryViewSet(viewsets.ViewSet):
         kw = request.GET.get('kw').strip()
         # series = ProductBrandSeries.objects.filter(
         #     Q(name__icontains=kw) | Q(brand__name__icontains=kw) | Q(
-        #         brand__companies__name__icontains=kw) | Q(
+        #         brand__manufactors__name__icontains=kw) | Q(
         #         brand__categories__name__icontains=kw) | Q(
         #         brand__categories__parent_category__name__icontains=kw) | Q(
         #         brand__categories__parent_category__parent_category__name__icontains=kw))
         series = ProductBrandSeries.objects.select_related(
-            'brand').prefetch_related('brand__companies', 'brand__categories',
+            'brand').prefetch_related('brand__manufactors', 'brand__categories',
                                       'brand__categories__parent_category',
                                       'brand__categories__parent_category__parent_category').filter(
             Q(name=kw) | Q(brand__name=kw) | Q(
-                brand__companies__name=kw) | Q(
+                brand__manufactors__name=kw) | Q(
                 brand__categories__name=kw) | Q(
                 brand__categories__parent_category__name=kw) | Q(
                 brand__categories__parent_category__parent_category__name=kw)).order_by(
             'brand__categories__parent_category__parent_category__no',
             'brand__categories__parent_category__no', 'brand__categories__no',
-            'brand__companies__no', 'brand__no', 'no')
+            'brand__manufactors__no', 'brand__no', 'no')
         result = []
         for se in series:
             for c3 in se.brand.categories.all():
-                for company in se.brand.companies.all():
-                    if not (se.active and se.brand.active and company.active and c3.active and c3.parent_category.active and c3.parent_category.parent_category.active):
+                for manufactor in se.brand.manufactors.all():
+                    if not (se.active and se.brand.active and manufactor.active and c3.active and c3.parent_category.active and c3.parent_category.parent_category.active):
                         continue
                     result_dict = {
                         'first_category': c3.parent_category.parent_category.name,
                         'second_category': c3.parent_category.name,
                         'third_category': c3.name,
                         'category_id': c3.id, 'series_id': se.id,
-                        'company': company.name, 'brand': se.brand.name,
+                        'manufactor': manufactor.name, 'brand': se.brand.name,
                         'series': se.name,}
                     if result_dict['first_category'] == kw or result_dict[
                         'second_category'] == kw or result_dict[
                         'third_category'] == kw or result_dict[
-                        'company'] == kw or \
+                        'manufactor'] == kw or \
                                     result_dict['brand'] == kw or result_dict[
                         'series'] == kw:
                         result.append(result_dict)
@@ -64,14 +64,14 @@ class CategoryViewSet(viewsets.ViewSet):
                         status=status.HTTP_200_OK)
 
     @detail_route(methods=['get'])
-    def companies(self, request, pk):
-        return Response(get_category_companies(pk),
+    def manufactors(self, request, pk):
+        return Response(get_category_manufactors(pk),
                         status=status.HTTP_200_OK)
 
     @detail_route()
     def brands(self, request, pk=None):
-        company_id = request.GET.get('company_id', 0)
-        return Response(get_company_brands(pk, company_id),
+        manufactor_id = request.GET.get('manufactor_id', 0)
+        return Response(get_manufactor_brands(pk, manufactor_id),
                         status=status.HTTP_200_OK)
 
     @list_route(methods=['post'])

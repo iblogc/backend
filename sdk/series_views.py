@@ -5,8 +5,7 @@ from rest_framework import viewsets
 from products.product_utils import *
 from rest_framework import status
 from rest_framework.response import Response
-from customers.models import Company
-from products.models import ProductBrand, CategoryBrand, CompanyBrand
+from products.models import ProductBrand, CategoryBrand, ManufactorBrand, Manufactor
 
 
 class SeriesViewSet(viewsets.ViewSet):

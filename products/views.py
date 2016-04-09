@@ -9,9 +9,8 @@ from django.views.generic import TemplateView, ListView
 from django.shortcuts import render
 from braces.views import LoginRequiredMixin
 from .models import Product, ProductCategory, ProductBrand, ProductBrandSeries, \
-    CategoryCompany, CategoryBrand, CompanyBrand, ProductModelFiles, \
-    ProductModelPreviews
-from customers.models import Company
+    CategoryManufactor, CategoryBrand, ManufactorBrand, ProductModelFiles, \
+    ProductModelPreviews, Manufactor
 from accounts.authorize import AccountLoginMixin
 from django.core.paginator import Paginator
 from django.core.cache import cache
@@ -78,7 +77,7 @@ class ProductView(LoginRequiredMixin, TemplateView):
                 category__parent_category__parent_category__name__icontains=self.kw) | Q(
                 category__parent_category__name__icontains=self.kw) | Q(
                 category__name__icontains=self.kw) | Q(
-                company__name__icontains=self.kw) | Q(
+                manufactor__name__icontains=self.kw) | Q(
                 brand__name__icontains=self.kw) | Q(
                 series__name__icontains=self.kw)
 
@@ -94,7 +93,7 @@ class ProductView(LoginRequiredMixin, TemplateView):
                     categroy_q = Q(category=self.c3)
         com_q = Q()
         if self.com:
-            com_q = Q(company__name__icontains=self.com)
+            com_q = Q(manufactor__name__icontains=self.com)
         b_q = Q()
         if self.b:
             b_q = Q(brand__name__icontains=self.b)
@@ -107,7 +106,7 @@ class ProductView(LoginRequiredMixin, TemplateView):
         select_q = Q(type=self.type, active=1)
 
         products = Product.objects.select_related('brand', 'series',
-                                                  'company',
+                                                  'manufactor',
                                                   'category',
                                                   'category__parent_category',
                                                   'category__parent_category__parent_category').filter(
@@ -136,7 +135,7 @@ class ProductView(LoginRequiredMixin, TemplateView):
                     self.desc == 0 and '-' or ''))
         elif self.order == 'c':
             products = products.extra(select={
-                'gbk_title': 'convert(`customers_company`.`name` using gbk)'}).order_by(
+                'gbk_title': 'convert(`customers_manufactor`.`name` using gbk)'}).order_by(
                 '%sgbk_title' % (self.desc == 0 and '-' or ''))
         elif self.order == 'b':
             products = products.extra(select={
@@ -167,7 +166,7 @@ class ProductView(LoginRequiredMixin, TemplateView):
             for product in self.page.object_list:
                 brand_name = product.brand and product.brand.name or 'N/A'
                 series_name = product.series and product.series.name or 'N/A'
-                company_name = product.company and product.company.name or 'N/A'
+                manufactor_name = product.manufactor and product.manufactor.name or 'N/A'
                 c1 = 'N/A'
                 c2 = 'N/A'
                 c3 = 'N/A'
@@ -201,8 +200,8 @@ class ProductView(LoginRequiredMixin, TemplateView):
                                                               self.kw.strip()),
                     "c3": c3 if not self.kw else change_style(c3,
                                                               self.kw.strip()),
-                    "company": company_name if not self.kw else change_style(
-                        company_name, self.kw.strip()),
+                    "manufactor": manufactor_name if not self.kw else change_style(
+                        manufactor_name, self.kw.strip()),
                     "style": style if not self.kw else change_style(style,
                                                                     self.kw.strip()),
                     "create_time": ctime if not self.kw else change_style(ctime,
@@ -283,12 +282,12 @@ def import_xls(request):
         first_category = ''
         second_category = ''
         third_category = ''
-        company_name = ''
+        manufactor_name = ''
         brand_name = ''
         series_name = ''
         datas_array = {}
         category_array = []
-        company_array = []
+        manufactor_array = []
         brand_array = []
         series_array = []
         for row_no in range(1, row_count):
@@ -301,7 +300,7 @@ def import_xls(request):
                 if cells[2].strip() != '':
                     third_category = cells[2].strip()
                 if cells[3].strip() != '':
-                    company_name = cells[3].strip()
+                    manufactor_name = cells[3].strip()
                 if cells[4].strip() != '':
                     brand_name = cells[4].strip()
                 if cells[5].strip() != '':
@@ -322,14 +321,14 @@ def import_xls(request):
                         third_category] = []
                 if not third_category in category_array:
                     category_array.append(third_category)
-                if not (company_name, brand_name, series_name) in \
+                if not (manufactor_name, brand_name, series_name) in \
                         datas_array[first_category][second_category][
                             third_category]:
                     datas_array[first_category][second_category][
                         third_category].append(
-                        (company_name, brand_name, series_name))
-                if not company_name in company_array:
-                    company_array.append(company_name)
+                        (manufactor_name, brand_name, series_name))
+                if not manufactor_name in manufactor_array:
+                    manufactor_array.append(manufactor_name)
                 if not brand_name in brand_array:
                     brand_array.append(brand_name)
                 if not series_name in series_array:
@@ -338,7 +337,7 @@ def import_xls(request):
         max_first_category_no = 1
         max_second_category_no = 1
         max_third_category_no = 1
-        max_company_no = 1
+        max_manufactor_no = 1
         max_brand_no = 1
         max_series_no = 1
         if ProductCategory.objects.filter(step=1).exists():
@@ -353,8 +352,8 @@ def import_xls(request):
             max_third_category_no = \
                 ProductCategory.objects.filter(step=3).order_by('-no')[
                     0].no + 1
-        if Company.objects.exists():
-            max_company_no = Company.objects.all().order_by('-no')[0].no + 1
+        if Manufactor.objects.exists():
+            max_manufactor_no = Manufactor.objects.all().order_by('-no')[0].no + 1
         if ProductBrand.objects.exists():
             max_brand_no = ProductBrand.objects.all().order_by('-no')[
                                0].no + 1
@@ -362,13 +361,13 @@ def import_xls(request):
             max_series_no = \
                 ProductBrandSeries.objects.all().order_by('-no')[0].no + 1
         exists_catecories = ProductCategory.objects.filter(name__in=category_array)
-        exists_companies = Company.objects.filter(name__in=company_array)
+        exists_manufactors = Manufactor.objects.filter(name__in=manufactor_array)
         exists_brands = ProductBrand.objects.filter(name__in=brand_array)
         exists_series = ProductBrandSeries.objects.filter(name__in=series_array)
         first_categories = {}
         second_categories = {}
         third_categories = {}
-        companies = {}
+        manufactors = {}
         brands = {}
         series = {}
         for category in exists_catecories:
@@ -378,8 +377,8 @@ def import_xls(request):
                 second_categories[category.name] = category
             else:
                 third_categories[category.name] = category
-        for company in exists_companies:
-            companies[company.name] = company
+        for manufactor in exists_manufactors:
+            manufactors[manufactor.name] = manufactor
         for brand in exists_brands:
             brands[brand.name] = brand
         for se in exists_series:
@@ -387,7 +386,7 @@ def import_xls(request):
         new_first_categories = []
         new_second_categories = []
         new_third_categories = []
-        new_companies = []
+        new_manufactors = []
         new_brands = []
         new_series = []
         for first_category_name in datas_array.keys():
@@ -429,59 +428,59 @@ def import_xls(request):
             for second_category_name in datas_array[first_category_name].keys():
                 for third_category_name in datas_array[first_category_name][
                     second_category_name].keys():
-                    for company_name,brand_name,series_name in datas_array[first_category_name][
+                    for manufactor_name,brand_name,series_name in datas_array[first_category_name][
                         second_category_name][third_category_name]:
-                        print company_name,brand_name,series_name
-                        if not companies.get(company_name):
-                            company = Company(name=company_name,no=max_company_no)
-                            max_company_no += 1
-                            new_companies.append(company)
+                        print manufactor_name,brand_name,series_name
+                        if not manufactors.get(manufactor_name):
+                            manufactor = Manufactor(name=manufactor_name,no=max_manufactor_no)
+                            max_manufactor_no += 1
+                            new_manufactors.append(manufactor)
                         if not brands.get(brand_name):
                             brand = ProductBrand(name=brand_name,no=max_brand_no)
                             max_brand_no += 1
                             new_brands.append(brand)
 
-        Company.objects.bulk_create(new_companies)
+        Manufactor.objects.bulk_create(new_manufactors)
         ProductBrand.objects.bulk_create(new_brands)
 
-        for company in Company.objects.filter(name__in=[company.name for company in new_companies]):
-            companies[company.name] = company
+        for manufactor in Manufactor.objects.filter(name__in=[manufactor.name for manufactor in new_manufactors]):
+            manufactors[manufactor.name] = manufactor
         for brand in ProductBrand.objects.filter(name__in=[brand.name for brand in new_brands]):
             brands[brand.name] = brand
-        exists_category_companies = CategoryCompany.objects.filter(category__in=third_categories.values(),company__in=companies.values())
+        exists_category_manufactors = CategoryManufactor.objects.filter(category__in=third_categories.values(),manufactor__in=manufactors.values())
         exists_category_brands = CategoryBrand.objects.filter(category__in=third_categories.values(),brand__in=brands.values())
-        exists_company_brands = CompanyBrand.objects.filter(company__in=companies.values(),brand__in=brands.values())
-        category_companies = {}
+        exists_manufactor_brands = ManufactorBrand.objects.filter(manufactor__in=manufactors.values(),brand__in=brands.values())
+        category_manufactors = {}
         category_brands = {}
-        company_brands = {}
-        for category_company in exists_category_companies:
-            category_companies[(category_company.category.name,category_company.company.name)] = category_company
+        manufactor_brands = {}
+        for category_manufactor in exists_category_manufactors:
+            category_manufactors[(category_manufactor.category.name,category_manufactor.manufactor.name)] = category_manufactor
 
         for category_brand in exists_category_brands:
-            category_brands[(category_brand.category.name,category_brand.brand.name)] = category_company
-        for company_brand in exists_company_brands:
-            company_brands[(company_brand.company.name,company_brand.brand.name)] = company_brand
-        new_category_companies = []
+            category_brands[(category_brand.category.name,category_brand.brand.name)] = category_brand
+        for manufactor_brand in exists_manufactor_brands:
+            manufactor_brands[(manufactor_brand.manufactor.name,manufactor_brand.brand.name)] = manufactor_brand
+        new_category_manufactors = []
         new_category_brands = []
-        new_company_brands = []
+        new_manufactor_brands = []
         for first_category_name in datas_array.keys():
             for second_category_name in datas_array[first_category_name].keys():
                 for third_category_name in datas_array[first_category_name][
                     second_category_name].keys():
                     category = third_categories[third_category_name]
-                    for company_name, brand_name, series_name in \
+                    for manufactor_name, brand_name, series_name in \
                     datas_array[first_category_name][
                         second_category_name][third_category_name]:
-                        company = companies[company_name]
-                        if not category_companies.get((third_category_name,company_name)):
-                            category_company = CategoryCompany(category=category,company=company)
-                            new_category_companies.append(category_company)
+                        manufactor = manufactors[manufactor_name]
+                        if not category_manufactors.get((third_category_name,manufactor_name)):
+                            category_manufactor = CategoryManufactor(category=category,manufactor=manufactor)
+                            new_category_manufactors.append(category_manufactor)
         for first_category_name in datas_array.keys():
             for second_category_name in datas_array[first_category_name].keys():
                 for third_category_name in datas_array[first_category_name][
                     second_category_name].keys():
                     category = third_categories[third_category_name]
-                    for company_name, brand_name, series_name in \
+                    for manufactor_name, brand_name, series_name in \
                             datas_array[first_category_name][
                                 second_category_name][third_category_name]:
                         brand = brands[brand_name]
@@ -494,24 +493,24 @@ def import_xls(request):
             for second_category_name in datas_array[first_category_name].keys():
                 for third_category_name in datas_array[first_category_name][
                     second_category_name].keys():
-                    for company_name, brand_name, series_name in \
+                    for manufactor_name, brand_name, series_name in \
                             datas_array[first_category_name][
                                 second_category_name][third_category_name]:
-                        company = companies[company_name]
+                        manufactor = manufactors[manufactor_name]
                         brand = brands[brand_name]
-                        if not company_brands.get((company_name,
+                        if not manufactor_brands.get((manufactor_name,
                                                    brand_name)):
-                            company_brand = CompanyBrand(
-                                company=company, brand=brand)
-                            new_company_brands.append(company_brand)
-        CategoryCompany.objects.bulk_create(new_category_companies)
+                            manufactor_brand = ManufactorBrand(
+                                manufactor=manufactor, brand=brand)
+                            new_manufactor_brands.append(manufactor_brand)
+        CategoryManufactor.objects.bulk_create(new_category_manufactors)
         CategoryBrand.objects.bulk_create(new_category_brands)
-        CompanyBrand.objects.bulk_create(new_company_brands)
+        ManufactorBrand.objects.bulk_create(new_manufactor_brands)
         for first_category_name in datas_array.keys():
             for second_category_name in datas_array[first_category_name].keys():
                 for third_category_name in datas_array[first_category_name][
                     second_category_name].keys():
-                    for company_name, brand_name, series_name in \
+                    for manufactor_name, brand_name, series_name in \
                             datas_array[first_category_name][
                                 second_category_name][third_category_name]:
                         brand = brands[brand_name]
@@ -555,11 +554,11 @@ def export_xls(request):
             for c2 in category.sub_categories.all():
                 second_row = row_no
                 for c3 in c2.sub_categories.all():
-                    for company in c3.companies.all():
-                        for brand in c3.brands.filter(companies=company):
+                    for manufactor in c3.manufactors.all():
+                        for brand in c3.brands.filter(manufactors=manufactor):
                             for series in brand.series.all():
                                 sheet.write(row_no, 2, c3.name, format)
-                                sheet.write(row_no, 3, company.name, format)
+                                sheet.write(row_no, 3, manufactor.name, format)
                                 sheet.write(row_no, 4, brand.name, format)
                                 sheet.write(row_no, 5, series.name, format)
                                 row_no += 1

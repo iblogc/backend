@@ -8,7 +8,7 @@ var categoryApp = function () {
     var second_category = 0;
     var third_category = 0;
     var step = 1;
-    var company = 0;
+    var manufactor = 0;
     var brand = 0;
     var series = 0;
     var settings_series = 0;
@@ -72,13 +72,13 @@ var categoryApp = function () {
                     },
                     "json"
                 );
-            } else if (company != 0) {
+            } else if (manufactor != 0) {
                 $.post(
                     encodeURI('/sdk/brand/batch_delete/'),
                     {
                         'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
                         'category_id': third_category,
-                        'company_id': company,
+                        'manufactor_id': manufactor,
                         'ids': ids,
                     },
                     function (data) {
@@ -93,7 +93,7 @@ var categoryApp = function () {
                 );
             } else if (third_category != 0) {
                 $.post(
-                    encodeURI('/sdk/company/batch_delete/'),
+                    encodeURI('/sdk/manufactor/batch_delete/'),
                     {
                         'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
                         'category_id': third_category,
@@ -102,9 +102,9 @@ var categoryApp = function () {
                     function (data) {
                         if (data.success == 1) {
                             for (var index in selected_ids) {
-                                $('div.js-company[data-id="' + selected_ids[index] + '"]').remove();
+                                $('div.js-manufactor[data-id="' + selected_ids[index] + '"]').remove();
                             }
-                            company = 0;
+                            manufactor = 0;
                         }
                     },
                     "json"
@@ -138,7 +138,7 @@ var categoryApp = function () {
                             for (var index in selected_ids) {
                                 $('div.js-second-category[data-id="' + selected_ids[index] + '"]').remove();
                             }
-                            selected_company = 0;
+                            selected_manufactor = 0;
                         }
                     },
                     "json"
@@ -147,7 +147,7 @@ var categoryApp = function () {
         } else if ($(this).attr('data-type') == 0) {
             var selected_series = $('.js-series.selected').attr('data-id');
             var selected_brand = $('.js-brand.selected').attr('data-id');
-            var selected_company = $('.js-company.selected').attr('data-id');
+            var selected_manufactor = $('.js-manufactor.selected').attr('data-id');
             var selected_third_category = $('.js-third-category.selected').attr('data-id');
             var selected_second_category = $('.js-second-category.selected').attr('data-id');
             var selected_first_category = $('.js-first-category.selected').attr('data-id');
@@ -155,8 +155,8 @@ var categoryApp = function () {
                 $('.js-series[data-id="' + selected_series + '"]').click();
             else if (selected_brand != undefined)
                 $('.js-brand[data-id="' + selected_brand + '"]').click();
-            else if (selected_company != undefined)
-                $('.js-company[data-id="' + selected_company + '"]').click();
+            else if (selected_manufactor != undefined)
+                $('.js-manufactor[data-id="' + selected_manufactor + '"]').click();
             else if (selected_third_category != undefined)
                 $('.js-third-category[data-id="' + selected_third_category + '"]').click();
             else if (selected_second_category != undefined)
@@ -172,7 +172,7 @@ var categoryApp = function () {
     var first_category_onclick = function () {
         $('.js-second-category-div').empty();
         $('.js-third-category-div').empty();
-        $('.js-company-div').empty();
+        $('.js-manufactor-div').empty();
         $('.js-brand-div').empty();
         $('.js-series-div').empty();
         first_category = 0;
@@ -194,14 +194,14 @@ var categoryApp = function () {
         );
         second_category = 0;
         third_category = 0;
-        company = 0;
+        manufactor = 0;
         brand = 0;
         series = 0;
     };
 
     var second_category_onclick = function () {
         $('.js-third-category-div').empty();
-        $('.js-company-div').empty();
+        $('.js-manufactor-div').empty();
         $('.js-brand-div').empty();
         $('.js-series-div').empty();
         second_category = 0;
@@ -222,13 +222,13 @@ var categoryApp = function () {
             "json"
         );
         third_category = 0;
-        company = 0;
+        manufactor = 0;
         brand = 0;
         series = 0;
     };
 
     var third_category_onclick = function () {
-        $('.js-company-div').empty();
+        $('.js-manufactor-div').empty();
         $('.js-brand-div').empty();
         $('.js-series-div').empty();
         third_category = 0;
@@ -236,33 +236,33 @@ var categoryApp = function () {
         third_category = $(this).attr('data-id');
         changeClass(this);
         $.get(
-            "/sdk/category/" + third_category + "/companies/",
+            "/sdk/category/" + third_category + "/manufactors/",
             {},
             function (data) {
                 for (var index in data) {
                     var category = data[index];
-                    $('.js-company-div').append('<div class="header js-company" data-id="' + category.id + '"><input type="checkbox" name="company-id" value="' + category.id + '"><div class="center-line js-company-name">' + category.name + '</div></div>');
+                    $('.js-manufactor-div').append('<div class="header js-manufactor" data-id="' + category.id + '"><input type="checkbox" name="manufactor-id" value="' + category.id + '"><div class="center-line js-manufactor-name">' + category.name + '</div></div>');
                 }
-                $('.js-company').bind('click', company_onclick);
+                $('.js-manufactor').bind('click', manufactor_onclick);
                 checkboxHide();
             },
             "json"
         );
-        company = 0;
+        manufactor = 0;
         brand = 0;
         series = 0;
     };
 
-    var company_onclick = function () {
+    var manufactor_onclick = function () {
         $('.js-brand-div').empty();
         $('.js-series-div').empty();
-        company = 0;
+        manufactor = 0;
         if (checkboxFlag) return;
-        company = $(this).attr('data-id');
+        manufactor = $(this).attr('data-id');
         changeClass(this);
         $.get(
             "/sdk/category/" + third_category + "/brands/",
-            {'company_id': company},
+            {'manufactor_id': manufactor},
             function (data) {
 
                 for (var index in data) {
@@ -333,9 +333,9 @@ var categoryApp = function () {
         }
     };
 
-    var add_company = function () {
+    var add_manufactor = function () {
         if (third_category != 0) {
-            $('.js-modal-save-button').bind('click', save_company);
+            $('.js-modal-save-button').bind('click', save_manufactor);
             $('#addCategoryForm').modal({backdrop: 'static', keyboard: false});
             $('#addCategoryFormLabel').html('添加厂家');
             $('.js-modal-category-label').html('厂家名称');
@@ -344,7 +344,7 @@ var categoryApp = function () {
     };
 
     var add_brand = function () {
-        if (company != 0) {
+        if (manufactor != 0) {
             $('.js-modal-save-button').bind('click', save_brand);
             $('#addCategoryForm').modal({backdrop: 'static', keyboard: false});
             $('#addCategoryFormLabel').html('添加品牌');
@@ -419,20 +419,20 @@ var categoryApp = function () {
 
     };
 
-    var save_company = function () {
-        var company_name = $('.js-modal-category-name').val();
+    var save_manufactor = function () {
+        var manufactor_name = $('.js-modal-category-name').val();
         if (third_category != 0) {
             $.post(
-                "/sdk/company/",
+                "/sdk/manufactor/",
                 {
                     'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
                     'category_id': third_category,
-                    'name': company_name,
+                    'name': manufactor_name,
                 },
                 function (data) {
                     if (data.success == 1) {
-                        $('.js-company-div').append('<div class="header js-company" data-id="' + data.company.id + '"><input type="checkbox" name="company-id" value="' + data.company.id + '"><div class="center-line js-company-name">' + data.company.name + '</div></div>');
-                        $('div.js-company[data-id="' + data.company.id + '"]').on('click', company_onclick);
+                        $('.js-manufactor-div').append('<div class="header js-manufactor" data-id="' + data.manufactor.id + '"><input type="checkbox" name="manufactor-id" value="' + data.manufactor.id + '"><div class="center-line js-manufactor-name">' + data.manufactor.name + '</div></div>');
+                        $('div.js-manufactor[data-id="' + data.manufactor.id + '"]').on('click', manufactor_onclick);
                         checkboxHide();
                         $('.js-modal-save-button').unbind('click');
                         $('#addCategoryForm').modal('hide');
@@ -448,13 +448,13 @@ var categoryApp = function () {
 
     var save_brand = function () {
         var brand_name = $('.js-modal-category-name').val();
-        if (company != 0 && third_category != 0) {
+        if (manufactor != 0 && third_category != 0) {
             $.post(
                 "/sdk/brand/",
                 {
                     'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
                     'category_id': third_category,
-                    'company_id': company,
+                    'manufactor_id': manufactor,
                     'name': brand_name,
                 },
                 function (data) {
@@ -528,19 +528,19 @@ var categoryApp = function () {
         }
     };
 
-    var delete_company = function () {
-        if (third_category != 0 && company != 0) {
-            deleteInfo($('.js-company-div .selected .center-line').html());
+    var delete_manufactor = function () {
+        if (third_category != 0 && manufactor != 0) {
+            deleteInfo($('.js-manufactor-div .selected .center-line').html());
             $('#deleteCategoryForm').modal({
                 backdrop: 'static',
                 keyboard: false
             });
-            $('.js-modal-confirm-button').bind('click', delete_company_confirm);
+            $('.js-modal-confirm-button').bind('click', delete_manufactor_confirm);
         }
     };
 
     var delete_brand = function () {
-        if (third_category != 0 && company != 0 && brand != 0) {
+        if (third_category != 0 && manufactor != 0 && brand != 0) {
             deleteInfo($('.js-brand-div .selected .center-line').html());
             $('#deleteCategoryForm').modal({
                 backdrop: 'static',
@@ -576,7 +576,7 @@ var categoryApp = function () {
                         $('div.js-second-category[data-id="' + second_category + '"]').remove();
                         second_category = 0;
                         $('.js-third-category-div').empty();
-                        $('.js-company-div').empty();
+                        $('.js-manufactor-div').empty();
                         $('.js-brand-div').empty();
                         $('.js-series-div').empty();
                     }
@@ -601,7 +601,7 @@ var categoryApp = function () {
                     if (data.success == 1) {
                         $('div.js-third-category[data-id="' + third_category + '"]').remove();
                         third_category = 0;
-                        $('.js-company-div').empty();
+                        $('.js-manufactor-div').empty();
                         $('.js-brand-div').empty();
                         $('.js-series-div').empty();
                     }
@@ -612,11 +612,11 @@ var categoryApp = function () {
         $('.js-modal-confirm-button').unbind('click');
     };
 
-    var delete_company_confirm = function () {
-        if (third_category != 0 && company != 0) {
+    var delete_manufactor_confirm = function () {
+        if (third_category != 0 && manufactor != 0) {
             var csrftoken = getCookie('csrftoken');
             $.ajax({
-                url: "/sdk/company/" + company + "/",
+                url: "/sdk/manufactor/" + manufactor + "/",
                 headers: {
                     'X-CSRFToken': csrftoken,
                 },
@@ -628,8 +628,8 @@ var categoryApp = function () {
                 dataType: 'json',
                 success: function (data) {
                     if (data.success == 1) {
-                        $('div.js-company[data-id="' + company + '"]').remove();
-                        company = 0;
+                        $('div.js-manufactor[data-id="' + manufactor + '"]').remove();
+                        manufactor = 0;
                         $('.js-brand-div').empty();
                         $('.js-series-div').empty();
                     }
@@ -641,7 +641,7 @@ var categoryApp = function () {
     };
 
     var delete_brand_confirm = function () {
-        if (third_category != 0 && company != 0 && brand != 0) {
+        if (third_category != 0 && manufactor != 0 && brand != 0) {
             var csrftoken = getCookie('csrftoken');
             $.ajax({
                 url: "/sdk/brand/" + brand + "/",
@@ -650,7 +650,7 @@ var categoryApp = function () {
                 },
                 data: {
                     'category_id': third_category,
-                    'company_id': company
+                    'manufactor_id': manufactor
                 },
                 type: "DELETE",
                 dataType: 'json',
@@ -709,13 +709,13 @@ var categoryApp = function () {
         }
     };
 
-    var edit_company = function () {
-        if (company != 0) {
-            $('.js-modal-save-button').bind('click', save_company_edit);
+    var edit_manufactor = function () {
+        if (manufactor != 0) {
+            $('.js-modal-save-button').bind('click', save_manufactor_edit);
             $('#addCategoryForm').modal({backdrop: 'static', keyboard: false});
             $('#addCategoryFormLabel').html('编辑厂家');
             $('.js-modal-category-label').html('厂家名称');
-            $('.js-modal-category-name').val($('.js-company[data-id="' + company + '"]').find('.js-company-name').html());
+            $('.js-modal-category-name').val($('.js-manufactor[data-id="' + manufactor + '"]').find('.js-manufactor-name').html());
         }
     };
 
@@ -794,12 +794,12 @@ var categoryApp = function () {
         }
     };
 
-    var save_company_edit = function () {
+    var save_manufactor_edit = function () {
         var category_name = $('.js-modal-category-name').val();
-        if (company != 0) {
+        if (manufactor != 0) {
             var csrftoken = getCookie('csrftoken');
             $.ajax({
-                url: "/sdk/company/" + company + "/",
+                url: "/sdk/manufactor/" + manufactor + "/",
                 headers: {
                     'X-CSRFToken': csrftoken,
                 },
@@ -810,18 +810,18 @@ var categoryApp = function () {
                 dataType: 'json',
                 success: function (data) {
                     if (data.success == 1) {
-                        $('.js-company[data-id="' + company + '"]').find('.js-company-name').html(category_name);
+                        $('.js-manufactor[data-id="' + manufactor + '"]').find('.js-manufactor-name').html(category_name);
                         $('.js-modal-save-button').unbind('click');
                         $('#addCategoryForm').modal('hide');
                     } else if (data.success == 2) {
-                        if ($('.js-company[data-id="' + data.company_id + '"]').length > 0) {
-                            $('.js-company[data-id="' + company + '"]').remove();
-                            company = 0;
-                            $('.js-company[data-id="' + data.company_id + '"]').click();
+                        if ($('.js-manufactor[data-id="' + data.manufactor_id + '"]').length > 0) {
+                            $('.js-manufactor[data-id="' + manufactor + '"]').remove();
+                            manufactor = 0;
+                            $('.js-manufactor[data-id="' + data.manufactor_id + '"]').click();
                         } else {
-                            $('.js-company[data-id="' + company + '"]').find('.js-company-name').html(category_name);
-                            $('.js-company[data-id="' + company + '"]').find('input').val(data.company_id);
-                            $('.js-company[data-id="' + company + '"]').attr('data-id', data.company_id);
+                            $('.js-manufactor[data-id="' + manufactor + '"]').find('.js-manufactor-name').html(category_name);
+                            $('.js-manufactor[data-id="' + manufactor + '"]').find('input').val(data.manufactor_id);
+                            $('.js-manufactor[data-id="' + manufactor + '"]').attr('data-id', data.manufactor_id);
                         }
                         $('.js-modal-save-button').unbind('click');
                         $('#addCategoryForm').modal('hide');
@@ -1181,7 +1181,7 @@ var categoryApp = function () {
                         '<div>' + data.data[tmp].first_category + '</div>' +
                         '<div>' + data.data[tmp].second_category + '</div>' +
                         '<div>' + data.data[tmp].third_category + '</div>' +
-                        '<div>' + data.data[tmp].company + '</div>' +
+                        '<div>' + data.data[tmp].manufactor + '</div>' +
                         '<div>' + data.data[tmp].brand + '</div>' +
                         '<div>' + data.data[tmp].series + '</div>' +
                         '<div><span class="fa fa-cog" category-id="' + data.data[tmp].category_id + '" series-id="' + data.data[tmp].series_id + '"></span></div>' +
@@ -1240,17 +1240,17 @@ var categoryApp = function () {
     var bindCategoryMainBtn = function () {
         $('.js-add-second-category').on('click', add_second_category);
         $('.js-add-third-category').on('click', add_third_category);
-        $('.js-add-company').on('click', add_company);
+        $('.js-add-manufactor').on('click', add_manufactor);
         $('.js-add-brand').on('click', add_brand);
         $('.js-add-series').on('click', add_series);
         $('.js-delete-second-category').on('click', delete_second_category);
         $('.js-delete-third-category').on('click', delete_third_category);
-        $('.js-delete-company').on('click', delete_company);
+        $('.js-delete-manufactor').on('click', delete_manufactor);
         $('.js-delete-brand').on('click', delete_brand);
         $('.js-delete-series').on('click', delete_series);
         $('.js-edit-second-category').on('click', edit_second_category);
         $('.js-edit-third-category').on('click', edit_third_category);
-        $('.js-edit-company').on('click', edit_company);
+        $('.js-edit-manufactor').on('click', edit_manufactor);
         $('.js-edit-brand').on('click', edit_brand);
         $('.js-edit-series').on('click', edit_series);
     };
@@ -1258,17 +1258,17 @@ var categoryApp = function () {
     var unbindCategoryMainBtn = function () {
         $('.js-add-second-category').off('click');
         $('.js-add-third-category').off('click');
-        $('.js-add-company').off('click');
+        $('.js-add-manufactor').off('click');
         $('.js-add-brand').off('click');
         $('.js-add-series').off('click');
         $('.js-delete-second-category').off('click');
         $('.js-delete-third-category').off('click');
-        $('.js-delete-company').off('click');
+        $('.js-delete-manufactor').off('click');
         $('.js-delete-brand').off('click');
         $('.js-delete-series').off('click');
         $('.js-edit-second-category').off('click');
         $('.js-edit-third-category').off('click');
-        $('.js-edit-company').off('click');
+        $('.js-edit-manufactor').off('click');
         $('.js-edit-brand').off('click');
         $('.js-edit-series').off('click');
     };
