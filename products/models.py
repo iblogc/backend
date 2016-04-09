@@ -21,7 +21,7 @@ class Product(models.Model):
     rule_val = models.CharField(max_length=100, default='', null=False)
     is_ornament = models.IntegerField(default=0, null=False)
     status = models.IntegerField(default=0, null=False)
-    company = models.ForeignKey('customers.Company', related_name='products', default=None, null=True, blank=True, on_delete=models.SET_NULL)
+    manufactor = models.ForeignKey('Manufactor', related_name='products', default=None, null=True, blank=True, on_delete=models.SET_NULL)
     create_time = models.IntegerField(default=0, null=False)
     update_time = models.IntegerField(default=0, null=False)
     args = models.TextField(default='')
@@ -74,7 +74,7 @@ class ProductCategory(models.Model):
     name = models.CharField(max_length=100, default='', null=False)
     step = models.IntegerField(default=1, null=False)   #分类目录树所处等级
     no = models.IntegerField(default=0, null=False)
-    companies = models.ManyToManyField("customers.Company", through='CategoryCompany',related_name='categories')
+    manufactors = models.ManyToManyField("Manufactor", through='CategoryManufactor',related_name='categories')
     brands = models.ManyToManyField('ProductBrand', through='CategoryBrand',related_name='categories')
     active = models.BooleanField(default=True)
 
@@ -91,16 +91,16 @@ class ProductCategory(models.Model):
             return 'c%s' % self.no
 
 
-class CategoryCompany(models.Model):
+class CategoryManufactor(models.Model):
     category = models.ForeignKey('ProductCategory')
-    company = models.ForeignKey('customers.Company')
+    manufactor = models.ForeignKey('Manufactor')
 
 class CategoryBrand(models.Model):
     category = models.ForeignKey('ProductCategory')
     brand = models.ForeignKey('ProductBrand')
 
-class CompanyBrand(models.Model):
-    company = models.ForeignKey('customers.Company')
+class ManufactorBrand(models.Model):
+    manufactor = models.ForeignKey('Manufactor')
     brand = models.ForeignKey('ProductBrand')
 
 # 产品分类属性关系数据表
@@ -124,6 +124,21 @@ class ProductCategoryAttributeValue(models.Model):
 
     def __unicode__(self):
         return '%s: %s' % (self.attribute.name, self.value)
+
+
+# 客户单位数据表
+class Manufactor(models.Model):
+    name = models.CharField(max_length=200, default='', null=False)
+    no = models.IntegerField(default=0, null=False)
+    brands = models.ManyToManyField('products.ProductBrand',through='products.ManufactorBrand',related_name='manufactors')
+    active = models.BooleanField(default=True)
+
+    def __unicode__(self):
+        return '%s(%s)' % (self.name, self.manufactor_no)
+
+    @property
+    def manufactor_no(self):
+        return 'd%s' % self.no
 
 # 产品品牌关系数据
 class ProductBrand(models.Model):

@@ -6,13 +6,12 @@ from products.models import ProductCategory
 from products.product_utils import *
 from rest_framework import status
 from rest_framework.response import Response
-from customers.models import Company
-from products.models import ProductBrand, ProductBrandSeries, CategoryCompany, CompanyBrand
+from products.models import ProductBrand, ProductBrandSeries, CategoryManufactor, ManufactorBrand, Manufactor
 
 
-class CompanyViewSet(viewsets.ViewSet):
+class ManufactorViewSet(viewsets.ViewSet):
     def list(self, request):
-        comps = Company.objects.filter(active=True)
+        comps = Manufactor.objects.filter(active=True)
         result = []
         for comp in comps:
             result.append({
@@ -25,7 +24,7 @@ class CompanyViewSet(viewsets.ViewSet):
     @detail_route()
     def brands(self, request, pk=None):
         category_id = request.GET.get('category_id', 0)
-        return Response(get_company_brands(category_id, pk),status=status.HTTP_200_OK)
+        return Response(get_manufactor_brands(category_id, pk),status=status.HTTP_200_OK)
 
     def create(self, request):
         name = request.POST.get('name').strip()
@@ -35,23 +34,23 @@ class CompanyViewSet(viewsets.ViewSet):
                 {'success': 0, 'message': '厂家名不能为空'},status=status.HTTP_200_OK)
         category = ProductCategory.objects.get(pk=category_id)
         max_no = 1
-        if Company.objects.exists():
-            max_no = Company.objects.all().order_by('-no')[0].no + 1
-        company_dict = {'id': 0, 'name': name}
-        company, flag = Company.objects.get_or_create(name=name)
-        if company.no == 0:
-            company.no = max_no
-            company.save()
-        CategoryCompany.objects.get_or_create(category=category,
-                                              company=company)
-        company_dict['id'] = company.id
-        return Response({'success': 1, 'company': company_dict},status=status.HTTP_201_CREATED)
+        if Manufactor.objects.exists():
+            max_no = Manufactor.objects.all().order_by('-no')[0].no + 1
+        manufactor_dict = {'id': 0, 'name': name}
+        manufactor, flag = Manufactor.objects.get_or_create(name=name)
+        if manufactor.no == 0:
+            manufactor.no = max_no
+            manufactor.save()
+        CategoryManufactor.objects.get_or_create(category=category,
+                                              manufactor=manufactor)
+        manufactor_dict['id'] = manufactor.id
+        return Response({'success': 1, 'manufactor': manufactor_dict},status=status.HTTP_201_CREATED)
 
     def destroy(self, request, pk=None):
         category_id = request.POST.get('category_id',0)
         category = ProductCategory.objects.get(pk=category_id)
-        company = Company.objects.get(pk=pk)
-        CategoryCompany.objects.filter(company=company,
+        manufactor = Manufactor.objects.get(pk=pk)
+        CategoryManufactor.objects.filter(manufactor=manufactor,
                                        category=category).delete()
         return Response({'success': 1},status=status.HTTP_200_OK)
 
@@ -59,10 +58,10 @@ class CompanyViewSet(viewsets.ViewSet):
     def batch_delete(self, request):
         category_id = request.POST.get('category_id', 0)
         category = ProductCategory.objects.get(pk=category_id)
-        companies = Company.objects.filter(
+        manufactors = Manufactor.objects.filter(
             pk__in=request.POST.get('ids').split(','))
-        for company in companies:
-            CategoryCompany.objects.filter(company=company,
+        for manufactor in manufactors:
+            CategoryManufactor.objects.filter(manufactor=manufactor,
                                            category=category).delete()
         return Response({'success': 1},status=status.HTTP_200_OK)
 
@@ -71,25 +70,25 @@ class CompanyViewSet(viewsets.ViewSet):
         if name == '':
             return Response(
                 {'success': 0, 'message': '厂家名不能为空'},status=status.HTTP_200_OK)
-        exists_company = Company.objects.filter(name=name).exclude(
+        exists_manufactor = Manufactor.objects.filter(name=name).exclude(
             pk=pk)
-        company = Company.objects.get(pk=pk)
-        if exists_company.exists():
-            exists_company = exists_company[0]
-            company_categories = company.categories.all()
-            company_brands = company.brands.all()
-            for category in company_categories:
-                CategoryCompany.objects.get_or_create(company=exists_company,
+        manufactor = Manufactor.objects.get(pk=pk)
+        if exists_manufactor.exists():
+            exists_manufactor = exists_manufactor[0]
+            manufactor_categories = manufactor.categories.all()
+            manufactor_brands = manufactor.brands.all()
+            for category in manufactor_categories:
+                CategoryManufactor.objects.get_or_create(manufactor=exists_manufactor,
                                                       category=category)
-            for brand in company_brands:
-                CompanyBrand.objects.get_or_create(company=exists_company,
+            for brand in manufactor_brands:
+                ManufactorBrand.objects.get_or_create(manufactor=exists_manufactor,
                                                    brand=brand)
-            company.categorycompany_set.all().delete()
-            company.companybrand_set.all().delete()
-            company.delete()
+            manufactor.categorymanufactor_set.all().delete()
+            manufactor.manufactorbrand_set.all().delete()
+            manufactor.delete()
             return Response(
-                {'success': 2, 'company_id': exists_company.id},status=status.HTTP_200_OK)
+                {'success': 2, 'manufactor_id': exists_manufactor.id},status=status.HTTP_200_OK)
         else:
-            company.name = name
-            company.save()
+            manufactor.name = name
+            manufactor.save()
             return Response({'success': 1},status=status.HTTP_200_OK)

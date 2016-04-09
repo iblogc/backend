@@ -97,7 +97,7 @@ var changeSearchLink = function () {
     c1 = $('.js-c1').val();
     c2 = $('.js-c2').val();
     c3 = $('.js-c3').val();
-    com = $('.js-company').val();
+    com = $('.js-manufactor').val();
     brand = $('.js-brand').val();
     series = $('.js-series').val();
     date_from = $('.js-df').val();
@@ -136,7 +136,7 @@ $('.js-product-detail').on('click', function () {
         $('.js-modal-product-no').html(data.product_no);
         $('.js-modal-product-name').html(data.product_name);
         $('.js-modal-product-category').html(data.category_name);
-        $('.js-modal-product-company').html(data.company_name);
+        $('.js-modal-product-manufactor').html(data.manufactor_name);
         $('.js-modal-product-brand').html(data.brand);
         $('.js-modal-product-series').html(data.series);
         $('.js-modal-model-no').html(data.norm_no);
@@ -322,7 +322,7 @@ var productApp = function () {
                     $('select[name=product2]').change();
                 }
                 $('.js-c3').val(temp[5]);
-                $('.js-company').val(temp[6]);
+                $('.js-manufactor').val(temp[6]);
                 $('.js-brand').val(temp[7]);
                 $('.js-series').val(temp[8]);
                 $('.js-df').val(temp[9]);

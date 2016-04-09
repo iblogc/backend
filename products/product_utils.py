@@ -2,9 +2,8 @@
 import json
 import time
 from models import ProductCategory, ProductBrand, ProductBrandSeries, \
-    ProductCategoryAttribute, ProductCategoryAttributeValue
+    ProductCategoryAttribute, ProductCategoryAttributeValue, Manufactor
 from django.core.cache import cache
-from customers.models import Company
 from django.db.models import Q
 
 class Node(object):
@@ -164,22 +163,22 @@ def get_sub_categories(category_id):
     return res
 
 
-def get_category_companies(category_id):
-    companies = Company.objects.filter(categories=category_id, active=True)
+def get_category_manufactors(category_id):
+    manufactors = Manufactor.objects.filter(categories=category_id, active=True)
     res = []
-    for comp in companies:
+    for comp in manufactors:
         res.append({'id': comp.id, 'name': comp.name})
     return res
 
 
-def get_company_brands(category_id=None, company_id=None):
+def get_manufactor_brands(category_id=None, manufactor_id=None):
     select_q = Q()
-    if category_id and not company_id:
+    if category_id and not manufactor_id:
         select_q = Q(categories=category_id, active=True)
-    if company_id and not category_id:
-        select_q = Q(companies=company_id, active=True)
-    if category_id and company_id:
-        select_q = Q(categories=category_id, companies=company_id, active=True)
+    if manufactor_id and not category_id:
+        select_q = Q(manufactors=manufactor_id, active=True)
+    if category_id and manufactor_id:
+        select_q = Q(categories=category_id, manufactors=manufactor_id, active=True)
     brands = ProductBrand.objects.filter(select_q)
     res = []
     for brand in brands:

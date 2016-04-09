@@ -5,8 +5,7 @@ from rest_framework import viewsets
 from products.product_utils import *
 from rest_framework import status
 from rest_framework.response import Response
-from customers.models import Company
-from products.models import ProductBrand, CategoryBrand, CompanyBrand
+from products.models import ProductBrand, CategoryBrand, ManufactorBrand, Manufactor
 
 
 class BrandViewSet(viewsets.ViewSet):
@@ -15,11 +14,11 @@ class BrandViewSet(viewsets.ViewSet):
         if not cid:
             return Response(status=status.HTTP_404_NOT_FOUND)
         result = []
-        comps = Company.objects.prefetch_related('brands',
+        comps = Manufactor.objects.prefetch_related('brands',
                                                  'brands__series').all()
         for comp_obj in comps:
             res = {}
-            res["company_id"] = comp_obj.id
+            res["manufactor_id"] = comp_obj.id
             brand = []
 
             for elem in comp_obj.brands.all():
@@ -51,12 +50,12 @@ class BrandViewSet(viewsets.ViewSet):
     def create(self, request):
         name = request.POST.get('name').strip()
         category_id = request.POST.get('category_id', 0)
-        company_id = request.POST.get('company_id', 0)
+        manufactor_id = request.POST.get('manufactor_id', 0)
         if name == '':
             return Response(
                 {'success': 0, 'message': '品牌名不能为空'}, status=status.HTTP_200_OK)
         category = ProductCategory.objects.get(pk=category_id)
-        company = Company.objects.get(pk=company_id)
+        manufactor = Manufactor.objects.get(pk=manufactor_id)
         max_no = 1
         if ProductBrand.objects.exists():
             max_no = ProductBrand.objects.all().order_by('-no')[0].no + 1
@@ -66,7 +65,7 @@ class BrandViewSet(viewsets.ViewSet):
             brand.no = max_no
             brand.save()
         CategoryBrand.objects.get_or_create(category=category, brand=brand)
-        CompanyBrand.objects.get_or_create(company=company, brand=brand)
+        ManufactorBrand.objects.get_or_create(manufactor=manufactor, brand=brand)
         brand_dict['id'] = brand.id
         return Response({'success': 1, 'brand': brand_dict},
                         status=status.HTTP_201_CREATED)
@@ -82,11 +81,11 @@ class BrandViewSet(viewsets.ViewSet):
 
     def destroy(self, request, pk=None):
         category_id = request.POST.get('category_id', 0)
-        company_id = request.POST.get('company_id', 0)
+        manufactor_id = request.POST.get('manufactor_id', 0)
         category = ProductCategory.objects.get(pk=category_id)
-        company = Company.objects.get(pk=company_id)
+        manufactor = Manufactor.objects.get(pk=manufactor_id)
         brand = ProductBrand.objects.get(pk=pk)
-        CompanyBrand.objects.filter(company=company, brand=brand).delete()
+        ManufactorBrand.objects.filter(manufactor=manufactor, brand=brand).delete()
         CategoryBrand.objects.filter(category=category, brand=brand).delete()
         return Response({'success': 1},
                         status=status.HTTP_200_OK)
@@ -94,13 +93,13 @@ class BrandViewSet(viewsets.ViewSet):
     @list_route(methods=['post'])
     def batch_delete(self, request):
         category_id = request.POST.get('category_id', 0)
-        company_id = request.POST.get('company_id', 0)
+        manufactor_id = request.POST.get('manufactor_id', 0)
         category = ProductCategory.objects.get(pk=category_id)
-        company = Company.objects.get(pk=company_id)
+        manufactor = Manufactor.objects.get(pk=manufactor_id)
         brands = ProductBrand.objects.filter(
             pk__in=request.POST.get('ids').split(','))
         for brand in brands:
-            CompanyBrand.objects.filter(company=company, brand=brand).delete()
+            ManufactorBrand.objects.filter(manufactor=manufactor, brand=brand).delete()
             CategoryBrand.objects.filter(category=category,
                                          brand=brand).delete()
         return Response({'success': 1},

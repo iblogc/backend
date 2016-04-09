@@ -48,7 +48,7 @@ class ProductViewSet(LoginRequiredMixin, viewsets.ViewSet):
                 category__parent_category__parent_category__name__icontains=kw) | Q(
                 category__parent_category__name__icontains=kw) | Q(
                 category__name__icontains=kw) | Q(
-                company__name__icontains=kw) | Q(
+                manufactor__name__icontains=kw) | Q(
                 brand__name__icontains=kw) | Q(
                 series__name__icontains=kw)
 
@@ -64,7 +64,7 @@ class ProductViewSet(LoginRequiredMixin, viewsets.ViewSet):
                     categroy_q = Q(category=c3)
         com_q = Q()
         if com:
-            com_q = Q(company__name__icontains=com)
+            com_q = Q(manufactor__name__icontains=com)
         b_q = Q()
         if b:
             b_q = Q(brand__name__icontains=b)
@@ -77,7 +77,7 @@ class ProductViewSet(LoginRequiredMixin, viewsets.ViewSet):
         select_q = Q(type=type, active=1)
 
         products = Product.objects.select_related('brand', 'series',
-                                                  'company',
+                                                  'manufactor',
                                                   'category',
                                                   'category__parent_category',
                                                   'category__parent_category__parent_category',
@@ -107,7 +107,7 @@ class ProductViewSet(LoginRequiredMixin, viewsets.ViewSet):
                     desc == 0 and '-' or ''))
         elif order == 'c':
             products = products.extra(select={
-                'gbk_title': 'convert(`customers_company`.`name` using gbk)'}).order_by(
+                'gbk_title': 'convert(`customers_manufactor`.`name` using gbk)'}).order_by(
                 '%sgbk_title' % (desc == 0 and '-' or ''))
         elif order == 'b':
             products = products.extra(select={
@@ -138,7 +138,7 @@ class ProductViewSet(LoginRequiredMixin, viewsets.ViewSet):
             for product in page.object_list:
                 brand_name = product.brand and product.brand.name or 'N/A'
                 series_name = product.series and product.series.name or 'N/A'
-                company_name = product.company and product.company.name or 'N/A'
+                manufactor_name = product.manufactor and product.manufactor.name or 'N/A'
                 c1 = 'N/A'
                 c2 = 'N/A'
                 c3 = 'N/A'
@@ -163,7 +163,7 @@ class ProductViewSet(LoginRequiredMixin, viewsets.ViewSet):
                     "c1": c1,
                     "c2": c2,
                     "c3": c3,
-                    "company": company_name,
+                    "manufactor": manufactor_name,
                     "style": style,
                     "create_time": ctime,
                     "update_time": utime,
@@ -186,7 +186,7 @@ class ProductViewSet(LoginRequiredMixin, viewsets.ViewSet):
             "id": p.id,
             "product_no": p.product_no,
             "product_name": p.name or 'N/A',
-            "company_name": p.company and p.company.name or 'N/A',
+            "manufactor_name": p.manufactor and p.manufactor.name or 'N/A',
             "category_name": get_category(p.category_id) or 'N/A',
             "brand": p.brand and p.brand.name or 'N/A',
             "series": p.series and p.series.name or 'N/A',
