@@ -34,29 +34,83 @@ class CustomerAccount(models.Model):
     )
 
     no = models.CharField(max_length=200, default=None, null=True, blank=True)
+    #来源
     source = models.IntegerField(choices=SOURCE_CHOICES, default=SOURCE_MAIN)
+    #用户名
     username = models.CharField(max_length=200, default=None, null=True,
                                 blank=True)
     password = models.CharField(max_length=50, default=None, null=True,
                                 blank=True)
+    #角色
     role = models.IntegerField(choices=ROLE_CHOICES, default=ROLE_NORMAL)
+    #状态
     active = models.BooleanField(default=True)
+    #注册日期
     register_date = models.DateTimeField(default=None, null=True, blank=True)
+    #头像
     avatar = models.ImageField(default=None, null=True, blank=True,
                                upload_to='avatar/')
+    #真实姓名
     real_name = models.CharField(max_length=200, default=None, null=True,
                                  blank=True)
+    #性别
     gender = models.IntegerField(choices=GENDER_CHOICES, default=GENDER_MALE)
+    #生日
     birth_date = models.DateField(default=None, null=True, blank=True)
+    #手机号码
     phone = models.CharField(max_length=50, default=None, null=True, blank=True)
+    #邮箱
     email = models.EmailField(max_length=200, default=None, null=True,
                               blank=True)
-
+    email_certified = models.BooleanField(default=False)
+    # 电话有效性认证
+    phone_certified = models.BooleanField(default=False)
+    #域名
     domain = models.CharField(max_length=200,default=None,null=True,blank=True)
+    #名称
     domain_name = models.CharField(max_length=200, default=None, null=True,
                               blank=True)
-    domain_description = models.CharField(max_length=200, default=None, null=True,
+    #描述
+    domain_description = models.CharField(max_length=2000, default=None, null=True,
                               blank=True)
+    # 认证
+    certified = models.BooleanField(default=False)
+    # 审核
+    approved = models.BooleanField(default=False)
+    #注册号
+    register_no = models.CharField(max_length=50, default=None, null=True,
+                                   blank=True)
+    #身份信息
+    cert_no = models.CharField(max_length=50, default=None, null=True,
+                               blank=True)
+    #银行帐号
+    bank_no = models.CharField(max_length=50, default=None, null=True,
+                               blank=True)
+    #营业执照
+    business_license = models.FileField(default=None, null=True, blank=True,
+                                        upload_to='business_license/')
+
+    def __unicode__(self):
+        return '%s: %s' % (CustomerAccount.SOURCE_CHOICES[self.source][1],self.username)
+
+class OtherAccount(models.Model):
+    """
+        第三方用户表，商铺、电商的用户
+    """
+    platform = models.ForeignKey('CustomerAccount', related_name='other')
+    platform_code = models.CharField(max_length=128, default='', null=False)
+    username = models.CharField(max_length=128, default='', null=False)
+    user_code = models.CharField(max_length=32, default='', null=False)
+
+class PendingApprove(models.Model):
+    account = models.ForeignKey('CustomerAccount',related_name='pending_approves')
+    domain = models.CharField(max_length=200, default=None, null=True,
+                              blank=True)
+    domain_name = models.CharField(max_length=200, default=None, null=True,
+                                   blank=True)
+    domain_description = models.CharField(max_length=2000, default=None,
+                                          null=True,
+                                          blank=True)
     # 认证
     certified = models.BooleanField(default=False)
     # 审核
@@ -70,6 +124,36 @@ class CustomerAccount(models.Model):
                                blank=True)
     business_license = models.FileField(default=None, null=True, blank=True,
                                         upload_to='business_license/')
+    create_date = models.DateTimeField(auto_now=True)
+
+    def __unicode__(self):
+        return '%s' % self.account.username
+
+    @property
+    def pending_type(self):
+        if self.account.certified:
+            return ApproveLog.TYPE_APPROVE
+        else:
+            return ApproveLog.TYPE_CERTIFY
+
+    def certify(self):
+        self.certified = True
+        self.save()
+        self.account.certified = True
+        self.account.save()
+
+    def approve(self):
+        self.approved = True
+        self.save()
+        self.account.approved = True
+        self.account.domain = self.domain
+        self.account.domain_name = self.domain_name
+        self.account.domain_description = self.domain_description
+        self.account.register_no = self.register_no
+        self.account.cert_no = self.cert_no
+        self.account.bank_no = self.bank_no
+        self.account.business_license = self.business_license
+        self.account.save()
 
 
 class AccountKey(models.Model):
@@ -91,8 +175,8 @@ class ApproveLog(models.Model):
     )
 
     account = models.ForeignKey('CustomerAccount', related_name='approve_logs')
-    create_date = models.DateField()
-    action_date = models.DateField()
+    approve_info = models.ForeignKey('PendingApprove', related_name='approve_log')
+    action_date = models.DateTimeField(auto_now=True)
     action_type = models.IntegerField(choices=TYPE_CHOICES,
                                       default=TYPE_CERTIFY)
     approved = models.BooleanField(default=False)

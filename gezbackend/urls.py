@@ -24,6 +24,7 @@ urlpatterns = [
     url(r'^', include("home.urls", namespace='home')),
 
     url(r'^accounts/', include("accounts.urls", namespace='accounts')),
+    url(r'^customers/', include("customers.urls", namespace='customers')),
     url(r'^property/?', include("property.urls", namespace='property')),
     url(r'^product/?', include("products.urls", namespace='product')),
     url(r'^system/?', include("system.urls", namespace='system')),

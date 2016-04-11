@@ -1,10 +1,20 @@
 {% extends "base.html" %}
 
-{% block privateStyle %}{% endblock %}
+{% block privateStyle %}
+    <link type="text/css" rel="stylesheet" media="screen"
+          href="/statics/css/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" media="screen"
+          href="/statics/css/font-awesome.min.css">
+    <link type="text/css" rel="stylesheet" media="screen"
+          href="/statics/plugins/sweetalert/sweetalert.css">
+    <link type="text/css" rel="stylesheet" media="screen"
+          href="/statics/css/base.css">
+
+{% endblock %}
 
 {% block contentBody %}
 
-
+<body class="body-normal left-menu-open">
 <!-- public header -->
 <div class="public-header-body">
     <div class="menu-logo left"></div>
@@ -79,10 +89,17 @@
 </div>
 <div class="content-footer"><p class="footer-copyright" id="copyRight">
     Copyright &copy; 2015 杭州格菱网络科技有限公司 版权所有</p></div>
-
+</body>
 {% endblock %}
 
 {% block privateScript %}
+    <script type="text/javascript" src="/statics/js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="/statics/js/jquery.cookie.js"></script>
+<script type="text/javascript" src="/statics/js/bootstrap.min.js"></script>
+<script type="text/javascript"
+        src="/statics/plugins/sweetalert/sweetalert.min.js"></script>
+<script type="text/javascript" src="/statics/js/md5.min.js"></script>
+<script type="text/javascript" src="/statics/js/base.js"></script>
 <script type="text/javascript" src="/statics/js/newTabs.js"></script>
 <script type="text/javascript" src="/statics/js/csrf.js"></script>
 <script type="text/javascript">

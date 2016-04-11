@@ -18,6 +18,7 @@ from django.db.models import Q
 from gezbackend.utils import get_password
 from .models import Account
 
+
 class LoginView(TemplateView):
     template_name = 'accounts/login.html'
 
