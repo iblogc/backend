@@ -33,15 +33,15 @@ class PendingApproveViewSet(viewsets.ModelViewSet):
     serializer_class = PendingApproveSerializer
     queryset = PendingApprove.objects.all()
 
-    @detail_route(methods=['post','get'])
+    @detail_route(methods=['post'])
     def action(self, request, pk=None):
         pending_approve = PendingApprove.objects.get(pk=pk)
         customer_account = pending_approve.account
-        approve = int(request.GET.get('approve', 0))
-        message = request.GET.get('message')
-        action_type = int(request.GET.get('action_type', 0))
+        approve = int(request.POST.get('approve', 0))
+        message = request.POST.get('message')
+        action_type = int(request.POST.get('action_type', 0))
         action_user = request.user.admin.realname
-        approve_log = ApproveLog(account=customer_account,
+        ApproveLog(account=customer_account,
                                  approve_info=pending_approve,
                                  action_type=action_type, approved=approve,
                                  message=message, action_user=action_user).save()
