@@ -46,6 +46,15 @@ class CustomerAccount(models.Model):
     bank_no = models.CharField(max_length=50,default=None,null=True,blank=True)
     business_license = models.FileField(default=None,null=True,blank=True,upload_to='business_license/')
 
+class AccountKey(models.Model):
+    account = models.ForeignKey('CustomerAccount', related_name='keys')
+    token = models.CharField(max_length=128, unique=True, default='',
+                             null=False)
+    license = models.CharField(max_length=64, unique=True, default='',
+                               null=False)
+    app_secret = models.CharField(max_length=64, unique=True, default='',
+                                 null=False)
+
 
 class ApproveLog(models.Model):
     TYPE_CERTIFY = 0
