@@ -1,7 +1,7 @@
 # -*- encoding:utf-8 -*-
 
 from rest_framework import serializers
-from .models import CustomerAccount, PendingApprove
+from .models import CustomerAccount, PendingApprove, ApproveLog
 
 
 class CustomerAccountSerializer(serializers.ModelSerializer):
@@ -79,17 +79,35 @@ class PendingApproveSerializer(serializers.Serializer):
                                     allow_blank=True, allow_null=True)
     business_license = serializers.FileField(
         allow_empty_file=True, allow_null=True)
+    create_date = serializers.DateTimeField(read_only=True)
 
     class Meta:
         model = PendingApprove
         fields = (
             'id', 'account','customer_account', 'domain', 'domain_name', 'domain_description',
             'certified', 'approved', 'register_no', 'cert_no', 'bank_no',
-            'business_license')
+            'business_license', 'create_date')
 
     def create(self, validated_data):
         pending_approve = PendingApprove.objects.create(**validated_data)
         return pending_approve
 
-class ApproveLog(serializers.Serializer):
-    pass
+class ApproveLogSerializer(serializers.Serializer):
+    account = serializers.PrimaryKeyRelatedField(queryset=CustomerAccount.objects.all())
+    approve_info = serializers.PrimaryKeyRelatedField(queryset=PendingApprove.objects.all())
+    action_date = serializers.DateTimeField(read_only=True)
+    action_type = serializers.ChoiceField(choices=ApproveLog.TYPE_CHOICES,
+                                      default=ApproveLog.TYPE_CERTIFY)
+    approved = serializers.BooleanField(default=False)
+    message = serializers.CharField(max_length=2000, allow_null=True, allow_blank=True)
+    action_user = serializers.CharField(max_length=200, allow_null=True, allow_blank=True)
+
+    class Meta:
+        model = ApproveLog
+        fields = (
+            'id', 'account', 'approve_info', 'action_date', 'action_type',
+            'approved', 'message', 'action_user')
+
+    def create(self, validated_data):
+        approve_log = ApproveLog.objects.create(**validated_data)
+        return approve_log

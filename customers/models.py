@@ -126,6 +126,35 @@ class PendingApprove(models.Model):
                                         upload_to='business_license/')
     create_date = models.DateTimeField(auto_now=True)
 
+    def __unicode__(self):
+        return '%s' % self.account.username
+
+    @property
+    def pending_type(self):
+        if self.account.certified:
+            return ApproveLog.TYPE_APPROVE
+        else:
+            return ApproveLog.TYPE_CERTIFY
+
+    def certify(self):
+        self.certified = True
+        self.save()
+        self.account.certified = True
+        self.account.save()
+
+    def approve(self):
+        self.approved = True
+        self.save()
+        self.account.approved = True
+        self.account.domain = self.domain
+        self.account.domain_name = self.domain_name
+        self.account.domain_description = self.domain_description
+        self.account.register_no = self.register_no
+        self.account.cert_no = self.cert_no
+        self.account.bank_no = self.bank_no
+        self.account.business_license = self.business_license
+        self.account.save()
+
 
 class AccountKey(models.Model):
     account = models.OneToOneField('CustomerAccount', related_name='key')
@@ -146,7 +175,7 @@ class ApproveLog(models.Model):
     )
 
     account = models.ForeignKey('CustomerAccount', related_name='approve_logs')
-    approve_info = models.OneToOneField('PendingApprove', related_name='approve_log')
+    approve_info = models.ForeignKey('PendingApprove', related_name='approve_log')
     action_date = models.DateTimeField(auto_now=True)
     action_type = models.IntegerField(choices=TYPE_CHOICES,
                                       default=TYPE_CERTIFY)
