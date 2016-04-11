@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block privateStyle %}{% endblock %}
+
+{% block contentBody %}
+
+{% endblock %}
+
+{% block privateScript %}
+<script type="text/javascript" src="/statics/js/newTabs.js"></script>
+<script type="text/javascript" src="/statics/js/csrf.js"></script>
+<script type="text/javascript">
+    $(function () {
+        baseApp.init();
+        newTabs.init();
+    })
+</script>
+
+{% endblock %}
