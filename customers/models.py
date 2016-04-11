@@ -71,6 +71,29 @@ class CustomerAccount(models.Model):
     business_license = models.FileField(default=None, null=True, blank=True,
                                         upload_to='business_license/')
 
+class PendingApprove(models.Model):
+    account = models.ForeignKey('CustomerAccount',related_name='pending_approves')
+    domain = models.CharField(max_length=200, default=None, null=True,
+                              blank=True)
+    domain_name = models.CharField(max_length=200, default=None, null=True,
+                                   blank=True)
+    domain_description = models.CharField(max_length=2000, default=None,
+                                          null=True,
+                                          blank=True)
+    # 认证
+    certified = models.BooleanField(default=False)
+    # 审核
+    approved = models.BooleanField(default=False)
+
+    register_no = models.CharField(max_length=50, default=None, null=True,
+                                   blank=True)
+    cert_no = models.CharField(max_length=50, default=None, null=True,
+                               blank=True)
+    bank_no = models.CharField(max_length=50, default=None, null=True,
+                               blank=True)
+    business_license = models.FileField(default=None, null=True, blank=True,
+                                        upload_to='business_license/')
+
 
 class AccountKey(models.Model):
     account = models.OneToOneField('CustomerAccount', related_name='key')
