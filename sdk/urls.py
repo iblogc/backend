@@ -8,7 +8,7 @@ from .brand_views import BrandViewSet
 from .company_views import ManufactorViewSet
 from .series_views import SeriesViewSet
 from .account_views import AccountViewSet
-from .customer_views import CustomerAccountViewSet
+from .customer_views import CustomerAccountViewSet, PendingApproveViewSet
 
 router = routers.SimpleRouter()
 router.register(r'category', CategoryViewSet, 'cateogry')
@@ -19,4 +19,5 @@ router.register(r'manufactor', ManufactorViewSet, 'manufactor')
 router.register(r'series', SeriesViewSet, 'series')
 router.register(r'account', AccountViewSet, 'account')
 router.register(r'customer', CustomerAccountViewSet, 'customer')
+router.register(r'pending_approves', PendingApproveViewSet, 'pending_approves')
 urlpatterns = router.urls

@@ -9,9 +9,13 @@ from rest_framework.response import Response
 from django.core.paginator import Paginator
 from django.db.models import Q
 from braces.views import LoginRequiredMixin
-from customers.serializers import CustomerAccountSerializer
-from customers.models import CustomerAccount
+from customers.serializers import CustomerAccountSerializer, PendingApproveSerializer
+from customers.models import CustomerAccount, PendingApprove
 
 class CustomerAccountViewSet(viewsets.ModelViewSet):
     serializer_class = CustomerAccountSerializer
     queryset = CustomerAccount.objects.all()
+
+class PendingApproveViewSet(viewsets.ModelViewSet):
+    serializer_class = PendingApproveSerializer
+    queryset = PendingApprove.objects.all()
