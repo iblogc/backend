@@ -51,6 +51,12 @@ class CustomerAccount(models.Model):
     phone = models.CharField(max_length=50, default=None, null=True, blank=True)
     email = models.EmailField(max_length=200, default=None, null=True,
                               blank=True)
+
+    domain = models.CharField(max_length=200,default=None,null=True,blank=True)
+    domain_name = models.CharField(max_length=200, default=None, null=True,
+                              blank=True)
+    domain_description = models.CharField(max_length=200, default=None, null=True,
+                              blank=True)
     # 认证
     certified = models.BooleanField(default=False)
     # 审核
