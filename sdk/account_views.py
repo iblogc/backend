@@ -11,19 +11,22 @@ from django.db.models import Q
 from braces.views import LoginRequiredMixin
 from accounts.serializers import AccountSerializer
 from accounts.models import Account
-from django.contrib.auth import authenticate, login
+from django.contrib import auth
 from gezbackend.utils import get_random_code
 from rest_framework.permissions import AllowAny
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view, permission_classes
+from django.utils.decorators import method_decorator
 
 class AccountViewSet(viewsets.ModelViewSet):
     serializer_class = AccountSerializer
     queryset = Account.objects.all()
 
-@csrf_exempt
+
 @api_view(http_method_names=['post'])
-def login(self, request):
+@method_decorator(csrf_exempt)
+@permission_classes([AllowAny])
+def login(request):
     username = request.POST.get('username')
     password = request.POST.get('password')
     try:
@@ -36,7 +39,7 @@ def login(self, request):
                 'data': ''
             },status=status.HTTP_200_OK)
         user = user[0]
-        user = authenticate(username=user.username, password=password)
+        user = auth.authenticate(username=user.username, password=password)
         if not user:
             # 登录密码错误
             return Response({
@@ -44,7 +47,7 @@ def login(self, request):
                 'message': '',
                 'data': ''
             }, status=status.HTTP_200_OK)
-        login(request, user)
+        auth.login(request, user)
         if hasattr(user, 'admin'):
             admin = user.admin
             request.session['token'] = get_random_code(64)

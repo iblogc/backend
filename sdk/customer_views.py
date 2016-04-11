@@ -50,7 +50,7 @@ class PendingApproveViewSet(viewsets.ModelViewSet):
                 pending_approve.certify()
             else:
                 pending_approve.approve()
-        return Response(status=status.HTTP_200_OK)
+        return Response({'success':1},status=status.HTTP_200_OK)
 
 
 
