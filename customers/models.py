@@ -71,6 +71,15 @@ class CustomerAccount(models.Model):
     business_license = models.FileField(default=None, null=True, blank=True,
                                         upload_to='business_license/')
 
+class OtherAccount(models.Model):
+    """
+        第三方用户表，商铺、电商的用户
+    """
+    platform = models.ForeignKey('CustomerAccount', related_name='other')
+    platform_code = models.CharField(max_length=128, default='', null=False)
+    username = models.CharField(max_length=128, default='', null=False)
+    user_code = models.CharField(max_length=32, default='', null=False)
+
 class PendingApprove(models.Model):
     account = models.ForeignKey('CustomerAccount',related_name='pending_approves')
     domain = models.CharField(max_length=200, default=None, null=True,
