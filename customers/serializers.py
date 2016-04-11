@@ -57,7 +57,8 @@ class CustomerAccountSerializer(serializers.ModelSerializer):
             'business_license')
 
 class PendingApproveSerializer(serializers.Serializer):
-    account = serializers.ChoiceField(choices=CustomerAccount.objects.all())
+    account = serializers.PrimaryKeyRelatedField(queryset=CustomerAccount.objects.all())
+    # account = CustomerAccountSerializer(read_only=True)
     domain = serializers.CharField(max_length=200, allow_blank=True,
                                    allow_null=True)
     domain_name = serializers.CharField(max_length=200, allow_blank=True,
@@ -82,6 +83,13 @@ class PendingApproveSerializer(serializers.Serializer):
     class Meta:
         model = PendingApprove
         fields = (
-            'id', 'account', 'domain', 'domain_name', 'domain_description',
+            'id', 'account','customer_account', 'domain', 'domain_name', 'domain_description',
             'certified', 'approved', 'register_no', 'cert_no', 'bank_no',
             'business_license')
+
+    def create(self, validated_data):
+        pending_approve = PendingApprove.objects.create(**validated_data)
+        return pending_approve
+
+class ApproveLog(serializers.Serializer):
+    pass

@@ -62,6 +62,9 @@ class CustomerAccount(models.Model):
     #邮箱
     email = models.EmailField(max_length=200, default=None, null=True,
                               blank=True)
+    email_certified = models.BooleanField(default=False)
+    # 电话有效性认证
+    phone_certified = models.BooleanField(default=False)
     #域名
     domain = models.CharField(max_length=200,default=None,null=True,blank=True)
     #名称
