@@ -8,7 +8,7 @@
 # Installation
 
 #### Git
-git地址: http://192.168.3.112:10080/huanghanxian/gezadmin
+git地址: https://github.com/jiangbingo/backend
 使用:
 1. Fork到自己帐号下
 2. 从自己帐号下的项目中clone项目到本地开发
